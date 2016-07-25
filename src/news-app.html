@@ -1,0 +1,224 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/helpers/helpers.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+
+<link rel="import" href="news-category-data.html">
+
+<dom-module id="news-app">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+        min-height: 100vh;
+      }
+
+      app-header {
+        @apply(--layout-fixed-top);
+        z-index: 1;
+        color: #fff;
+      }
+
+      .logo {
+        text-align: center;
+      }
+
+      .logo a {
+        font-weight: 600;
+        letter-spacing: 6px;
+        text-decoration: none;
+        color: #fff;
+        /* required for IE 11, so this <a> can receive pointer events */
+        display: inline-block;
+        pointer-events: auto;
+      }
+
+      iron-pages {
+        max-width: 1440px;
+        margin: 0 auto;
+      }
+
+      app-drawer {
+        z-index: 2;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+      }
+
+      .drawer-list a {
+        display: block;
+        padding: 0 16px;
+        line-height: 40px;
+        text-decoration: none;
+        color: #999;
+      }
+
+      .drawer-list a.iron-selected {
+        color: #282828;
+        font-weight: 600;
+      }
+
+    </style>
+
+    <!--
+      app-location and app-route elements provide the state of the URL for the app.
+    -->
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/:page"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
+    <iron-media-query query="max-width: 600px" query-matches="{{smallScreen}}"></iron-media-query>
+
+    <!--
+      news-category-data provides the list of categories and the articles for the category.
+    -->
+    <news-category-data categories="{{categories}}"></news-category-data>
+
+    <app-header condenses>
+      <app-toolbar>
+        <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
+        <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
+        <paper-icon-button icon="search"></paper-icon-button>
+      </app-toolbar>
+    </app-header>
+
+    <!-- Lazy-create the drawer for small screen sizes. -->
+    <template is="dom-if" if="[[_shouldRenderDrawer]]">
+      <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
+        <iron-selector role="navigation" class="drawer-list" selected="[[categoryName]]" attr-for-selected="name">
+          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
+            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+          </template>
+        </iron-selector>
+      </app-drawer>
+    </template>
+
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="active">
+      <!-- list view of articles in a category -->
+      <news-list name="list" route="[[subroute]]"></news-list>
+      <!-- article view -->
+      <news-article name="article" route="[[subroute]]"></news-article>
+    </iron-pages>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'news-app',
+
+      properties: {
+
+        page: {
+          observer: '_pageChanged'
+        },
+
+        _shouldRenderDrawer: {
+          computed: '_computeShouldRenderDrawer(smallScreen, loadComplete)'
+        }
+      },
+
+      observers: [
+        '_routePageChanged(routeData.page)'
+      ],
+
+      listeners: {
+        'change-section': '_onChangeSection'
+      },
+
+      created: function() {
+        // Custom elements polyfill safe way to indicate an element has been upgraded.
+        this.removeAttribute('unresolved');
+      },
+
+      _routePageChanged: function(page) {
+        if (!page) {
+          // set default route if route path is empty
+          this.set('route.path', 'list/mobile-homepage');
+          return;
+        }
+        this.page = page;
+        // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
+        // with `behavior: 'silent'` to disable header scroll effects during the scroll.
+        Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });
+        // Close the drawer - in case the *route* change came from a link in the drawer.
+        this.drawerOpened = false;
+      },
+
+      _pageChanged: function(page, oldPage) {
+        if (page != null) {
+          this.importHref(
+            this.resolveUrl('news-' + page + '.html'),
+            function() {
+              this._pageLoaded(Boolean(oldPage));
+            }, null, true);
+        }
+      },
+
+      _pageLoaded: function(shouldResetLayout) {
+        this._ensureLazyLoaded();
+      },
+
+      _ensureLazyLoaded: function() {
+        // load lazy resources after render and set `loadComplete` when done.
+        if (!this.loadComplete) {
+          Polymer.RenderStatus.afterNextRender(this, function() {
+            this.importHref(this.resolveUrl('lazy-resources.html'), function() {
+              // Register service worker if supported.
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js');
+              }
+              this.loadComplete = true;
+            });
+          });
+        }
+      },
+
+      _toggleDrawer: function() {
+        this.drawerOpened = !this.drawerOpened;
+      },
+
+      // Elements in the app can notify section changes.
+      // Response by a11y announcing the section and syncronizing the category.
+      _onChangeSection: function(event) {
+        var detail = event.detail;
+        this.categoryName = detail.category || '';
+        // Announce the page's title
+        if (detail.title) {
+          document.title = detail.title + ' - NEWS';
+        }
+      },
+
+      _computeShouldRenderDrawer: function(smallScreen, loadComplete) {
+        return smallScreen && loadComplete;
+      }
+
+    });
+
+  </script>
+
+</dom-module>

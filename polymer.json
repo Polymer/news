@@ -1,0 +1,9 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/news-app.html",
+  "fragments": [
+    "src/news-list.html",
+    "src/news-article.html",
+    "src/lazy-resources.html"
+  ]
+}

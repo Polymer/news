@@ -1,0 +1,227 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="news-category-data.html">
+
+<dom-module id="news-list">
+
+  <template>
+
+    <style>
+
+      ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      li {
+        display: block;
+      }
+
+      li > a {
+        display: block;
+        position: relative;
+        box-sizing: border-box;
+        border-bottom: 1px solid #ddd;
+        text-decoration: none;
+        color: #282828;
+        overflow: hidden;
+      }
+
+      .headline {
+        padding: 24px;
+      }
+
+      .headline > h2 {
+        margin: 0 0 16px;
+        font-family: Georgia, serif;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 28px;
+      }
+
+      .author {
+        font-size: 14px;
+      }
+
+      li.featured > a {
+        height: 100vh;
+        border-bottom: 0;
+        background-color: #000;
+        color: #fff;
+      }
+
+      li.featured .headline {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+
+      li.featured .headline > h2 {
+        font-size: 37px;
+        line-height: 47px;
+      }
+
+      li.featured .author {
+        font-size: 16px;
+      }
+
+      .img-container {
+        position: relative;
+      }
+
+      .img-container > img {
+        display: block;
+        width: 100%;
+        height: auto;
+        min-height: 60vh;
+        object-fit: cover;
+      }
+
+      .img-container > .scrim {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+      }
+
+    </style>
+
+    <!--
+      app-route provides the name of the category.
+    -->
+    <app-route
+        route="[[route]]"
+        pattern="/:category"
+        data="{{routeData}}"></app-route>
+
+    <!--
+      news-category-data provides the category data for a given category name.
+    -->
+    <news-category-data
+        id="categoryData"
+        category-name="[[routeData.category]]"
+        category="{{category}}"
+        failure="{{failure}}"></news-category-data>
+
+    <ul class="grid">
+      <li class="featured">
+        <a href$="[[_getItemHref(featuredItem)]]">
+          <div class="img-container">
+            <img src="[[_getFeaturedImg(featuredItem)]]">
+            <div class="scrim"></div>
+          </div>
+          <div class="headline">
+            <h2>{{_unescapeText(featuredItem.web_headline)}}</h2>
+            <div class="author">{{featuredItem.byline}}</div>
+          </div>
+        </a>
+      </li>
+
+      <template is="dom-repeat" items="[[_getListItems(category.items)]]">
+        <li>
+          <a href$="[[_getItemHref(item)]]">
+            <div class="headline">
+              <h2>{{_unescapeText(item.web_headline)}}</h2>
+              <div class="author">{{item.byline}}</div>
+            </div>
+          </a>
+        </li>
+      </template>
+    </ul>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'news-list',
+
+      properties: {
+
+        category: Object,
+
+        featuredItem: {
+          type: Object,
+          computed: '_computeFeaturedItem(category.items)'
+        },
+
+        route: Object,
+
+        routeData: Object,
+
+        active: Boolean,
+
+        failure: Boolean
+
+      },
+
+      observers: [
+        '_categoryChanged(category, active)'
+      ],
+
+      _computeFeaturedItem: function(items) {
+        return items ? items[0] : {};
+      },
+
+      _getFeaturedImg: function(item) {
+        return item.thumbnail && (item.thumbnail.url ||
+            item.thumbnail.featured && item.thumbnail.featured.url) || '';
+      },
+
+      _getListItems: function(items) {
+        return items ? items.splice(1) : [];
+      },
+
+      _getItemHref: function(item) {
+        // By returning null when `itemId` is undefined, the href attribute won't be set and
+        // the link will be disabled.
+        return item.canonical_url ? '/article/' + item.canonical_url : null;
+      },
+
+      _categoryChanged: function(category, active) {
+        if (active) {
+          this.debounce('change-section', function() {
+            // Notify the category and the page's title
+            this.fire('change-section', {
+              category: category.name,
+              title: category.title
+            });
+          });
+        }
+      },
+
+      _unescapeText: function(text) {
+        var elem = document.createElement('textarea');
+        elem.innerHTML = text;
+        return elem.textContent;
+      },
+
+      _tryReconnect: function() {
+        this.$.categoryData.refresh();
+      },
+
+      _offlineChanged: function(offline) {
+        if (!offline) {
+          this._tryReconnect();
+        }
+      }
+
+    });
+
+  </script>
+
+</dom-module>

@@ -1,0 +1,125 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="news-category-data">
+
+  <script>
+
+  (function() {
+
+    var categoryList = [
+      {name: 'mobile-homepage', title: 'Top Stories'},
+      {name: 'opinions', title: 'Opinions'},
+      {name: 'politics', title: 'Politics'},
+      {name: 'world', title: 'World'},
+      {name: 'business', title: 'Business'},
+      {name: 'business_technology', title: 'Technology'},
+      {name: 'lifestyle', title: 'Lifestyle'},
+      {name: 'entertainment', title: 'Entertainment'},
+      {name: 'sports', title: 'Sports'}
+    ];
+
+    Polymer({
+
+      is: 'news-category-data',
+
+      properties: {
+
+        categories: {
+          type: Array,
+          value: categoryList,
+          readOnly: true,
+          notify: true
+        },
+
+        categoryName: String,
+
+        category: {
+          type: Object,
+          computed: '_computeCategory(categoryName)',
+          notify: true
+        },
+
+        failure: {
+          type: Boolean,
+          notify: true,
+          readOnly: true
+        }
+
+      },
+
+      _getCategory: function(categoryName) {
+        for (var i = 0, c; c = this.categories[i]; ++i) {
+          if (c.name === categoryName) {
+            return c;
+          }
+        }
+        return null;
+      },
+
+      _computeCategory: function(categoryName) {
+        // Fetch the items of the category. Note that the fetch is asynchronous,
+        // which means `category.items` may not be set initially (but that path
+        // will be notified when the fetch completes).
+        var category = this._getCategory(categoryName);
+        this._fetchItems(category);
+        return category;
+      },
+
+      _fetchItems: function(category, force, attempts) {
+        this._setFailure(false);
+        // Only fetch the items of a category it has not been previously set or if `force` is true
+        if (!force && (!category || category.items)) {
+          return;
+        }
+        var path = category.name.replace('_', '/');
+        this._getResource({
+          url: 'https://www.washingtonpost.com/pwa/api/section/' + path + '/?outputType=jsonFront',
+          onLoad: function(e) {
+            this.set('category.items', JSON.parse(e.target.responseText).entries);
+          },
+          onError: function(e) {
+            this._setFailure(true);
+          }
+        }, attempts || 1);
+      },
+
+      _getResource: function(rq, attempts) {
+        var xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', rq.onLoad.bind(this));
+        xhr.addEventListener('error', function(e) {
+          // Flaky connections might fail fetching resources
+          if (attempts > 1) {
+            this.debounce('_getResource', this._getResource.bind(this, rq, attempts - 1), 200);
+          } else {
+            rq.onError.call(this, e);
+          }
+        }.bind(this));
+
+        xhr.open('GET', rq.url);
+        xhr.send();
+      },
+
+      refresh: function() {
+        if (this.categoryName) {
+          // Try at most 3 times to get the items.
+          this._fetchItems(this._getCategoryObject(this.categoryName), true, 3);
+        }
+      }
+
+    });
+
+  })();
+
+  </script>
+
+</dom-module>

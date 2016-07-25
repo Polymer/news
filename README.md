@@ -12,7 +12,7 @@ Install [polymer-cli](https://github.com/Polymer/polymer-cli):
 
 ##### Setup
 
-    git clone https://github.com/frankiefu/news.git
+    git clone https://github.com/polymerlabs/news.git
     cd shop
     bower install
 

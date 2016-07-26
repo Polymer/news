@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 
 <dom-module id="news-list-item">
@@ -43,8 +44,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         line-height: 47px;
       }
 
-      :host([featured]) .author {
-        font-size: 16px;
+      :host([featured]) .kicker {
+        border-color: rgba(255,255,255,0.5);
+        color: #fff;
+      }
+
+      :host([featured]) .details {
+        border-top: 1px solid rgba(255,255,255,0.5);
+        padding-top: 24px;
+      }
+
+      :host([featured]) .headline > h2 {
+        margin: 0 0 24px;
       }
 
       .img-container {
@@ -74,7 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .headline > h2 {
-        margin: 0 0 16px;
+        margin: 0 0 18px;
         font-family: Georgia, serif;
         font-weight: 400;
         font-size: 20px;
@@ -99,11 +110,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 0px;
       }
 
-      :host([featured]) .kicker {
-        border-color: rgba(255,255,255,0.5);
-        color: #fff;
+      .details {
+        @apply(--layout-horizontal);
+        font-family: Georgia;
+        font-size: 11px;
+        font-weight: bold;
       }
 
+      .details > div {
+        white-space: nowrap;
+      }
+
+      .author {
+        padding-left: 35px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     </style>
 
     
@@ -115,7 +137,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="headline">
         <div class="kicker" hidden$="[[_hide(item.kicker)]]">[[item.kicker]]</div>
         <h2>{{_unescapeText(item.web_headline)}}</h2>
-        <div class="author">{{item.byline}}</div>
+        <div class="details">
+          <div class="timestamp">[[_ago(item.published_date_num)]]</div>
+          <div class="author">{{item.byline}}</div>
+        </div>
       </div>
     </a>
   </template>
@@ -133,6 +158,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _not: function(b) {
         return !b;
+      },
+
+      _ago: function(timestamp) {
+        var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
+        if (minutes < 60)
+          return `${Math.floor(minutes)} min ago`
+        if (minutes < 120)
+          return '1 hour ago'
+        return `${Math.floor(minutes / 60)} hours ago` 
       },
 
       _hide: function(text) {

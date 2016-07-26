@@ -12,8 +12,8 @@ Install [polymer-cli](https://github.com/Polymer/polymer-cli):
 
 ##### Setup
 
-    git clone https://github.com/frankiefu/news.git
-    cd shop
+    git clone https://github.com/polymerlabs/news.git
+    cd news
     bower install
 
 ### Start the development server

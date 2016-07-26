@@ -16,6 +16,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
 
     <style>
+    :host {
+      opacity: 1;
+      transition: opacity 500ms;
+    }
+    :host([loading]) {
+      opacity: 0;
+      transition: none;
+    }
 
     .cover {
       background: url(../images/article6.png);
@@ -91,7 +99,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _routeData: Object,
 
-        _articleData: Object
+        _articleData: Object,
+
+        loading: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false,
+        },
 
       },
 
@@ -100,6 +114,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _fetchArticle: function(page) {
+        this.loading = true;
         var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + decodeURIComponent(page);
         var xhr = new XMLHttpRequest();
         xhr.addEventListener('load', this._loadArticle.bind(this));
@@ -109,6 +124,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _loadArticle: function(e) {
         this._articleData = JSON.parse(e.target.responseText);
+        this.loading = false;
       },
 
       _decodeHeadline: function(s) {

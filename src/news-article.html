@@ -19,7 +19,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
       opacity: 1;
       transition: opacity 500ms;
+      display: block;
+      margin: 24px;
     }
+
     :host([loading]) {
       opacity: 0;
       transition: none;
@@ -36,21 +39,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       flex: 1;
     }
 
-    .meta {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      height: 100vh;
-      box-sizing: border-box;
-      color: #FFF;
-      padding: 24px;
-    }
-
     .meta .category {
       display: inline-block;
       text-transform: capitalize;
       padding: 6px 20px 7px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+    @media (max-width: 767px) {
+      :host {
+        margin: 0;
+      }
+
+      .meta {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        height: 100vh;
+        box-sizing: border-box;
+        color: #FFF;
+        padding: 24px;
+      }
+
+      .meta .category {
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
     }
 
     #content {
@@ -62,6 +75,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: none;
     }
     </style>
+
+    <news-category-data categories="{{categories}}"></news-category-data>
 
     <app-route
         route="[[route]]"

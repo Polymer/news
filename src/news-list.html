@@ -189,7 +189,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getItemHref: function(item) {
         // By returning null when `itemId` is undefined, the href attribute won't be set and
         // the link will be disabled.
-        return item.canonical_url ? '/article/' + item.canonical_url : null;
+        return item.canonical_url ? '/article/' + encodeURIComponent(item.canonical_url) : null;
       },
 
       _categoryChanged: function(category, active) {

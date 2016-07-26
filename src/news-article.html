@@ -9,14 +9,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 
 <dom-module id="news-article">
+
+  <template>
+
+    <app-route
+        route="[[route]]"
+        pattern="/:page"
+        data="{{_routeData}}"></app-route>
+
+    <div id="content"></div>
+
+  </template>
 
   <script>
 
     Polymer({
 
-      is: 'news-article'
+      is: 'news-article',
+
+      properties: {
+
+        route: Object,
+
+        _routeData: Object
+
+      },
+
+      observers: [
+        '_fetchArticle(_routeData.page)'
+      ],
+
+      _fetchArticle: function(page) {
+        var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + decodeURIComponent(page);
+        var xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', this._loadArticle.bind(this));
+        xhr.open('GET', url);
+        xhr.send();
+      },
+
+      _loadArticle: function(e) {
+        var data = JSON.parse(e.target.responseText);
+        this.$.content.innerHTML = data.html;
+      }
+
 
     });
 

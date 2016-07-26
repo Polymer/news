@@ -15,12 +15,67 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
 
+    <style>
+
+    .cover {
+      background: url(../images/article6.png);
+      background-size: cover;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .flex {
+      flex: 1;
+    }
+
+    .meta {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      height: 100vh;
+      box-sizing: border-box;
+      color: #FFF;
+      padding: 24px;
+    }
+
+    .meta .category {
+      display: inline-block;
+      text-transform: capitalize;
+      padding: 6px 20px 7px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    #content {
+      padding: 24px;
+    }
+
+    #content .kicker,
+    #content h1 {
+      display: none;
+    }
+    </style>
+
     <app-route
         route="[[route]]"
         pattern="/:page"
         data="{{_routeData}}"></app-route>
 
-    <div id="content"></div>
+    <div class="meta">
+      <div class="flex"></div>
+      <div>
+        <span class="category">[[_articleData.section]]</span>
+      </div>
+      <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
+      <div>
+        <span>20 mins ago</span>
+        <span>4 mins read</span>
+      </div>
+    </div>
+
+    <div class="cover">
+    </div>
+
+    <div id="content" inner-h-t-m-l="[[_articleData.html]]"></div>
 
   </template>
 
@@ -34,7 +89,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         route: Object,
 
-        _routeData: Object
+        _routeData: Object,
+
+        _articleData: Object
 
       },
 
@@ -51,10 +108,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _loadArticle: function(e) {
-        var data = JSON.parse(e.target.responseText);
-        this.$.content.innerHTML = data.html;
-      }
+        this._articleData = JSON.parse(e.target.responseText);
+      },
 
+      _decodeHeadline: function(s) {
+        return decodeURIComponent(s.replace(/\+/g, ' '));
+      }
 
     });
 

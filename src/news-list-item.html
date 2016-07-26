@@ -70,6 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .headline {
         padding: 24px;
+        padding-top: 0px;
       }
 
       .headline > h2 {
@@ -78,6 +79,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: 400;
         font-size: 20px;
         line-height: 28px;
+      }
+
+      .kicker {
+        margin-top: 24px;
+        margin-bottom: 18px;
+        padding: 6px 20px 7px 20px;
+        border: 1px solid #C2C2C2;
+        display: inline-block;
+        font-family: Georgia;
+        font-weight: bold;
+        font-size: 11px;
+      }
+
+      .kicker[hidden] {
+        visibility: hidden;
+        height: 0px;
+        margin-top: 0px;
+        padding: 0px;
+      }
+
+      :host([featured]) .kicker {
+        border-color: rgba(255,255,255,0.5);
+        color: #fff;
       }
 
     </style>
@@ -89,6 +113,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="scrim"></div>
       </div>
       <div class="headline">
+        <div class="kicker" hidden$="[[_hide(item.kicker)]]">[[item.kicker]]</div>
         <h2>{{_unescapeText(item.web_headline)}}</h2>
         <div class="author">{{item.byline}}</div>
       </div>
@@ -108,6 +133,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _not: function(b) {
         return !b;
+      },
+
+      _hide: function(text) {
+        return text == "" || text == undefined;
       },
 
       _getItemHref: function(item) {

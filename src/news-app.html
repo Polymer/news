@@ -20,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
 <link rel="import" href="news-category-data.html">
+<link rel="import" href="news-list-item.html">
 
 <dom-module id="news-app">
 
@@ -40,6 +41,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .logo {
         text-align: center;
+      }
+
+      .date-line {
+        width: 100%;
+        text-align: center;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        margin-left: 12px;
+        margin-right: 12px;
+        box-sizing: border-box;
       }
 
       .logo a {
@@ -103,6 +116,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
         <paper-icon-button icon="search"></paper-icon-button>
       </app-toolbar>
+      <app-toolbar>
+        <div class="date-line">
+          Top Stories &middot; [[_currentTime()]]
+        </div>
+      </app-toolbar>
     </app-header>
 
     <!-- Lazy-create the drawer for small screen sizes. -->
@@ -153,6 +171,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       created: function() {
         // Custom elements polyfill safe way to indicate an element has been upgraded.
         this.removeAttribute('unresolved');
+      },
+
+      _currentTime: function() {
+        var monthNames = [
+          "January", "February", "March",
+          "April", "May", "June", "July",
+          "August", "September", "October",
+          "November", "December"
+        ];
+
+        var date = new Date();
+
+        return `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
       },
 
       _routePageChanged: function(page) {

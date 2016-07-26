@@ -28,6 +28,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       transition: none;
     }
 
+    .container {
+      display: flex;
+    }
+
+    .container main {
+      flex: 1;
+    }
+
+    .container aside {
+      margin-left: 24px;
+      width: 300px;
+    }
+
     .cover {
       background: url(../images/article6.png);
       background-size: cover;
@@ -56,6 +69,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 0;
       }
 
+      .container {
+        flex-direction: column;
+      }
+
+      .container aside {
+        margin-left: auto;
+        width: auto;
+        padding: 24px;
+      }
+
       .meta {
         display: flex;
         flex-direction: column;
@@ -76,29 +99,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     </style>
 
-    <news-category-data categories="{{categories}}"></news-category-data>
+    <news-category-data category-name="[[_articleData.section]]" category="{{_category}}"></news-category-data>
 
     <app-route
         route="[[route]]"
         pattern="/:page"
         data="{{_routeData}}"></app-route>
 
-    <div class="meta">
-      <div class="flex"></div>
-      <div>
-        <span class="category">[[_articleData.section]]</span>
-      </div>
-      <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
-      <div>
-        <span>20 mins ago</span>
-        <span>4 mins read</span>
-      </div>
-    </div>
+    <div class="container">
+      <main>
+        <div class="meta">
+          <div class="flex"></div>
+          <div>
+            <span class="category">[[_articleData.section]]</span>
+          </div>
+          <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
+          <div>
+            <span>20 mins ago</span>
+            <span>4 mins read</span>
+          </div>
+        </div>
 
-    <div class="cover">
-    </div>
+        <div class="cover">
+        </div>
 
-    <div id="content" inner-h-t-m-l="[[_articleData.html]]"></div>
+        <div id="content" inner-h-t-m-l="[[_articleData.html]]"></div>
+      </main>
+
+      <aside>
+        <template is="dom-repeat" items="[[_category.items]]">
+          <a href$="[[_getItemHref(item)]]">
+            <div class="headline">
+              <h2>{{_unescapeText(item.web_headline)}}</h2>
+              <div class="author">{{item.byline}}</div>
+            </div>
+          </a>
+        </template>
+      </aside>
+    </div>
 
   </template>
 
@@ -115,6 +153,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         _routeData: Object,
 
         _articleData: Object,
+
+        _category: Object,
 
         loading: {
           type: Boolean,
@@ -144,7 +184,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _decodeHeadline: function(s) {
         return decodeURIComponent(s.replace(/\+/g, ' '));
-      }
+      },
+
+      _getItemHref: function(item) {
+        // By returning null when `itemId` is undefined, the href attribute won't be set and
+        // the link will be disabled.
+        return item.canonical_url ? '/article/' + encodeURIComponent(item.canonical_url) : null;
+      },
+
+      _unescapeText: function(text) {
+        var elem = document.createElement('textarea');
+        elem.innerHTML = text;
+        return elem.textContent;
+      },
 
     });
 

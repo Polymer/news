@@ -21,6 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="news-category-data.html">
 <link rel="import" href="news-list-item.html">
+<link rel="import" href="news-sticky-header.html">
+
 
 <dom-module id="news-app">
 
@@ -39,6 +41,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: #fff;
       }
 
+      news-sticky-header {
+        z-index: 1;
+      }
+
       .logo {
         text-align: center;
       }
@@ -46,8 +52,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .date-line {
         width: 100%;
         text-align: center;
-        border-top: 1px solid rgba(255,255,255,0.5);
-        border-bottom: 1px solid rgba(255,255,255,0.5);
         padding-top: 6px;
         padding-bottom: 6px;
         margin-left: 12px;
@@ -55,6 +59,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         box-sizing: border-box;
         font-family: Georgia;
         font-size: 11px;
+      }
+
+      app-header .date-line {
+        border-top: 1px solid rgba(255,255,255,0.5);
+        border-bottom: 1px solid rgba(255,255,255,0.5);
+      }
+
+      news-sticky-header .date-line {
+        padding-right: 40px;
       }
 
       .logo a {
@@ -118,12 +131,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
         <paper-icon-button icon="search"></paper-icon-button>
       </app-toolbar>
-      <app-toolbar>
+      <app-toolbar sticky>
         <div class="date-line">
           Top Stories &middot; [[_currentTime()]]
         </div>
       </app-toolbar>
     </app-header>
+
+    <news-sticky-header>
+      <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
+      <div class="date-line">
+        Top Stories &middot; [[_currentTime()]]
+      </div>
+    </news-sticky-header>
 
     <!-- Lazy-create the drawer for small screen sizes. -->
     <template is="dom-if" if="[[_shouldRenderDrawer]]">

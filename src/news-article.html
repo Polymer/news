@@ -64,6 +64,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: none;
     }
 
+    .headline {
+      text-decoration: none;
+      color: black;
+      display: block;
+      margin: 20px;
+    }
+
     @media (max-width: 767px) {
       :host {
         margin: 0;
@@ -128,11 +135,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <aside>
         <template is="dom-repeat" items="[[_category.items]]">
-          <a href$="[[_getItemHref(item)]]">
-            <div class="headline">
-              <h2>{{_unescapeText(item.web_headline)}}</h2>
-              <div class="author">{{item.byline}}</div>
-            </div>
+          <a class="headline" href$="[[_getItemHref(item)]]">
+            <span>{{_unescapeText(item.web_headline)}}</span>
           </a>
         </template>
       </aside>

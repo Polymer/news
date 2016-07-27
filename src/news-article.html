@@ -44,6 +44,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     .cover {
+      background-position: 50%;
+      background-repeat: no-repeat;
       background-size: cover;
       width: 100%;
       height: 100vh;
@@ -66,13 +68,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     .meta h1 {
       font-weight: normal;
-      font-size: 48px;
-      line-height: 62px;
+      font-size: 37px;
+      line-height: 47px;
     }
 
     .meta-info {
-      border-top: 1px solid #999;
-      padding-top: 32px;
+      font-size: 11px;
+      font-weight: bold;
+      border-top: 1px solid rgba(255,255,255,0.5);
+      padding-top: 24px;
     }
 
     #content {
@@ -140,12 +144,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: #FFF;
         padding: 24px;
         z-index: 1;
-      }
-
-      .meta h1 {
-        font-weight: normal;
-        font-size: 38px;
-        line-height: 52px;
       }
 
       .meta .category {
@@ -312,8 +310,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _getArticleImageStyle: function(item) {
-        return item.thumbnail && ('background:url(' + item.thumbnail.url + ')' ||
-          item.thumbnail.featured && 'background:url(' + item.thumbnail.featured.url + ')') || '';
+        return item.thumbnail && ('background-image:url(' + item.thumbnail.url + ')' ||
+          item.thumbnail.featured && 'background-image:url(' + item.thumbnail.featured.url + ')') || '';
       }
 
     });

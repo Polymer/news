@@ -85,7 +85,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       app-drawer {
+        --app-drawer-content-container: {
+          background: #212121;
+          color: white;
+        };
+        --app-drawer-width: 230px;
         z-index: 11;
+      }
+
+      app-drawer paper-icon-button {
+        --paper-icon-button-ink-color: white;
+        margin: 10px;
       }
 
       .drawer-list {
@@ -94,15 +104,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .drawer-list a {
         display: block;
-        padding: 0 16px;
-        line-height: 40px;
+        padding: 0 24px;
+        line-height: 48px;
         text-decoration: none;
-        color: #999;
+        color: white;
       }
 
       .drawer-list a.iron-selected {
-        color: #282828;
-        font-weight: 600;
+        background: rgba(255,255,255,0.1);
       }
 
       @media (max-width: 767px) {
@@ -169,6 +178,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- Lazy-create the drawer for small screen sizes. -->
     <template is="dom-if" if="[[_shouldRenderDrawer]]">
       <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
+        <paper-icon-button icon="close" on-click="_toggleDrawer"></paper-icon-button>
         <iron-selector role="navigation" class="drawer-list" selected="[[categoryName]]" attr-for-selected="name">
           <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>

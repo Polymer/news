@@ -180,6 +180,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _unescapeText: function(text) {
+        if (text == undefined)
+          return '';
         var elem = document.createElement('textarea');
         elem.innerHTML = text;
         return elem.textContent;

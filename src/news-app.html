@@ -31,12 +31,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
         min-height: 100vh;
+        font-family: Georgia;
       }
 
       app-header {
         @apply(--layout-fixed-top);
         z-index: 1;
-        color: #fff;
       }
 
       .logo {
@@ -53,7 +53,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-left: 12px;
         margin-right: 12px;
         box-sizing: border-box;
-        font-family: Georgia;
         font-size: 11px;
       }
 
@@ -61,10 +60,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: 600;
         letter-spacing: 6px;
         text-decoration: none;
-        color: #fff;
         /* required for IE 11, so this <a> can receive pointer events */
         display: inline-block;
         pointer-events: auto;
+        color: black;
       }
 
       iron-pages {
@@ -91,6 +90,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .drawer-list a.iron-selected {
         color: #282828;
         font-weight: 600;
+      }
+
+      @media (max-width: 767px) {
+        :host([page=article]) .logo, :host([page=article]) .date-line {
+          visibility: hidden;
+        }
+
+        app-header, .logo a {
+          color: white;
+        }
+
+      }
+
+      news-list:not(.page-selected) {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+      }
+
+      news-article:not(.page-selected) {
+        display: none;
       }
 
     </style>
@@ -136,11 +157,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-drawer>
     </template>
 
-    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="active">
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="active" selected-class="page-selected">
       <!-- list view of articles in a category -->
-      <news-list name="list" route="[[subroute]]"></news-list>
+      <news-list id="list" name="list" route="[[subroute]]" class="iron-selected"></news-list>
       <!-- article view -->
-      <news-article name="article" route="[[subroute]]"></news-article>
+      <news-article name="article" route="[[subroute]]" class="iron-selected"></news-article>
     </iron-pages>
 
   </template>
@@ -154,7 +175,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
 
         page: {
-          observer: '_pageChanged'
+          observer: '_pageChanged',
+          reflectToAttribute: true
         },
 
         _shouldRenderDrawer: {
@@ -195,6 +217,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return;
         }
         this.page = page;
+        if (page == 'article')
+          this.$.list.style.top = -document.body.scrollTop + 'px';
         // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
         Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });

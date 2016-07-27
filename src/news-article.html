@@ -9,14 +9,217 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 
 <dom-module id="news-article">
+
+  <template>
+
+    <style>
+    :host {
+      opacity: 1;
+      transition: opacity 500ms;
+      display: block;
+      margin: 128px 40px 0;
+    }
+
+    :host([loading]) {
+      opacity: 0;
+      transition: none;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .container main {
+      flex: 1;
+    }
+
+    .container aside {
+      margin-left: 24px;
+      width: 300px;
+    }
+
+    .cover {
+      background: url(../images/article6.png);
+      background-size: cover;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .flex {
+      flex: 1;
+    }
+
+    .meta .category {
+      display: inline-block;
+      text-transform: capitalize;
+      padding: 6px 20px 7px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+    }
+
+    #content {
+      font-size: 16px;
+      line-height: 26px;
+    }
+
+    #content .kicker,
+    #content h1 {
+      display: none;
+    }
+
+    #content img {
+      max-width: 100%;
+    }
+
+    #content .byline {
+      font-weight: bold;
+    }
+
+    #content .date {
+      display: none;
+    }
+
+    .headline {
+      text-decoration: none;
+      color: black;
+      display: block;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 767px) {
+      :host {
+        margin: 0;
+      }
+
+      .container {
+        flex-direction: column;
+      }
+
+      .container aside {
+        margin-left: auto;
+        width: auto;
+        padding: 24px;
+      }
+
+      .meta {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        height: 100vh;
+        box-sizing: border-box;
+        color: #FFF;
+        padding: 24px;
+      }
+
+      .meta .category {
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      #content {
+        padding: 24px;
+      }
+    }
+    </style>
+
+    <news-category-data category-name="[[_articleData.section]]" category="{{_category}}"></news-category-data>
+
+    <app-route
+        route="[[route]]"
+        pattern="/:page"
+        data="{{_routeData}}"></app-route>
+
+    <div class="container">
+      <main>
+        <div class="meta">
+          <div class="flex"></div>
+          <div>
+            <span class="category">[[_articleData.section]]</span>
+          </div>
+          <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
+          <div>
+            <span>20 mins ago</span>
+            <span>4 mins read</span>
+          </div>
+        </div>
+
+        <div class="cover">
+        </div>
+
+        <div id="content" inner-h-t-m-l="[[_articleData.html]]"></div>
+      </main>
+
+      <aside>
+        <template is="dom-repeat" items="[[_category.items]]">
+          <a class="headline" href$="[[_getItemHref(item)]]">
+            <span>{{_unescapeText(item.web_headline)}}</span>
+          </a>
+        </template>
+      </aside>
+    </div>
+
+  </template>
 
   <script>
 
     Polymer({
 
-      is: 'news-article'
+      is: 'news-article',
+
+      properties: {
+
+        route: Object,
+
+        _routeData: Object,
+
+        _articleData: Object,
+
+        _category: Object,
+
+        loading: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false,
+        },
+
+      },
+
+      observers: [
+        '_fetchArticle(_routeData.page)'
+      ],
+
+      _fetchArticle: function(page) {
+        if (this.getAttribute('active') == null)
+          return;
+        this.loading = true;
+        var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + decodeURIComponent(page);
+        var xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', this._loadArticle.bind(this));
+        xhr.open('GET', url);
+        xhr.send();
+      },
+
+      _loadArticle: function(e) {
+        this._articleData = JSON.parse(e.target.responseText);
+        this.loading = false;
+      },
+
+      _decodeHeadline: function(s) {
+        return decodeURIComponent(s.replace(/\+/g, ' '));
+      },
+
+      _getItemHref: function(item) {
+        // By returning null when `itemId` is undefined, the href attribute won't be set and
+        // the link will be disabled.
+        return item.canonical_url ? '/article/' + encodeURIComponent(item.canonical_url) : null;
+      },
+
+      _unescapeText: function(text) {
+        var elem = document.createElement('textarea');
+        elem.innerHTML = text;
+        return elem.textContent;
+      },
 
     });
 

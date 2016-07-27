@@ -202,6 +202,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _loadArticle: function(e) {
         this._articleData = JSON.parse(e.target.responseText);
+        var match = this._articleData.html.match(/<p class="date">([^<]*)/);
+        if (match) {
+          this._articleData.date = match[0].replace(/,| at| (?=AM)/g, '')
+        }
         this.loading = false;
       },
 

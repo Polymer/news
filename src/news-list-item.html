@@ -1,0 +1,200 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+
+<dom-module id="news-list-item">
+
+  <template>
+    <style>
+      a {
+        display: block;
+        position: relative;
+        box-sizing: border-box;
+        border-bottom: 1px solid #ddd;
+        text-decoration: none;
+        color: #282828;
+        overflow: hidden;
+      }
+
+      :host([featured]) > a {
+        height: 100vh;
+        border-bottom: 0;
+        background-color: #000;
+        color: #fff;
+      }
+
+      :host([featured]) .headline {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+
+      :host([featured]) .headline > h2 {
+        font-size: 37px;
+        line-height: 47px;
+      }
+
+      :host([featured]) .kicker {
+        border-color: rgba(255,255,255,0.5);
+        color: #fff;
+      }
+
+      :host([featured]) .details {
+        border-top: 1px solid rgba(255,255,255,0.5);
+        padding-top: 24px;
+      }
+
+      :host([featured]) .headline > h2 {
+        margin: 0 0 24px;
+      }
+
+      .img-container {
+        position: relative;
+      }
+
+      .img-container > img {
+        display: block;
+        width: 100%;
+        height: auto;
+        min-height: 60vh;
+        object-fit: cover;
+      }
+
+      .img-container > .scrim {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+      }
+
+      .headline {
+        padding: 24px;
+        padding-top: 0px;
+      }
+
+      .headline > h2 {
+        margin: 0 0 18px;
+        font-family: Georgia, serif;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 28px;
+      }
+
+      .kicker {
+        margin-top: 24px;
+        margin-bottom: 18px;
+        padding: 6px 20px 7px 20px;
+        border: 1px solid #C2C2C2;
+        display: inline-block;
+        font-family: Georgia;
+        font-weight: bold;
+        font-size: 11px;
+      }
+
+      .kicker[hidden] {
+        visibility: hidden;
+        height: 0px;
+        margin-top: 0px;
+        padding: 0px;
+      }
+
+      .details {
+        @apply(--layout-horizontal);
+        font-family: Georgia;
+        font-size: 11px;
+        font-weight: bold;
+      }
+
+      .details > div {
+        white-space: nowrap;
+      }
+
+      .author {
+        padding-left: 35px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+
+    
+    <a class='link' href$="[[_getItemHref(item)]]">
+      <div class="img-container" hidden$="[[_not(featured)]]">
+        <img src="[[_getFeaturedImg(item)]]">
+        <div class="scrim"></div>
+      </div>
+      <div class="headline">
+        <div class="kicker" hidden$="[[_hide(item.kicker)]]">[[item.kicker]]</div>
+        <h2>{{_unescapeText(item.web_headline)}}</h2>
+        <div class="details">
+          <div class="timestamp">[[_ago(item.published_date_num)]]</div>
+          <div class="author">{{item.byline}}</div>
+        </div>
+      </div>
+    </a>
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'news-list-item',
+
+      properties: {
+        item: Object,
+        featured: {type: Boolean, value: false}
+      },
+
+      _not: function(b) {
+        return !b;
+      },
+
+      _ago: function(timestamp) {
+        var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
+        if (minutes < 60)
+          return `${Math.floor(minutes)} min ago`
+        if (minutes < 120)
+          return '1 hour ago'
+        return `${Math.floor(minutes / 60)} hours ago` 
+      },
+
+      _hide: function(text) {
+        return text == "" || text == undefined;
+      },
+
+      _getItemHref: function(item) {
+        // By returning null when `itemId` is undefined, the href attribute won't be set and
+        // the link will be disabled.
+        return item.canonical_url ? '/article/' + item.canonical_url : null;
+      },
+
+      _unescapeText: function(text) {
+        var elem = document.createElement('textarea');
+        elem.innerHTML = text;
+        return elem.textContent;
+      },
+      
+      _getFeaturedImg: function(item) {
+        return item.thumbnail && (item.thumbnail.url ||
+            item.thumbnail.featured && item.thumbnail.featured.url) || '';
+      },
+
+
+    })
+
+  </script>
+
+</dom-module>
+
+

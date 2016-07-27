@@ -222,7 +222,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (match) {
           result.date = match[0].replace(/,| at| (?=AM)/g, '')
         }
-        result.readTime = Math.round(result.html.length / 3000);
+        result.readTime = Math.max(2, Math.round(result.html.length / 3000));
         this._articleData = result;
         this.loading = false;
       },

@@ -190,6 +190,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _fetchArticle: function(page) {
+        if (this.getAttribute('active') == null)
+          return;
         this.loading = true;
         var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + decodeURIComponent(page);
         var xhr = new XMLHttpRequest();

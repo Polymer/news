@@ -71,6 +71,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // which means `category.items` may not be set initially (but that path
         // will be notified when the fetch completes).
         var category = this._getCategory(categoryName);
+        if (!category)
+          return;
         this._fetchItems(category);
         return category;
       },

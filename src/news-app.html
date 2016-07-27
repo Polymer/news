@@ -103,6 +103,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       }
 
+      news-list:not(.page-selected) {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+      }
+
+      news-article:not(.page-selected) {
+        display: none;
+      }
+
     </style>
 
     <!--
@@ -146,11 +157,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-drawer>
     </template>
 
-    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="active">
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="active" selected-class="page-selected">
       <!-- list view of articles in a category -->
-      <news-list name="list" route="[[subroute]]"></news-list>
+      <news-list id="list" name="list" route="[[subroute]]" class="iron-selected"></news-list>
       <!-- article view -->
-      <news-article name="article" route="[[subroute]]"></news-article>
+      <news-article name="article" route="[[subroute]]" class="iron-selected"></news-article>
     </iron-pages>
 
   </template>
@@ -206,6 +217,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return;
         }
         this.page = page;
+        if (page == 'article')
+          this.$.list.style.top = -document.body.scrollTop + 'px';
         // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
         Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });

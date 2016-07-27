@@ -50,14 +50,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
         padding-top: 6px;
         padding-bottom: 6px;
-        margin-left: 12px;
-        margin-right: 12px;
         box-sizing: border-box;
         font-size: 11px;
-      }
-
-      news-sticky-header .date-line {
-        padding-right: 40px;
       }
 
       .logo a {
@@ -158,6 +152,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           border-top: 1px solid rgba(255,255,255,.5);
           border-bottom: 1px solid rgba(255,255,255,.5);
         }
+
+        news-sticky-header .logo {
+          display: none;
+        }
+
       }
 
       /* desktop */
@@ -185,6 +184,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           height: auto;
           padding: 0 0 45px 0;
         }
+
+        news-sticky-header {
+          height: auto;
+        }
+
+        news-sticky-header .logo a {
+          color: white;
+        }
+
+        news-sticky-header .logo {
+          font-size: 26px;
+          padding-top: 16px;
+        }
+
+        news-sticky-header .date-line {
+          padding-top: 4px;
+          padding-bottom: 14px;
+        }
+        
+      }
+
+      .vertical-layout {
+        @apply(--layout-vertical);
+        flex: 1;
       }
     </style>
 
@@ -229,9 +252,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <news-sticky-header>
       <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
-      <div class="date-line">
-        Top Stories &middot; [[_currentTime()]]
+      <div class="vertical-layout">
+        <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
+        <div class="date-line">
+          Top Stories &middot; [[_currentTime()]]
+        </div>
       </div>
+      <paper-icon-button icon="search"></paper-icon-button>
     </news-sticky-header>
 
     <!-- Lazy-create the drawer for small screen sizes. -->

@@ -36,7 +36,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app-header {
         @apply(--layout-fixed-top);
         z-index: 1;
-        color: #fff;
       }
 
       .logo {
@@ -61,10 +60,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: 600;
         letter-spacing: 6px;
         text-decoration: none;
-        color: #fff;
         /* required for IE 11, so this <a> can receive pointer events */
         display: inline-block;
         pointer-events: auto;
+        color: black;
       }
 
       iron-pages {
@@ -91,6 +90,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .drawer-list a.iron-selected {
         color: #282828;
         font-weight: 600;
+      }
+
+      @media (max-width: 767px) {
+        :host([page=article]) .logo, :host([page=article]) .date-line {
+          visibility: hidden;
+        }
+
+        app-header, .logo a {
+          color: white;
+        }
+
       }
 
     </style>
@@ -154,7 +164,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
 
         page: {
-          observer: '_pageChanged'
+          observer: '_pageChanged',
+          reflectToAttribute: true
         },
 
         _shouldRenderDrawer: {

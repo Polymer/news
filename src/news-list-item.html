@@ -161,6 +161,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _ago: function(timestamp) {
+        if (timestamp == undefined)
+          return ''
         var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
         if (minutes < 60)
           return `${Math.floor(minutes)} min ago`

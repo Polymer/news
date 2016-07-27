@@ -102,6 +102,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-align: center;
     }
 
+    .meta .category {
+      text-decoration: none;
+      color: white;
+    }
+
     @media (max-width: 767px) {
       :host {
         padding: 0;
@@ -149,7 +154,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="meta">
           <div class="flex"></div>
           <div>
-            <span class="category">[[_articleData.section]]</span>
+            <a class="category" href="/list/[[_articleData.section]]">[[_articleData.section]]</a>
           </div>
           <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
           <div>

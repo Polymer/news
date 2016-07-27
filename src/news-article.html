@@ -34,28 +34,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: flex;
     }
 
-    .container main {
-      flex: 1;
-    }
-
-    .container aside {
-      margin-left: 24px;
-      width: 300px;
-    }
-
-    .cover {
-      background-position: 50%;
-      background-repeat: no-repeat;
-      background-size: cover;
-      width: 100%;
-      height: 100vh;
-    }
-
     .flex {
       flex: 1;
     }
 
-    .meta .category {
+    .cover-text .category {
       display: inline-block;
       text-transform: capitalize;
       padding: 6px 20px 7px;
@@ -66,17 +49,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-decoration: none;
     }
 
-    .meta h1 {
+    .cover-text h1 {
       font-weight: normal;
       font-size: 37px;
       line-height: 47px;
     }
 
-    .meta-info {
+    .cover-text .meta {
       font-size: 11px;
       font-weight: bold;
       border-top: 1px solid rgba(0, 0, 0, 0.5);
       padding: 24px 0;
+    }
+
+    .cover-img-container {
+      position: relative;
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 100%;
+    }
+
+    .cover-img-container > img {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 60vh;
+      object-fit: cover;
     }
 
     #content {
@@ -101,15 +99,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: none;
     }
 
-    .headline {
+    .timer-icon {
+      margin-left: 30px;
+    }
+
+    .container aside {
+      margin-left: 24px;
+      width: 300px;
+    }
+
+    .container aside .headline {
       text-decoration: none;
       color: black;
       display: block;
       margin: 20px 0;
-    }
-
-    .timer-icon {
-      margin-left: 30px;
     }
 
     aside h3 {
@@ -129,16 +132,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         flex-direction: column;
       }
 
-      .container aside {
-        margin-left: auto;
-        width: auto;
-        padding: 24px;
+      .cover {
+        background: #000;
       }
 
-      .meta {
+      .cover-text {
+        position: relative;
         display: flex;
         flex-direction: column;
-        position: absolute;
         height: 100vh;
         box-sizing: border-box;
         color: #FFF;
@@ -146,22 +147,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         z-index: 1;
       }
 
-      .meta .category {
+      .cover-text .category {
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.5);
       }
 
-      .meta-info {
+      .cover-text .meta {
         font-size: 11px;
         font-weight: bold;
         border-top: 1px solid rgba(255, 255, 255, 0.5);
       }
 
-      .cover {
-        position: relative;
+      .cover-img-container {
+        position: absolute;
+        top: 0;
       }
 
-      .scrim {
+      .cover-img-container .scrim {
         position: absolute;
         top: 0;
         right: 0;
@@ -177,6 +179,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #content img:first-of-type {
         display: none;
       }
+
+      .container aside {
+        margin-left: auto;
+        width: auto;
+        padding: 24px;
+      }
     }
     </style>
 
@@ -188,22 +196,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{_routeData}}"></app-route>
 
     <div class="container">
-      <main>
-        <div class="meta">
-          <div class="flex"></div>
-          <div>
-            <a class="category" href="/list/[[_articleData.section]]">[[_articleData.section]]</a>
+      <main class="flex">
+        <div class="cover">
+          <div class="cover-text">
+            <div class="flex"></div>
+            <div>
+              <a class="category" href="/list/[[_articleData.section]]">[[_articleData.section]]</a>
+            </div>
+            <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
+            <div class="meta">
+              <span>[[_ago(_item.display_date_num)]]</span>
+              <iron-icon class="timer-icon" icon="timer"></iron-icon>
+              <span>[[_articleData.readTime]] min read</span>
+            </div>
           </div>
-          <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
-          <div class="meta-info">
-            <span>[[_ago(_item.display_date_num)]]</span>
-            <iron-icon class="timer-icon" icon="timer"></iron-icon>
-            <span>[[_articleData.readTime]]</span> <span>min read</span>
-          </div>
-        </div>
 
-        <div class="cover" style$="[[_getArticleImageStyle(_item)]]">
-          <div class="scrim"></div>
+          <div class="cover-img-container">
+            <img src="[[_getArticleImage(_item)]]">
+            <div class="scrim"></div>
+          </div>
         </div>
 
         <div id="content" inner-h-t-m-l="[[_articleData.html]]"></div>
@@ -319,6 +330,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var img = item && item.thumbnail && (item.thumbnail.url ||
             item.thumbnail.featured && item.thumbnail.featured.url) || '';
         return img ? 'background-image:url(' + img + ')' : '';
+      },
+
+      _getArticleImage: function(item) {
+        return item && item.thumbnail && (item.thumbnail.url ||
+            item.thumbnail.featured && item.thumbnail.featured.url) || '';
       }
 
     });

@@ -166,7 +166,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
           <div>
             <span>20 mins ago</span>
-            <span>4 mins read</span>
+            <span>[[_articleData.readTime]]</span> <span>mins read</span>
           </div>
         </div>
 
@@ -228,11 +228,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _loadArticle: function(e) {
-        this._articleData = JSON.parse(e.target.responseText);
-        var match = this._articleData.html.match(/<p class="date">([^<]*)/);
+        var result = JSON.parse(e.target.responseText);
+        var match = result.html.match(/<p class="date">([^<]*)/);
         if (match) {
-          this._articleData.date = match[0].replace(/,| at| (?=AM)/g, '')
+          result.date = match[0].replace(/,| at| (?=AM)/g, '')
         }
+        result.readTime = Math.round(result.html.length / 3000);
+        this._articleData = result;
         this.loading = false;
       },
 

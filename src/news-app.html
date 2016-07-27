@@ -36,11 +36,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-family: Georgia;
       }
 
-      app-header {
-        @apply(--layout-fixed-top);
-        z-index: 10;
-      }
-
       news-sticky-header {
         z-index: 10;
       }
@@ -58,11 +53,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-right: 12px;
         box-sizing: border-box;
         font-size: 11px;
-      }
-
-      app-header .date-line {
-        border-top: 1px solid rgba(255,255,255,0.5);
-        border-bottom: 1px solid rgba(255,255,255,0.5);
       }
 
       news-sticky-header .date-line {
@@ -105,15 +95,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: 600;
       }
 
-      @media (max-width: 767px) {
-        :host([page=article]) .logo, :host([page=article]) .date-line {
-          visibility: hidden;
-        }
+      .menu-list {
+        @apply(--layout-flex-auto);
+        text-align: center;
+        font-size: 13px;
+        border-top: 1px solid #dfdfdf;
+        border-bottom: 1px solid #dfdfdf;
+        padding: 8px 0;
+        margin-left: 40px;
+        margin-right: 40px;
+      }
 
-        app-header, .logo a {
-          color: white;
-        }
+      .menu-list a {
+        color: #333;
+        text-decoration: none;
+        margin: 0 10px;
+      }
 
+      .menu-list a.iron-selected {
+        font-weight: bold;
       }
 
       news-list:not(.page-selected) {
@@ -127,6 +127,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none;
       }
 
+      /* mobile */
+      @media (max-width: 767px) {
+        :host([page=article]) .logo, :host([page=article]) .date-line {
+          visibility: hidden;
+        }
+        
+        header {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1;
+        }
+
+        header, .logo a {
+          color: white;
+        }
+
+        header .date-line {
+          border-top: 1px solid rgba(255,255,255,.5);
+          border-bottom: 1px solid rgba(255,255,255,.5);
+        }
+      }
+
+      /* desktop */
+      @media (min-width: 768px) {
+
+        header {
+          background-color: white;
+        }
+
+        .logo {
+          font-size: 39px;
+        }
+
+        .logo-toolbar {
+          padding: 40px 32px 0 32px;
+          height: 45px;
+        }
+
+        .date-line-toolbar {
+          height: 11px;
+          padding-bottom: 27px;
+        }
+
+        .menu-toolbar {
+          height: auto;
+          padding: 0 0 45px 0;
+        }
+      }
     </style>
 
     <!--
@@ -139,25 +189,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <iron-media-query query="max-width: 600px" query-matches="{{smallScreen}}"></iron-media-query>
+    <iron-media-query query="max-width: 767px" query-matches="{{smallScreen}}"></iron-media-query>
 
     <!--
       news-category-data provides the list of categories and the articles for the category.
     -->
     <news-category-data categories="{{categories}}"></news-category-data>
 
-    <app-header condenses>
-      <app-toolbar>
+    <header role="navigation">
+      <app-toolbar class="logo-toolbar">
         <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
         <paper-icon-button icon="search"></paper-icon-button>
       </app-toolbar>
-      <app-toolbar sticky>
+      <app-toolbar class="date-line-toolbar">
         <div class="date-line">
           Top Stories &middot; [[_currentTime()]]
         </div>
       </app-toolbar>
-    </app-header>
+      <template is="dom-if" if="[[_not(_shouldRenderDrawer)]]">
+        <app-toolbar class="menu-toolbar">
+          <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
+            <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
+              <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+            </template>
+          </iron-selector>
+        </app-toolbar>
+      </template>
+    </header>
 
     <news-sticky-header>
       <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
@@ -292,6 +351,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _computeShouldRenderDrawer: function(smallScreen, loadComplete) {
         return smallScreen && loadComplete;
+      },
+
+      _not: function(v) {
+        return !v;
       }
 
     });

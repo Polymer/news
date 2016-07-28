@@ -133,7 +133,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* mobile */
       @media (max-width: 767px) {
-        :host([page=article]) .logo, :host([page=article]) .date-line {
+        :host([page=article]) .logo {
           visibility: hidden;
         }
         
@@ -255,7 +255,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="vertical-layout">
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
         <div class="date-line">
-          Top Stories &middot; [[_currentTime()]]
+          [[_articleTitle(page, articleHeadline)]][[_categoryTitle(page, categoryHeadline)]] &middot; [[_currentTime()]]
         </div>
       </div>
       <paper-icon-button icon="search"></paper-icon-button>
@@ -275,9 +275,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="active" selected-class="page-selected">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" route="[[subroute]]" class="iron-selected"></news-list>
+      <news-list id="list" name="list" route="[[subroute]]" category="{{categoryHeadline}}" class="iron-selected"></news-list>
       <!-- article view -->
-      <news-article name="article" route="[[subroute]]" class="iron-selected"></news-article>
+      <news-article name="article" route="[[subroute]]" headline="{{articleHeadline}}" class="iron-selected"></news-article>
     </iron-pages>
 
   </template>
@@ -324,6 +324,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var date = new Date();
 
         return `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+      },
+
+      _articleTitle: function(page, articleHeadline) {
+        return page == 'article' ? articleHeadline : '';
+      },
+
+      _categoryTitle: function(page, categoryHeadline) {
+        return page == 'list' ? categoryHeadline.title : '';
       },
 
       _routePageChanged: function(page) {

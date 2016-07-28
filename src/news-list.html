@@ -70,7 +70,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
-        category: Object,
+        category: {
+          type: Object,
+          notify: true
+        },
 
         featuredItem: {
           type: Object,

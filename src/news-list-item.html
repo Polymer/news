@@ -18,6 +18,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <style>
 
+      :host {
+        display: block;
+      }
+
       a {
         display: block;
         position: relative;
@@ -25,38 +29,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-decoration: none;
         color: #282828;
         overflow: hidden;
-      }
-
-      :host([featured]) > a {
-        height: 100vh;
-        border-bottom: 0;
-        background-color: #000;
-        color: #fff;
-      }
-
-      :host([featured]) .headline {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-      }
-
-      :host([featured]) .headline > h2 {
-        font-size: 37px;
-        line-height: 47px;
-      }
-
-      :host([featured]) .kicker {
-        border-color: rgba(255,255,255,0.5);
-        color: #fff;
-      }
-
-      :host([featured]) .details {
-        border-top: 1px solid rgba(255,255,255,0.5);
-        padding-top: 24px;
-      }
-
-      :host([featured]) .headline > h2 {
-        margin: 0 0 24px;
       }
 
       .img-container {
@@ -91,7 +63,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .kicker {
-        margin-top: 24px;
         margin-bottom: 18px;
         padding: 6px 20px 7px 20px;
         border: 1px solid #C2C2C2;
@@ -126,8 +97,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* mobile */
       @media (max-width: 767px) {
+        :host(:not([featured])) .img-container {
+          display: none;
+        }
+
+        :host([featured]) > a {
+          height: 100vh;
+          border-bottom: 0;
+          background-color: #000;
+          color: #fff;
+        }
+
+        :host([featured]) .headline {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
+
+        :host([featured]) .headline > h2 {
+          font-size: 37px;
+          line-height: 47px;
+        }
+
+        :host([featured]) .kicker {
+          border-color: rgba(255, 255, 255, 0.5);
+          color: #fff;
+        }
+
+        :host([featured]) .details {
+          border-top: 1px solid rgba(255, 255, 255, 0.5);
+          padding-top: 24px;
+        }
+
+        :host([featured]) .headline > h2 {
+          margin: 0 0 24px;
+        }
+
         .headline {
           padding: 24px;
+        }
+
+        .kicker {
+          margin-top: 24px;
         }
 
         a {
@@ -137,10 +148,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         .img-container > img {
           min-height: 60vh;
         }
-
-        :host(:not([featured])) .img-container {
-          display: none;
-        }
       }
 
       /* desktop */
@@ -148,18 +155,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :host(:not([featured])) .img-container > img {
           height: 150px;
         }
+
+        :host([featured]) a {
+          @apply(--layout-horizontal);
+        }
+
+        :host([featured]) .img-container {
+          width: 498px;
+          height: 338px;
+          min-width: 498px;
+          margin-right: 24px;
+        }
+
+        :host([featured]) h2 {
+          font-size: 42px;
+          line-height: 53px;
+        }
+
+        :host([featured]) .details {
+          padding-top: 24px;
+          border-top: 1px solid #ddd;
+        }
+
+        :host(:not([featured])) .kicker {
+          margin-top: 20px;
+        }
       }
 
     </style>
 
-    <a class='link' href$="[[_getItemHref(item)]]">
+    <a href$="[[_getItemHref(item)]]">
       <div class="img-container">
         <img src="[[_getFeaturedImg(item)]]">
         <div class="scrim"></div>
       </div>
       <div class="headline">
         <div class="kicker" hidden$="[[_hide(item.kicker)]]">[[item.kicker]]</div>
-        <h2>{{_unescapeText(item.web_headline)}}</h2>
+        <h2>[[_unescapeText(item.web_headline)]]</h2>
         <div class="details">
           <div class="timestamp">[[_ago(item.display_date_num)]]</div>
           <div class="author">{{item.byline}}</div>

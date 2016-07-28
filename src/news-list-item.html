@@ -42,15 +42,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         object-fit: cover;
       }
 
-      .img-container > .scrim {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
-      }
-
       .headline {
         padding-top: 0px;
       }
@@ -137,6 +128,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 24px;
         }
 
+        .img-container > .scrim {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+        }
+
         .kicker {
           margin-top: 24px;
         }
@@ -161,9 +161,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         :host([featured]) .img-container {
-          width: 498px;
+          width: 472px;
           height: 338px;
-          min-width: 498px;
+          min-width: 472px;
           margin-right: 24px;
         }
 
@@ -184,7 +184,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <a href$="[[_getItemHref(item)]]">
+    <a href$="[[_getItemHref(item, categoryName)]]">
       <div class="img-container">
         <img src="[[_getFeaturedImg(item)]]">
         <div class="scrim"></div>
@@ -207,7 +207,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'news-list-item',
 
       properties: {
+
         item: Object,
+
+        categoryName: String,
+
         featured: {
           type: Boolean,
           value: false,

@@ -108,6 +108,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       width: 300px;
     }
 
+    .container aside h3 {
+      border-top: 1px solid rgba(0, 0, 0, 0.5);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+      font-size: 13px;
+      padding: 8px;
+      text-align: center;
+    }
+
     .container aside .headline {
       text-decoration: none;
       color: black;
@@ -115,12 +123,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: 20px 0;
     }
 
-    aside h3 {
-      border-top: 1px solid rgba(0, 0, 0, 0.5);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-      font-size: 13px;
-      padding: 8px;
-      text-align: center;
+    .container aside .time-ago {
+      margin-left: 8px;
+      font-size: 12px;
+      font-weight: bold;
     }
 
     @media (max-width: 767px) {
@@ -188,11 +194,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     </style>
 
-    <news-category-data category-name="[[_articleData.section]]" category="{{_category}}"></news-category-data>
+    <news-category-data category-name="[[_routeData.category]]" category="{{_category}}"></news-category-data>
 
     <app-route
         route="[[route]]"
-        pattern="/:page"
+        pattern="/:category/:page"
         data="{{_routeData}}"></app-route>
 
     <div class="container">
@@ -224,7 +230,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <h3>Most Read</h3>
         <template is="dom-repeat" items="[[_category.items]]">
           <a class="headline" href$="[[_getItemHref(item)]]">
-            <span>{{_unescapeText(item.web_headline)}}</span>
+            <span>[[_unescapeText(item.web_headline)]]</span>
+            <span class="time-ago">[[_ago(item.display_date_num)]]</span>
           </a>
         </template>
       </aside>

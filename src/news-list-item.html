@@ -127,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     
-    <a class='link' href$="[[_getItemHref(item)]]">
+    <a class='link' href$="[[_getItemHref(item, categoryName)]]">
       <div class="img-container" hidden$="[[_not(featured)]]">
         <img src="[[_getFeaturedImg(item)]]">
         <div class="scrim"></div>
@@ -151,7 +151,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
         item: Object,
-        featured: {type: Boolean, value: false}
+        featured: {type: Boolean, value: false},
+        categoryName: String
       },
 
       _not: function(b) {
@@ -173,10 +174,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return text == "" || text == undefined;
       },
 
-      _getItemHref: function(item) {
+      _getItemHref: function(item, categoryName) {
         // By returning null when `itemId` is undefined, the href attribute won't be set and
         // the link will be disabled.
-        return item.canonical_url ? '/article/' + encodeURIComponent(item.canonical_url) : null;
+        return item.canonical_url ? '/article/' + categoryName + '/' + encodeURIComponent(item.canonical_url) : null;
       },
 
       _unescapeText: function(text) {

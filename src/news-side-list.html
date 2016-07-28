@@ -39,7 +39,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <h3>[[headline]]</h3>
     <template is="dom-repeat" items="[[items]]">
-      <a href$="[[_getItemHref(item)]]">[[_unescapeText(item.web_headline)]]</a>
+      <a href$="[[_getItemHref(item, categoryName)]]">[[_unescapeText(item.web_headline)]]</a>
     </template>
   </template>
 
@@ -51,7 +51,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
         items: Array,
-        headline: String
+        headline: String,
+        categoryName: String
       },
 
       _unescapeText: function(text) {
@@ -60,8 +61,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return this._textarea.textContent;
       },
 
-      _getItemHref: function(item) {
-        return item.canonical_url ? '/article/' + encodeURIComponent(item.canonical_url) : null;
+      _getItemHref: function(item, categoryName) {
+        // By returning null when `itemId` is undefined, the href attribute won't be set and
+        // the link will be disabled.
+        return item.canonical_url ? '/article/' + categoryName + '/' + encodeURIComponent(item.canonical_url) : null;
       }
 
     });

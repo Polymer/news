@@ -1,0 +1,71 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="news-side-list">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+      }
+
+      h3 {
+        border-top: 1px solid rgba(0, 0, 0, 0.5);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        font-size: 13px;
+        padding: 8px;
+        text-align: center;
+      }
+
+      a {
+        text-decoration: none;
+        color: black;
+        display: block;
+        margin: 20px 0;
+      }
+
+    </style>
+
+    <h3>[[headline]]</h3>
+    <template is="dom-repeat" items="[[items]]">
+      <a href$="[[_getItemHref(item)]]">[[_unescapeText(item.web_headline)]]</a>
+    </template>
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'news-side-list',
+
+      properties: {
+        items: Array,
+        headline: String
+      },
+
+      _unescapeText: function(text) {
+        this._textarea = this._textarea || document.createElement('textarea');
+        this._textarea.innerHTML = text;
+        return this._textarea.textContent;
+      },
+
+      _getItemHref: function(item) {
+        return item.canonical_url ? '/article/' + encodeURIComponent(item.canonical_url) : null;
+      }
+
+    });
+
+  </script>
+
+</dom-module>

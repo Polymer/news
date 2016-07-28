@@ -57,10 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       get threshold() {
-        if (this.smallScreen) {
-          return window.innerHeight - 32;
-        }
-        return 200;
+        return this.smallScreen ? window.innerHeight - 32 : 200;
       },
 
       attached: function() {

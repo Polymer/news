@@ -203,8 +203,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding-bottom: 14px;
         }
 
-        .expanded-header[shown] {
+        div.expanded-header {
           display: block;
+          @apply(--layout-vertical);
+          align-items: center;
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          background-color: black;
+          transition: transform 0.2s ease-in-out;
+          z-index: -1;
+        }
+
+        .expanded-header[shown] {
+          transform: translateY(100%);
         }
       }
 
@@ -220,9 +232,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         flex: 1;
       }
 
+      
       .expanded-header {
         display: none;
       }
+
+      .compressed-header {
+        background-color: black;
+      }
+      
     </style>
 
     <!--
@@ -265,7 +283,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </header>
 
     <news-sticky-header class="vertical-layout">
-      <div class="horizontal-layout">
+      <div class="horizontal-layout compressed-header">
         <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
         <div class="vertical-layout">
           <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>

@@ -150,7 +150,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :host([page=article]) .logo, :host([page=article]) .date-line {
           visibility: hidden;
         }
-        
+
         header {
           position: absolute;
           top: 0;
@@ -222,22 +222,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           @apply(--layout-vertical);
           align-items: center;
           position: absolute;
+          left: 0;
+          right: 0;
           bottom: 0;
-          width: 100%;
           background-color: black;
           transition: transform 0.2s ease-in-out;
+          will-change: transform;
           z-index: -1;
           padding-top: 12px;
           padding-bottom: 24px;
         }
 
-        .expanded-header div {
+        .expanded-header > div {
           column-count: 3;
           column-gap: 82px;
+          opacity: 0;
+          transition: opacity 0.2s ease-in-out;
+          will-change: opacity;
         }
 
         .expanded-header[shown] {
-          transform: translateY(100%);
+          transform: translate3d(0, 100%, 0);
+        }
+
+        .expanded-header[shown] > div {
+          opacity: 1;
         }
       }
 
@@ -253,7 +262,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         flex: 1;
       }
 
-      
       .expanded-header {
         display: none;
       }
@@ -261,7 +269,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .compressed-header {
         background-color: black;
       }
-      
+
     </style>
 
     <!--
@@ -281,7 +289,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     -->
     <news-category-data categories="{{categories}}"></news-category-data>
 
-    <header role="navigation">
+    <header id="header" role="navigation">
       <app-toolbar class="logo-toolbar">
         <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
@@ -402,9 +410,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.set('route.path', 'list/mobile-homepage');
           return;
         }
+
         this.page = page;
-        if (page == 'article')
-          this.$.list.style.top = -document.body.scrollTop + 'px';
+        if (page == 'article') {
+          this.$.list.style.top = this.$.header.offsetHeight + 'px';
+        }
         // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
         Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });

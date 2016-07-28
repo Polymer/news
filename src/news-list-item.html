@@ -15,12 +15,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="news-list-item">
 
   <template>
+
     <style>
+
       a {
         display: block;
         position: relative;
         box-sizing: border-box;
-        border-bottom: 1px solid #ddd;
         text-decoration: none;
         color: #282828;
         overflow: hidden;
@@ -66,7 +67,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         width: 100%;
         height: auto;
-        min-height: 60vh;
         object-fit: cover;
       }
 
@@ -124,11 +124,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
+      /* mobile */
+      @media (max-width: 767px) {
+        a {
+          border-bottom: 1px solid #ddd;
+        }
+
+        .img-container > img {
+          min-height: 60vh;
+        }
+
+        :host(:not([featured])) .img-container {
+          display: none;
+        }
+      }
+      
+      /* desktop */
+      @media (min-width: 768px) {
+        :host(:not([featured])) .img-container > img {
+          height: 150px;
+        }
+      }
+
     </style>
 
-    
-    <a class='link' href$="[[_getItemHref(item, categoryName)]]">
-      <div class="img-container" hidden$="[[_not(featured)]]">
+    <a class='link' href$="[[_getItemHref(item)]]">
+      <div class="img-container">
         <img src="[[_getFeaturedImg(item)]]">
         <div class="scrim"></div>
       </div>
@@ -151,12 +173,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
         item: Object,
-        featured: {type: Boolean, value: false},
-        categoryName: String
-      },
-
-      _not: function(b) {
-        return !b;
+        featured: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        }
       },
 
       _ago: function(timestamp) {
@@ -167,7 +188,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return `${Math.floor(minutes)} min ago`
         if (minutes < 120)
           return '1 hour ago'
-        return `${Math.floor(minutes / 60)} hours ago` 
+        return `${Math.floor(minutes / 60)} hours ago`
       },
 
       _hide: function(text) {
@@ -187,17 +208,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         elem.innerHTML = text;
         return elem.textContent;
       },
-      
+
       _getFeaturedImg: function(item) {
         return item.thumbnail && (item.thumbnail.url ||
             item.thumbnail.featured && item.thumbnail.featured.url) || '';
-      },
+      }
 
 
-    })
+    });
 
   </script>
 
 </dom-module>
-
-

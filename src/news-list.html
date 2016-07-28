@@ -10,13 +10,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
+
 <link rel="import" href="news-category-data.html">
+<link rel="import" href="news-side-list.html">
 
 <dom-module id="news-list">
 
   <template>
 
-    <style>
+    <style include="app-grid-style">
+
+      :host {
+        display: block;
+        --paper-icon-button-ink-color: white;
+      }
 
       ul {
         padding: 0;
@@ -26,6 +34,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       li {
         display: block;
+      }
+
+      li:first-child {
+        @apply(--app-grid-expandible-item);
+      }
+
+
+      /* desktop */
+      @media (min-width: 768px) {
+        :host {
+          margin: 0 40px;
+          --app-grid-columns: 4;
+          --app-grid-gutter: 10px;
+          --app-grid-expandible-item-columns: 4;
+        }
+
+        .container {
+          @apply(--layout-horizontal);
+        }
+
+        .container > main {
+          @apply(--layout-flex-auto);
+        }
+
+        .container > aside {
+          margin-left: 24px;
+          width: 300px;
+          min-width: 300px;
+        }
+      }
+
+      /* mobile */
+      @media (max-width: 767px) {
+        aside {
+          display: none;
+        }
       }
 
     </style>
@@ -47,18 +91,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         category="{{category}}"
         failure="{{failure}}"></news-category-data>
 
-    <ul class="grid">
-
-      <li>
-        <news-list-item featured item="[[featuredItem]]" category-name="[[routeData.category]]"></news-list-item>
-      </li>
-
-      <template is="dom-repeat" items="[[_getListItems(category.items)]]">
-        <li>
-          <news-list-item item="[[item]]" category-name="[[routeData.category]]"></news-list-item>
-        </li>
-      </template>
-    </ul>
+    <div class="container">
+      <main>
+        <ul class="app-grid">
+          <li>
+            <news-list-item featured item="[[featuredItem]]"></news-list-item>
+          </li>
+          <template is="dom-repeat" items="[[_getListItems(category.items)]]">
+            <li>
+              <news-list-item item="[[item]]"></news-list-item>
+            </li>
+          </template>
+        </ul>
+      </main>
+      <aside>
+        <news-side-list headline="Most Read" items="[[category.items]]"></news-side-list>
+        <!-- most read  articles -->
+      </aside>
+    </div>
 
   </template>
 
@@ -91,6 +141,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_categoryChanged(category, active)'
       ],
 
+      created: function() {
+        this._resizeHandler = this._resizeHandler.bind(this);
+      },
+
+      attached: function() {
+        window.addEventListener('resize', this._resizeHandler);
+      },
+
+      detached: function() {
+        window.removeEventListener('resize', this._resizeHandler);
+      },
+
       _computeFeaturedItem: function(items) {
         return items ? items[0] : {};
       },
@@ -119,6 +181,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!offline) {
           this._tryReconnect();
         }
+      },
+
+      _resizeHandler: function() {
+        this.debounce('_resize', this.updateStyles, 50);
       }
 
     });

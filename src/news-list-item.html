@@ -80,7 +80,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .headline {
-        padding: 24px;
         padding-top: 0px;
       }
 
@@ -127,6 +126,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* mobile */
       @media (max-width: 767px) {
+        .headline {
+          padding: 24px;
+        }
+
         a {
           border-bottom: 1px solid #ddd;
         }
@@ -139,7 +142,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           display: none;
         }
       }
-      
+
       /* desktop */
       @media (min-width: 768px) {
         :host(:not([featured])) .img-container > img {

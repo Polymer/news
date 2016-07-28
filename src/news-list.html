@@ -45,8 +45,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       @media (min-width: 768px) {
         :host {
           margin: 0 40px;
-          --app-grid-columns: 4;
-          --app-grid-gutter: 10px;
+          --app-grid-columns: 2;
+          --app-grid-gutter: 32px;
           --app-grid-expandible-item-columns: 4;
         }
 
@@ -62,6 +62,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           margin-left: 24px;
           width: 300px;
           min-width: 300px;
+        }
+      }
+
+      @media (min-width: 1025px) {
+        :host {
+          --app-grid-columns: 4;
         }
       }
 

@@ -202,12 +202,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding-top: 4px;
           padding-bottom: 14px;
         }
-        
+
+        .expanded-header[shown] {
+          display: block;
+        }
       }
 
       .vertical-layout {
         @apply(--layout-vertical);
         flex: 1;
+      }
+
+      .horizontal-layout {
+        @apply(--layout-horizontal);
+        align-self: stretch;
+        align-items: center;
+        flex: 1;
+      }
+
+      .expanded-header {
+        display: none;
       }
     </style>
 
@@ -250,15 +264,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </header>
 
-    <news-sticky-header>
-      <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
-      <div class="vertical-layout">
-        <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
-        <div class="date-line">
-          Top Stories &middot; [[_currentTime()]]
+    <news-sticky-header class="vertical-layout">
+      <div class="horizontal-layout">
+        <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
+        <div class="vertical-layout">
+          <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
+          <div class="date-line">
+            Top Stories &middot; [[_currentTime()]]
+          </div>
         </div>
+        <paper-icon-button icon="search"></paper-icon-button>
       </div>
-      <paper-icon-button icon="search"></paper-icon-button>
+      <div class="expanded-header" shown$="[[drawerOpened]]"> YO YO YO WADDUP </div>
     </news-sticky-header>
 
     <!-- Lazy-create the drawer for small screen sizes. -->

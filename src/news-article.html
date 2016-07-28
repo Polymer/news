@@ -188,11 +188,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     </style>
 
-    <news-category-data category-name="[[_articleData.section]]" category="{{_category}}"></news-category-data>
+    <news-category-data category-name="[[_routeData.category]]" category="{{_category}}"></news-category-data>
 
     <app-route
         route="[[route]]"
-        pattern="/:page"
+        pattern="/:category/:page"
         data="{{_routeData}}"></app-route>
 
     <div class="container">

@@ -39,6 +39,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+    <iron-media-query query="max-width: 767px" query-matches="{{smallScreen}}"></iron-media-query>
+
     <content></content>
 
   </template>
@@ -55,7 +57,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       get threshold() {
-        return window.innerHeight - 32;
+        if (this.smallScreen) {
+          return window.innerHeight - 32;
+        }
+        return window.innerHeight + 170;
       },
 
       attached: function() {

@@ -133,18 +133,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
       }
 
-      news-list:not(.page-selected) {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: -1;
-      }
-
-      news-article:not(.page-selected) {
-        display: none;
-      }
-
       /* mobile */
       @media (max-width: 767px) {
         :host([page=article]) .logo, :host([page=article]) .date-line {
@@ -345,11 +333,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-drawer>
     </template>
 
-    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="active" selected-class="page-selected">
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" route="[[subroute]]" class="iron-selected"></news-list>
+      <news-list id="list" name="list" route="[[subroute]]"></news-list>
       <!-- article view -->
-      <news-article name="article" route="[[subroute]]" class="iron-selected"></news-article>
+      <news-article name="article" route="[[subroute]]"></news-article>
     </iron-pages>
 
   </template>
@@ -412,9 +400,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         this.page = page;
-        if (page == 'article') {
-          this.$.list.style.top = this.$.header.offsetHeight + 'px';
-        }
         // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
         Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });

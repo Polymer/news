@@ -138,14 +138,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         routeData: Object,
 
-        active: Boolean,
-
         failure: Boolean
 
       },
 
       observers: [
-        '_categoryChanged(category, active)'
+        '_categoryChanged(category)'
       ],
 
       created: function() {
@@ -168,16 +166,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return items ? items.slice(1) : [];
       },
 
-      _categoryChanged: function(category, active) {
-        if (active) {
-          this.debounce('change-section', function() {
-            // Notify the category and the page's title
-            this.fire('change-section', {
-              category: category.name,
-              title: category.title
-            });
+      _categoryChanged: function(category) {
+        this.debounce('change-section', function() {
+          // Notify the category and the page's title
+          this.fire('change-section', {
+            category: category.name,
+            title: category.title
           });
-        }
+        });
       },
 
       _tryReconnect: function() {

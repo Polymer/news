@@ -235,7 +235,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <aside>
         <h3>Most Read</h3>
         <template is="dom-repeat" items="[[_category.items]]">
-          <a class="headline" href$="[[_getItemHref(item)]]">
+          <a class="headline" href$="[[_getItemHref(item, _routeData.category)]]">
             <span>[[_unescapeText(item.web_headline)]]</span>
             <span class="time-ago">[[_ago(item.display_date_num)]]</span>
           </a>
@@ -264,13 +264,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         _item: {
           type: Object,
           computed: '_computeItem(_category.items, _routeData.page)'
-        },
-
-        loading: {
-          type: Boolean,
-          reflectToAttribute: true,
-          value: false,
-        },
+        }
 
       },
 
@@ -279,9 +273,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _fetchArticle: function(page) {
-        if (this.getAttribute('active') == null)
-          return;
-        this.loading = true;
+        this.setAttribute('loading', '');
         var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + page;
         var xhr = new XMLHttpRequest();
         xhr.addEventListener('load', this._loadArticle.bind(this));
@@ -297,17 +289,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         result.readTime = Math.max(2, Math.round(result.html.length / 3000));
         this._articleData = result;
-        this.loading = false;
+        this.removeAttribute('loading');
       },
 
       _decodeHeadline: function(s) {
         return decodeURIComponent(s.replace(/\+/g, ' '));
       },
 
-      _getItemHref: function(item) {
+      _getItemHref: function(item, categoryName) {
         // By returning null when `itemId` is undefined, the href attribute won't be set and
         // the link will be disabled.
-        return item.canonical_url ? '/article/' + encodeURIComponent(item.canonical_url) : null;
+        return item.canonical_url ? '/article/' + categoryName + '/' + encodeURIComponent(item.canonical_url) : null;
       },
 
       _unescapeText: function(text) {

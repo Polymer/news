@@ -50,12 +50,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <ul class="grid">
 
       <li>
-        <news-list-item featured item="[[featuredItem]]"></news-list-item>
+        <news-list-item featured item="[[featuredItem]]" category-name="[[routeData.category]]"></news-list-item>
       </li>
 
       <template is="dom-repeat" items="[[_getListItems(category.items)]]">
         <li>
-          <news-list-item item="[[item]]"></news-list-item>
+          <news-list-item item="[[item]]" category-name="[[routeData.category]]"></news-list-item>
         </li>
       </template>
     </ul>
@@ -97,12 +97,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _getListItems: function(items) {
         return items ? items.slice(1) : [];
-      },
-
-      _getItemHref: function(item) {
-        // By returning null when `itemId` is undefined, the href attribute won't be set and
-        // the link will be disabled.
-        return item.canonical_url ? '/article/' + encodeURIComponent(item.canonical_url) : null;
       },
 
       _categoryChanged: function(category, active) {

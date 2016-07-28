@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       opacity: 1;
       transition: opacity 500ms;
       display: block;
-      padding: 0px 40px 0;
+      padding: 0 40px;
     }
 
     :host([loading]) {
@@ -53,6 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       font-weight: normal;
       font-size: 37px;
       line-height: 47px;
+      margin: 24px 0;
     }
 
     .cover-text .meta {
@@ -91,6 +92,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       max-width: 100%;
     }
 
+    #content img:first-of-type {
+      display: none;
+    }
+
     #content .byline {
       font-weight: bold;
     }
@@ -108,6 +113,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       width: 300px;
     }
 
+    .container aside h3 {
+      border-top: 1px solid rgba(0, 0, 0, 0.5);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+      font-size: 13px;
+      margin-top: 54px;
+      padding: 8px;
+      text-align: center;
+    }
+
     .container aside .headline {
       text-decoration: none;
       color: black;
@@ -115,12 +129,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: 20px 0;
     }
 
-    aside h3 {
-      border-top: 1px solid rgba(0, 0, 0, 0.5);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-      font-size: 13px;
-      padding: 8px;
-      text-align: center;
+    .container aside .time-ago {
+      margin-left: 8px;
+      font-size: 12px;
+      font-weight: bold;
     }
 
     @media (max-width: 767px) {
@@ -176,23 +188,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 24px;
       }
 
-      #content img:first-of-type {
-        display: none;
-      }
-
       .container aside {
         margin-left: auto;
         width: auto;
         padding: 24px;
       }
+
+      .container aside h3 {
+        margin-top: 0;
+      }
     }
     </style>
 
-    <news-category-data category-name="[[_articleData.section]]" category="{{_category}}"></news-category-data>
+    <news-category-data category-name="[[_routeData.category]]" category="{{_category}}"></news-category-data>
 
     <app-route
         route="[[route]]"
-        pattern="/:page"
+        pattern="/:category/:page"
         data="{{_routeData}}"></app-route>
 
     <div class="container">
@@ -224,7 +236,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <h3>Most Read</h3>
         <template is="dom-repeat" items="[[_category.items]]">
           <a class="headline" href$="[[_getItemHref(item)]]">
-            <span>{{_unescapeText(item.web_headline)}}</span>
+            <span>[[_unescapeText(item.web_headline)]]</span>
+            <span class="time-ago">[[_ago(item.display_date_num)]]</span>
           </a>
         </template>
       </aside>

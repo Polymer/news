@@ -95,6 +95,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: white;
       }
 
+      .expanded-header a {
+        display: block;
+        line-height: 26px;
+        font-size: 13px;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .expanded-header a.iron-selected {
+        font-weight: bold;
+        color: white;
+      }
+
       .drawer-list a.iron-selected {
         background: rgba(255,255,255,0.1);
       }
@@ -203,13 +216,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding-top: 4px;
           padding-bottom: 14px;
         }
-        
+
+        div.expanded-header {
+          display: block;
+          @apply(--layout-vertical);
+          align-items: center;
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          background-color: black;
+          transition: transform 0.2s ease-in-out;
+          z-index: -1;
+          padding-top: 12px;
+          padding-bottom: 24px;
+        }
+
+        .expanded-header div {
+          column-count: 3;
+          column-gap: 82px;
+        }
+
+        .expanded-header[shown] {
+          transform: translateY(100%);
+        }
       }
 
       .vertical-layout {
         @apply(--layout-vertical);
         flex: 1;
       }
+
+      .horizontal-layout {
+        @apply(--layout-horizontal);
+        align-self: stretch;
+        align-items: center;
+        flex: 1;
+      }
+
+      
+      .expanded-header {
+        display: none;
+      }
+
+      .compressed-header {
+        background-color: black;
+      }
+      
     </style>
 
     <!--
@@ -251,15 +303,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
     </header>
 
-    <news-sticky-header>
-      <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
-      <div class="vertical-layout">
-        <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
-        <div class="date-line">
-          Top Stories &middot; [[_currentTime()]]
+    <news-sticky-header class="vertical-layout">
+      <div class="horizontal-layout compressed-header">
+        <paper-icon-button icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
+        <div class="vertical-layout">
+          <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
+          <div class="date-line">
+            Top Stories &middot; [[_currentTime()]]
+          </div>
+        </div>
+        <paper-icon-button icon="search"></paper-icon-button>
+      </div>
+      <div class="expanded-header" shown$="[[drawerOpened]]">
+        <div>
+        <iron-selector role="navigation" selected="[[categoryName]]" attr-for-selected="name">
+          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
+            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+          </template>
+        </iron-selector>
         </div>
       </div>
-      <paper-icon-button icon="search"></paper-icon-button>
     </news-sticky-header>
 
     <!-- Lazy-create the drawer for small screen sizes. -->
@@ -312,6 +375,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       created: function() {
         // Custom elements polyfill safe way to indicate an element has been upgraded.
         this.removeAttribute('unresolved');
+      },
+
+      _menuIcon: function(drawerOpened) {
+        if (drawerOpened)
+          return 'close';
+        return 'menu';
       },
 
       _currentTime: function() {

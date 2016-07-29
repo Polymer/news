@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       ul {
         padding: 0;
-        margin: 0;
+        margin: 0 -32px 0 0 !important;
         list-style: none;
       }
 
@@ -40,8 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         @apply(--app-grid-expandible-item);
       }
 
-
-      /* desktop */
+      /* desktop 1 */
       @media (min-width: 768px) {
         :host {
           padding: 0 40px;
@@ -49,7 +48,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           --app-grid-gutter: 32px;
           --app-grid-expandible-item-columns: 4;
         }
+      }
 
+      /* desktop 2 */
+      @media (min-width: 1260px) {
         .container {
           @apply(--layout-horizontal);
         }

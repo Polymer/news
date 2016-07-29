@@ -88,9 +88,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* mobile */
       @media (max-width: 767px) {
-        :host(:not([featured])) .img-container {
-          display: none;
+
+        a {
+          border-bottom: 1px solid #ddd;
         }
+
+        .headline {
+          padding: 24px;
+        }
+
+      }
+
+      /* mobile and desktop small */
+      @media (max-width: 1259px) {
 
         :host([featured]) > a {
           height: 100vh;
@@ -124,11 +134,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           margin: 0 0 24px;
         }
 
-        .headline {
-          padding: 24px;
-        }
-
-        .img-container > .scrim {
+        :host([featured]) .img-container > .scrim {
           position: absolute;
           top: 0;
           right: 0;
@@ -137,34 +143,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
         }
 
-        .kicker {
-          margin-top: 24px;
+        :host(:not([featured])) .img-container {
+          display: none;
         }
 
-        a {
-          border-bottom: 1px solid #ddd;
+        :host([featured]) .headline {
+          padding: 24px;
         }
 
-        .img-container > img {
-          min-height: 60vh;
-        }
       }
 
-      /* desktop */
-      @media (min-width: 768px) {
+      /* desktop small */
+      @media (min-width: 768px) and (max-width: 1259px) {
+
+        :host([featured]) > a {
+          height: 50vmax;
+        }
+
         :host(:not([featured])) .img-container > img {
           height: 150px;
         }
 
-        :host([featured]) a {
-          @apply(--layout-horizontal);
+        .kicker {
+          margin-top: 24px;
         }
+
+        :host(:not([featured])) .img-container {
+          display: block;
+        }
+
+        :host(:not([featured])) .img-container > img {
+          height: 150px;
+        }
+
+      }
+
+      /* desktop large */
+      @media (min-width: 1260px) {
 
         :host([featured]) .img-container {
           width: 472px;
           height: 338px;
           min-width: 472px;
           margin-right: 24px;
+        }
+
+        :host([featured]) a {
+          @apply(--layout-horizontal);
         }
 
         :host([featured]) h2 {
@@ -180,6 +205,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :host(:not([featured])) .kicker {
           margin-top: 20px;
         }
+
       }
 
     </style>

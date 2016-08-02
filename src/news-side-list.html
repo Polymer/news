@@ -35,11 +35,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 20px 0;
       }
 
+      .time-ago {
+        margin-left: 8px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
     </style>
 
     <h3>[[headline]]</h3>
     <template is="dom-repeat" items="[[items]]">
-      <a href$="[[_getItemHref(item, categoryName)]]">[[_unescapeText(item.web_headline)]]</a>
+      <a href$="[[_getItemHref(item, categoryName)]]">
+        [[_unescapeText(item.web_headline)]]
+        <span class="time-ago">[[_ago(item.display_date_num)]]</span>
+      </a>
     </template>
   </template>
 
@@ -65,6 +74,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // By returning null when `itemId` is undefined, the href attribute won't be set and
         // the link will be disabled.
         return item.canonical_url ? '/article/' + categoryName + '/' + encodeURIComponent(item.canonical_url) : null;
+      },
+
+      _ago: function(timestamp) {
+        if (timestamp == undefined)
+          return ''
+        var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
+        if (minutes < 60)
+          return `${Math.floor(minutes)} min ago`;
+        if (minutes < 120)
+          return '1 hour ago';
+        var hours = minutes / 60;
+        if (hours < 24)
+          return `${Math.floor(hours)} hours ago`;
+        return `${Math.floor(hours / 24)} days ago`;
       }
 
     });

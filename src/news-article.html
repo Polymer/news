@@ -12,6 +12,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
+<link rel="import" href="news-side-list.html">
+
 <dom-module id="news-article">
 
   <template>
@@ -113,28 +115,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       width: 300px;
     }
 
-    .container aside h3 {
-      border-top: 1px solid rgba(0, 0, 0, 0.5);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-      font-size: 13px;
-      margin-top: 54px;
-      padding: 8px;
-      text-align: center;
-    }
-
-    .container aside .headline {
-      text-decoration: none;
-      color: black;
-      display: block;
-      margin: 20px 0;
-    }
-
-    .container aside .time-ago {
-      margin-left: 8px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
     @media (max-width: 767px) {
       :host {
         padding: 0;
@@ -193,10 +173,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: auto;
         padding: 24px;
       }
-
-      .container aside h3 {
-        margin-top: 0;
-      }
     }
     </style>
 
@@ -233,13 +209,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </main>
 
       <aside>
-        <h3>Most Read</h3>
-        <template is="dom-repeat" items="[[_category.items]]">
-          <a class="headline" href$="[[_getItemHref(item, _routeData.category)]]">
-            <span>[[_unescapeText(item.web_headline)]]</span>
-            <span class="time-ago">[[_ago(item.display_date_num)]]</span>
-          </a>
-        </template>
+        <news-side-list
+            headline="Most Read"
+            items="[[_category.items]]"
+            category-name="[[_routeData.category]]"></news-side-list>
       </aside>
     </div>
 
@@ -294,18 +267,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _decodeHeadline: function(s) {
         return decodeURIComponent(s.replace(/\+/g, ' '));
-      },
-
-      _getItemHref: function(item, categoryName) {
-        // By returning null when `itemId` is undefined, the href attribute won't be set and
-        // the link will be disabled.
-        return item.canonical_url ? '/article/' + categoryName + '/' + encodeURIComponent(item.canonical_url) : null;
-      },
-
-      _unescapeText: function(text) {
-        var elem = document.createElement('textarea');
-        elem.innerHTML = text;
-        return elem.textContent;
       },
 
       _ago: function(timestamp) {

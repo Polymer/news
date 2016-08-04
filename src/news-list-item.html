@@ -286,8 +286,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _getFeaturedImg: function(item) {
-        return item.thumbnail && (item.thumbnail.url ||
-            item.thumbnail.featured && item.thumbnail.featured.url) || '';
+        if (!item.thumbnail) {
+          return '';
+        }
+        if (this.featured) {
+          return (item.thumbnail && item.thumbnail.url) || '';
+        } else {
+          return (item.thumbnail.featured && item.thumbnail.featured.url) || '';
+        }
       }
 
 

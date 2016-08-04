@@ -226,12 +226,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           will-change: opacity;
         }
 
-        .expanded-header[shown] {
+        news-sticky-header[shown] .expanded-header[shown] {
           transform: translate3d(0, 100%, 0);
         }
 
-        .expanded-header[shown] > div {
+        news-sticky-header[shown] .expanded-header[shown] > div {
           opacity: 1;
+        }
+
+        .toggle-drawer-btn {
+          display: none;
         }
       }
 
@@ -276,7 +280,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <header id="header" role="navigation">
       <app-toolbar class="logo-toolbar">
-        <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
+        <paper-icon-button class="toggle-drawer-btn" icon="menu" on-click="_toggleDrawer"></paper-icon-button>
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
         <paper-icon-button icon="search"></paper-icon-button>
       </app-toolbar>
@@ -309,11 +313,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
       <div class="expanded-header" shown$="[[drawerOpened]]">
         <div>
-        <iron-selector role="navigation" selected="[[categoryName]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
+          <iron-selector role="navigation" selected="[[categoryName]]" attr-for-selected="name">
+            <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
+              <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+            </template>
+          </iron-selector>
         </div>
       </div>
     </news-sticky-header>

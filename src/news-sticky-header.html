@@ -31,18 +31,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         visibility: hidden;
         pointer-events: none;
         transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        transform: translate3d(0, -64px, 0);
+        transform: translate3d(0, -100%, 0);
       }
 
-      :host([visible]) {
+      :host([shown]) {
         visibility: visible;
         pointer-events: auto;
         transform: translate3d(0, 0, 0);
       }
 
     </style>
-
-    <iron-media-query query="max-width: 767px" query-matches="{{smallScreen}}"></iron-media-query>
 
     <content></content>
 
@@ -53,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'news-sticky-header',
 
       properties: {
-        visible: {
+        shown: {
           type: Boolean,
           reflectToAttribute: true
         }
@@ -74,7 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _scrollHandler: function() {
         var scrollTop = window.pageYOffset;
-        this.visible = (scrollTop >= this.threshold);
+        this.shown = (scrollTop >= this.threshold);
       }
 
 

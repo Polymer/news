@@ -285,6 +285,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return '';
         }
         return (item.thumbnail.featured && item.thumbnail.featured.url) || '';
+      },
+
+      _getHeadline: function(item) {
+        return item || '';
       }
 
 

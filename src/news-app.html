@@ -180,7 +180,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .menu-toolbar {
-          height: auto;
           padding: 0 0 45px 0;
         }
 
@@ -290,7 +289,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           Top Stories &middot; [[_currentTime()]]
         </div>
       </app-toolbar>
-      <template is="dom-if" if="[[_not(_shouldRenderDrawer)]]">
+      <template is="dom-if" if="[[_not(smallScreen)]]">
         <app-toolbar class="menu-toolbar">
           <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
             <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">

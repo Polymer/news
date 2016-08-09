@@ -228,6 +228,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         route: Object,
 
+        headline: {
+          type: String,
+          notify: true
+        },
+
         _routeData: Object,
 
         _articleData: Object,
@@ -262,6 +267,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         result.readTime = Math.max(2, Math.round(result.html.length / 3000));
         this._articleData = result;
+        this.headline = this._decodeHeadline(this._articleData.headline);
         this.removeAttribute('loading');
       },
 

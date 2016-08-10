@@ -33,6 +33,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-family: Georgia;
       }
 
+      .vertical-layout {
+        @apply(--layout-vertical);
+        flex: 1;
+      }
+
+      .horizontal-layout {
+        @apply(--layout-horizontal);
+        align-self: stretch;
+        align-items: center;
+        flex: 1;
+      }
+
       header,
       news-sticky-header {
         z-index: 10;
@@ -92,6 +104,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: white;
       }
 
+      .expanded-header {
+        display: none;
+      }
+
       .expanded-header a {
         display: block;
         line-height: 26px;
@@ -103,6 +119,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .expanded-header a.iron-selected {
         font-weight: bold;
         color: white;
+      }
+
+      .compressed-header {
+        background-color: black;
       }
 
       .drawer-list a.iron-selected {
@@ -128,6 +148,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .menu-list a.iron-selected {
         font-weight: bold;
+      }
+
+      footer {
+        margin: 40px;
+        text-align: center;
+      }
+
+      footer a {
+        text-decoration: none;
+        font-size: 11px;
+        color: #999;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
       }
 
       /* mobile */
@@ -201,7 +236,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding-bottom: 14px;
         }
 
-        div.expanded-header {
+        .expanded-header {
           display: block;
           @apply(--layout-vertical);
           align-items: center;
@@ -239,26 +274,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
 
-      .vertical-layout {
-        @apply(--layout-vertical);
-        flex: 1;
-      }
-
-      .horizontal-layout {
-        @apply(--layout-horizontal);
-        align-self: stretch;
-        align-items: center;
-        flex: 1;
-      }
-
-      .expanded-header {
-        display: none;
-      }
-
-      .compressed-header {
-        background-color: black;
-      }
-
     </style>
 
     <!--
@@ -289,7 +304,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           Top Stories &middot; [[_currentTime()]]
         </div>
       </app-toolbar>
-      <template is="dom-if" if="[[_not(smallScreen)]]">
+      <template is="dom-if" if="[[!smallScreen]]">
         <app-toolbar class="menu-toolbar">
           <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
             <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
@@ -323,7 +338,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </news-sticky-header>
 
     <!-- Lazy-create the drawer for small screen sizes. -->
-    <template is="dom-if" if="[[_shouldRenderDrawer]]">
+    <template is="dom-if" if="[[_shouldRenderDrawer(smallScreen, loadComplete)]]">
       <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
         <paper-icon-button icon="close" on-click="_toggleDrawer"></paper-icon-button>
         <iron-selector role="navigation" class="drawer-list" selected="[[categoryName]]" attr-for-selected="name">
@@ -341,6 +356,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <news-article name="article" route="[[subroute]]"></news-article>
     </iron-pages>
 
+    <footer>
+      <a href="https://www.polymer-project.org/1.0/toolbox/">Made by Polymer</a>
+    </footer>
+
   </template>
 
   <script>
@@ -356,9 +375,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true
         },
 
-        _shouldRenderDrawer: {
-          computed: '_computeShouldRenderDrawer(smallScreen, loadComplete)'
-        }
+        categories: Array,
+
+        articleHeadline: String
       },
 
       observers: [
@@ -452,12 +471,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-      _computeShouldRenderDrawer: function(smallScreen, loadComplete) {
+      _shouldRenderDrawer: function(smallScreen, loadComplete) {
         return smallScreen && loadComplete;
-      },
-
-      _not: function(v) {
-        return !v;
       }
 
     });

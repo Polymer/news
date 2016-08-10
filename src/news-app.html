@@ -49,11 +49,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .date-line,
       .article-headline {
         text-align: center;
-        padding: 6px 0;
         font-size: 11px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        margin: 0 16px;
       }
 
       .logo a {
@@ -97,6 +97,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: white;
       }
 
+      .expanded-header {
+        display: none;
+      }
+
       .expanded-header a {
         display: block;
         line-height: 26px;
@@ -115,14 +119,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .menu-list {
-        @apply(--layout-flex-auto);
+        display: block;
         text-align: center;
         font-size: 13px;
         border-top: 1px solid #dfdfdf;
         border-bottom: 1px solid #dfdfdf;
         padding: 8px 0;
-        margin-left: 40px;
-        margin-right: 40px;
+        margin: 40px;
       }
 
       .menu-list a {
@@ -155,6 +158,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         header .date-line {
+          padding: 6px 0;
           border-top: 1px solid rgba(255,255,255,.5);
           border-bottom: 1px solid rgba(255,255,255,.5);
         }
@@ -183,15 +187,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           height: 45px;
         }
 
-        .date-line-toolbar {
-          height: 11px;
-          padding-bottom: 27px;
-        }
-
-        .menu-toolbar {
-          padding: 0 0 45px 0;
-        }
-
         news-sticky-header {
           height: auto;
         }
@@ -213,7 +208,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           display: none;
         }
 
-        div.expanded-header {
+        .expanded-header {
           display: block;
           @apply(--layout-vertical);
           align-items: center;
@@ -229,20 +224,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding-bottom: 24px;
         }
 
-        .expanded-header > div {
+        .expanded-header .grid-container {
           column-count: 3;
           column-gap: 82px;
-          opacity: 0;
-          transition: opacity 0.2s ease-in-out;
-          will-change: opacity;
         }
 
         news-sticky-header[shown] .expanded-header[shown] {
           transform: translate3d(0, 100%, 0);
-        }
-
-        news-sticky-header[shown] .expanded-header[shown] > div {
-          opacity: 1;
         }
 
         .toggle-drawer-btn {
@@ -261,10 +249,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         align-self: stretch;
         align-items: center;
         flex: 1;
-      }
-
-      .expanded-header {
-        display: none;
       }
 
       .compressed-header {
@@ -290,28 +274,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     -->
     <news-category-data categories="{{categories}}"></news-category-data>
 
+    <!--
+      Header at the scroll top of the page.
+    -->
     <header id="header" role="navigation">
       <app-toolbar class="logo-toolbar">
         <paper-icon-button class="toggle-drawer-btn" icon="menu" on-click="_toggleDrawer"></paper-icon-button>
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
         <paper-icon-button icon="search"></paper-icon-button>
       </app-toolbar>
-      <app-toolbar class="date-line-toolbar">
-        <div class="date-line">
-          [[_currentTime()]]
-        </div>
-      </app-toolbar>
+      <div class="date-line">
+        [[_currentTime()]]
+      </div>
       <template is="dom-if" if="[[_not(smallScreen)]]">
-        <app-toolbar class="menu-toolbar">
-          <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
-            <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
-              <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-            </template>
-          </iron-selector>
-        </app-toolbar>
+        <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
+          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
+            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+          </template>
+        </iron-selector>
       </template>
     </header>
 
+    <!--
+      Sticky header reveals when scrolled down on the page.
+    -->
     <news-sticky-header class="vertical-layout">
       <div class="horizontal-layout compressed-header">
         <paper-icon-button icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
@@ -327,22 +313,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button icon="search"></paper-icon-button>
       </div>
       <div class="expanded-header" shown$="[[drawerOpened]]">
-        <div>
-          <iron-selector role="navigation" selected="[[categoryName]]" attr-for-selected="name">
-            <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
-              <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-            </template>
-          </iron-selector>
-        </div>
+        <iron-selector class="grid-container" role="navigation"
+            selected="[[categoryName]]" attr-for-selected="name">
+          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
+            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+          </template>
+        </iron-selector>
       </div>
     </news-sticky-header>
 
-    <!-- Lazy-create the drawer for small screen sizes. -->
+    <!--
+      Lazy-create the drawer on small viewports.
+    -->
     <template is="dom-if" if="[[_shouldRenderDrawer]]">
       <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
         <paper-icon-button icon="close" on-click="_toggleDrawer"></paper-icon-button>
         <iron-selector role="navigation" class="drawer-list" selected="[[categoryName]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="4">
+          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
           </template>
         </iron-selector>

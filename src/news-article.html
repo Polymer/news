@@ -230,6 +230,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         headline: {
           type: String,
+          readOnly: true,
           notify: true
         },
 
@@ -267,7 +268,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         result.readTime = Math.max(2, Math.round(result.html.length / 3000));
         this._articleData = result;
-        this.headline = this._decodeHeadline(this._articleData.headline);
+        this._setHeadline(this._decodeHeadline(this._articleData.headline));
         this.removeAttribute('loading');
       },
 

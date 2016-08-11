@@ -302,15 +302,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return null;
       },
 
-      _getArticleImageStyle: function(item) {
-        var img = item && item.thumbnail && (item.thumbnail.url ||
-            item.thumbnail.featured && item.thumbnail.featured.url) || '';
-        return img ? 'background-image:url(' + img + ')' : '';
-      },
-
       _getArticleImage: function(item) {
-        return item && item.thumbnail && (item.thumbnail.url ||
-            item.thumbnail.featured && item.thumbnail.featured.url) || '';
+        return (item && item.thumbnail && item.thumbnail.featured &&
+          item.thumbnail.featured.url) || '';
       }
 
     });

@@ -262,6 +262,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _loadArticle: function(e) {
         this._articleData = JSON.parse(e.target.responseText);
+        this.scopeSubtree(this.$.content);
         this.removeAttribute('loading');
       },
 

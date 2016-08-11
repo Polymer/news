@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="news-article-item-behavior.html">
 <link rel="import" href="news-img.html">
 
 <dom-module id="news-list-item">
@@ -217,15 +219,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <a href="[[_getItemHref(item, categoryName)]]">
       <div class="img-container">
-        <news-img class="image" src="[[_getFeaturedImg(item)]]"></news-img>
+        <news-img class="image" src="[[_getArticleImage(item)]]"></news-img>
         <div class="scrim"></div>
       </div>
       <div class="headline">
-        <div class="kicker" hidden$="[[_hide(item.kicker)]]">[[item.kicker]]</div>
-        <h2 inner-h-t-m-l="[[item.web_headline]]"></h2>
+        <div class="kicker" hidden$="[[!item.kicker]]">[[item.kicker]]</div>
+        <h2>[[_unescapeText(item.web_headline)]]</h2>
         <div class="details">
           <div class="timestamp">[[_ago(item.display_date_num)]]</div>
-          <div class="author">{{item.byline}}</div>
+          <div class="author">[[item.byline]]</div>
         </div>
       </div>
     </a>
@@ -236,6 +238,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
 
       is: 'news-list-item',
+
+      behaviors: [
+        NewsArticleItemBehavior
+      ],
 
       properties: {
 
@@ -248,49 +254,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: false,
           reflectToAttribute: true
         }
-      },
 
-      _ago: function(timestamp) {
-        if (timestamp == undefined)
-          return ''
-        var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
-        if (minutes < 60)
-          return `${Math.floor(minutes)} min ago`;
-        if (minutes < 120)
-          return '1 hour ago';
-        var hours = minutes / 60;
-        if (hours < 24)
-          return `${Math.floor(hours)} hours ago`;
-        return `${Math.floor(hours / 24)} days ago`;
-      },
-
-      _hide: function(text) {
-        return text == "" || text == undefined;
-      },
-
-      _getItemHref: function(item, categoryName) {
-        // By returning null when `itemId` is undefined, the href attribute won't be set and
-        // the link will be disabled.
-        return item.canonical_url ? '/article/' + categoryName + '/' + encodeURIComponent(item.canonical_url) : null;
-      },
-
-      _getTinyImg: function(item) {
-        return item.thumbnail && item.thumbnail.url ?
-            'https://img.washingtonpost.com/wp-apps/imrs.php?w=10&src=' +
-            encodeURIComponent(item.thumbnail.url) : '';
-      },
-
-      _getFeaturedImg: function(item) {
-        if (!item.thumbnail) {
-          return '';
-        }
-        return (item.thumbnail.featured && item.thumbnail.featured.url) || '';
-      },
-
-      _getHeadline: function(item) {
-        return item || '';
       }
-
 
     });
 

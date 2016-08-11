@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
+<link rel="import" href="news-article-item-behavior.html">
 <link rel="import" href="news-side-list.html">
 
 <dom-module id="news-article">
@@ -92,10 +93,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     #content img {
       max-width: 100%;
-    }
-
-    #content img:first-of-type {
-      display: none;
     }
 
     #content .byline {
@@ -191,11 +188,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div>
               <a class="category" href="/list/[[_articleData.section]]">[[_articleData.section]]</a>
             </div>
-            <h1>[[_decodeHeadline(_articleData.headline)]]</h1>
+            <h1>[[headline]]</h1>
             <div class="meta">
               <span>[[_ago(_item.display_date_num)]]</span>
               <iron-icon class="timer-icon" icon="timer"></iron-icon>
-              <span>[[_articleData.readTime]] min read</span>
+              <span>[[_getReadTime(_articleData.html)]] min read</span>
             </div>
           </div>
 
@@ -210,9 +207,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <aside>
         <news-side-list
-            headline="Most Read"
             items="[[_category.items]]"
-            category-name="[[_routeData.category]]"></news-side-list>
+            category-name="[[_routeData.category]]">Most Read</news-side-list>
       </aside>
     </div>
 
@@ -224,13 +220,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'news-article',
 
+      behaviors: [
+        NewsArticleItemBehavior
+      ],
+
       properties: {
 
         route: Object,
 
         headline: {
           type: String,
-          readOnly: true,
+          computed: '_computeHeadline(_item)',
           notify: true
         },
 
@@ -261,33 +261,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _loadArticle: function(e) {
-        var result = JSON.parse(e.target.responseText);
-        var match = result.html.match(/<p class="date">([^<]*)/);
-        if (match) {
-          result.date = match[0].replace(/,| at| (?=AM)/g, '')
-        }
-        result.readTime = Math.max(2, Math.round(result.html.length / 3000));
-        this._articleData = result;
-        this._setHeadline(this._decodeHeadline(this._articleData.headline));
+        this._articleData = JSON.parse(e.target.responseText);
         this.removeAttribute('loading');
-      },
-
-      _decodeHeadline: function(s) {
-        return decodeURIComponent(s.replace(/\+/g, ' '));
-      },
-
-      _ago: function(timestamp) {
-        if (timestamp == undefined)
-          return ''
-        var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
-        if (minutes < 60)
-          return `${Math.floor(minutes)} min ago`;
-        if (minutes < 120)
-          return '1 hour ago';
-        var hours = minutes / 60;
-        if (hours < 24)
-          return `${Math.floor(hours)} hours ago`;
-        return `${Math.floor(hours / 24)} days ago`;
       },
 
       _computeItem: function(items, page) {
@@ -302,9 +277,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return null;
       },
 
-      _getArticleImage: function(item) {
-        return (item && item.thumbnail && item.thumbnail.featured &&
-          item.thumbnail.featured.url) || '';
+      _computeHeadline: function(item) {
+        return item ? this._unescapeText(item.web_headline) : '';
+      },
+
+      _getReadTime: function(html) {
+        return Math.max(2, Math.round(html.length / 3000));
       }
 
     });

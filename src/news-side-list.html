@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="news-article-item-behavior.html">
+
 <dom-module id="news-side-list">
 
   <template>
@@ -43,7 +45,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <h3>[[headline]]</h3>
+    <h3>
+      <content></content>
+    </h3>
     <template is="dom-repeat" items="[[items]]">
       <a href$="[[_getItemHref(item, categoryName)]]">
         [[_unescapeText(item.web_headline)]]
@@ -58,36 +62,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'news-side-list',
 
+      behaviors: [
+        NewsArticleItemBehavior
+      ],
+
       properties: {
+
         items: Array,
-        headline: String,
+
         categoryName: String
-      },
 
-      _unescapeText: function(text) {
-        this._textarea = this._textarea || document.createElement('textarea');
-        this._textarea.innerHTML = text;
-        return this._textarea.textContent;
-      },
-
-      _getItemHref: function(item, categoryName) {
-        // By returning null when `itemId` is undefined, the href attribute won't be set and
-        // the link will be disabled.
-        return item.canonical_url ? '/article/' + categoryName + '/' + encodeURIComponent(item.canonical_url) : null;
-      },
-
-      _ago: function(timestamp) {
-        if (timestamp == undefined)
-          return ''
-        var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
-        if (minutes < 60)
-          return `${Math.floor(minutes)} min ago`;
-        if (minutes < 120)
-          return '1 hour ago';
-        var hours = minutes / 60;
-        if (hours < 24)
-          return `${Math.floor(hours)} hours ago`;
-        return `${Math.floor(hours / 24)} days ago`;
       }
 
     });

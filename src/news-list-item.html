@@ -42,18 +42,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .headline {
+        box-sizing: border-box;
+        width: 100%;
         padding-top: 0px;
       }
 
-      .headline > h2 {
-        margin: 0 0 18px;
+      h2 {
+        margin: 18px 0;
         font-weight: 400;
         font-size: 20px;
         line-height: 28px;
       }
 
       .kicker {
-        margin-bottom: 18px;
         padding: 6px 20px 7px 20px;
         border: 1px solid #C2C2C2;
         display: inline-block;
@@ -75,7 +76,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
       }
 
-      .details > div {
+      .timestamp {
         white-space: nowrap;
       }
 
@@ -83,6 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding-left: 35px;
         overflow: hidden;
         text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       /* mobile */
@@ -101,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* mobile and desktop small */
       @media (max-width: 1259px) {
 
-        :host([featured]) > a {
+        :host([featured]) a {
           height: 100vh;
           border-bottom: 0;
           background-color: #000;
@@ -118,9 +120,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           left: 0;
         }
 
-        :host([featured]) .headline > h2 {
-          font-size: 37px;
-          line-height: 47px;
+        :host([featured]) h2 {
+          font-size: 6vh;
+          line-height: 7vh;
+          max-height: calc(7vh * 7);
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 7;
+          -webkit-box-orient: vertical;
         }
 
         :host([featured]) .kicker {
@@ -130,14 +137,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         :host([featured]) .details {
           border-top: 1px solid rgba(255, 255, 255, 0.5);
-          padding-top: 24px;
+          padding: 24px 0 12px 0;
         }
 
-        :host([featured]) .headline > h2 {
-          margin: 0 0 24px;
+        :host([featured]) h2 {
+          margin: 24px 0;
         }
 
-        :host([featured]) .img-container > .scrim {
+        :host([featured]) .scrim {
           position: absolute;
           top: 0;
           right: 0;
@@ -159,16 +166,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop small */
       @media (min-width: 768px) and (max-width: 1259px) {
 
-        :host([featured]) > a {
+        :host([featured]) a {
           height: 50vmax;
         }
 
         :host(:not([featured])) .image {
           height: 150px;
-        }
-
-        .kicker {
-          margin-top: 24px;
         }
 
         :host(:not([featured])) .img-container {
@@ -177,6 +180,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         :host(:not([featured])) .image {
           height: 150px;
+        }
+
+        :host(:not([featured])) .kicker {
+          margin-top: 20px;
         }
 
       }
@@ -205,12 +212,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           border-top: 1px solid #ddd;
         }
 
-        :host(:not([featured])) .kicker {
-          margin-top: 20px;
-        }
-
         :host(:not([featured])) .image {
           height: 150px;
+        }
+
+        :host(:not([featured])) .kicker {
+          margin-top: 20px;
         }
 
       }

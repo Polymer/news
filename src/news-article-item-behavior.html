@@ -26,15 +26,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _ago: function(timestamp) {
       if (timestamp == undefined)
         return ''
+
       var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
+      if (minutes < 2)
+        return '1 min ago';
       if (minutes < 60)
-        return `${Math.floor(minutes)} min ago`;
+        return Math.floor(minutes) + ' mins ago';
       if (minutes < 120)
         return '1 hour ago';
+
       var hours = minutes / 60;
       if (hours < 24)
-        return `${Math.floor(hours)} hours ago`;
-      return `${Math.floor(hours / 24)} days ago`;
+        return Math.floor(hours) + ' hours ago';
+      if (hours < 48)
+        return '1 day ago';
+
+      return Math.floor(hours / 24) + ' days ago';
     },
 
     _getItemHref: function(item, categoryName) {

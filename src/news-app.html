@@ -415,7 +415,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var date = new Date();
 
-        return `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
       },
 
       _routePageChanged: function(page) {

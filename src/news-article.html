@@ -52,7 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-decoration: none;
       }
 
-      .cover-text h1 {
+      h1 {
         font-weight: normal;
         font-size: 37px;
         line-height: 47px;
@@ -171,6 +171,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 0 24px;
         }
       }
+
+      @media (max-width: 1259px) {
+        h1 {
+          font-size: 6vh;
+          line-height: 7vh;
+          max-height: calc(7vh * 7);
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 7;
+          -webkit-box-orient: vertical;
+        }
+      }
     </style>
 
     <news-category-data category-name="[[_routeData.category]]" category="{{_category}}"></news-category-data>
@@ -197,7 +209,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
 
           <div class="cover-img-container">
-            <img src="[[_getArticleImage(_item)]]" alt="[[headline]]">
+            <img src="[[_getArticleImage(_item)]]">
             <div class="scrim"></div>
           </div>
         </div>

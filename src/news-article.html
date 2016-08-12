@@ -66,19 +66,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 24px 0;
       }
 
-      .cover-img-container {
-        position: relative;
-        background-repeat: no-repeat;
-        background-size: contain;
+      /*.cover-img-container > img {
         width: 100%;
-      }
+      }*/
 
-      .cover-img-container > img {
-        display: block;
-        width: 100%;
-        height: auto;
-        min-height: 60vh;
-        object-fit: cover;
+      .cover-img-container {
+        display: none;
       }
 
       #content {
@@ -118,7 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .container {
-          flex-direction: column;
+          display: block;
         }
 
         .cover {
@@ -148,8 +141,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .cover-img-container {
+          display: block;
           position: absolute;
           top: 0;
+          left: 0;
+          right: 0;
+          height: 60vh;
+          overflow: hidden;
+        }
+
+        /*.cover-img-container > img {
+          width: auto;
+          min-width: 100%;
+          min-height: 60vh;
+        }*/
+
+        .cover-img {
+          width: 100%;
+          height: 100%;
+          background-position: 50%;
+          background-size: cover;
         }
 
         .cover-img-container .scrim {
@@ -197,7 +208,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
 
           <div class="cover-img-container">
-            <img src="[[_getArticleImage(_item)]]" alt="[[headline]]">
+            <!-- <img src="[[_getArticleImage(_item)]]" alt="[[headline]]"> -->
+            <div class="cover-img" style$="[[_getArticleImageStyle(_item)]]"></div>
             <div class="scrim"></div>
           </div>
         </div>

@@ -53,6 +53,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _getArticleImage: function(item) {
       return (item && item.thumbnail && item.thumbnail.featured &&
         item.thumbnail.featured.url) || '';
+    },
+
+    _getArticleImageStyle: function(item) {
+      var url = this._getArticleImage(item);
+      return url ? 'background-image: url("' + url + '")' : '';
     }
 
   };

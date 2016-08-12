@@ -299,7 +299,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button icon="search"></paper-icon-button>
       </app-toolbar>
       <div class="date-line">
-        [[_currentTime()]]
+        [[categoryTitle]] &middot; [[_currentTime()]]
       </div>
       <template is="dom-if" if="[[!smallScreen]]">
         <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
@@ -319,7 +319,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="sticky-header-center">
           <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
           <div class="date-line">
-            [[_currentTime()]]
+            [[categoryTitle]] &middot; [[_currentTime()]]
           </div>
           <div class="article-headline">
             [[articleHeadline]]
@@ -379,7 +379,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         categories: Array,
 
-        articleHeadline: String
+        articleHeadline: String,
+
+        categoryName: String,
+
+        categoryTitle: String
       },
 
       observers: [
@@ -467,6 +471,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _onChangeSection: function(event) {
         var detail = event.detail;
         this.categoryName = detail.category || '';
+        this.categoryTitle = detail.title || '';
         // Announce the page's title
         if (detail.title) {
           document.title = detail.title + ' - NEWS';

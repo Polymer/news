@@ -20,157 +20,157 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
 
     <style>
-    :host {
-      background: #FFF;
-      opacity: 1;
-      transition: opacity 500ms;
-      display: block;
-      padding: 0 40px;
-    }
-
-    :host([loading]) {
-      opacity: 0;
-      transition: none;
-    }
-
-    .container {
-      display: flex;
-    }
-
-    .flex {
-      flex: 1;
-    }
-
-    .cover-text .category {
-      display: inline-block;
-      text-transform: capitalize;
-      padding: 6px 20px 7px;
-      border: 1px solid rgba(0, 0, 0, 0.5);
-      font-size: 11px;
-      font-weight: bold;
-      color: #000;
-      text-decoration: none;
-    }
-
-    .cover-text h1 {
-      font-weight: normal;
-      font-size: 37px;
-      line-height: 47px;
-      margin: 24px 0;
-    }
-
-    .cover-text .meta {
-      font-size: 11px;
-      font-weight: bold;
-      border-top: 1px solid rgba(0, 0, 0, 0.5);
-      padding: 24px 0;
-    }
-
-    .cover-img-container {
-      position: relative;
-      background-repeat: no-repeat;
-      background-size: contain;
-      width: 100%;
-    }
-
-    .cover-img-container > img {
-      display: block;
-      width: 100%;
-      height: auto;
-      min-height: 60vh;
-      object-fit: cover;
-    }
-
-    #content {
-      font-size: 16px;
-      line-height: 26px;
-    }
-
-    #content .kicker,
-    #content h1 {
-      display: none;
-    }
-
-    #content img {
-      max-width: 100%;
-    }
-
-    #content .byline {
-      font-weight: bold;
-    }
-
-    #content .date {
-      display: none;
-    }
-
-    .timer-icon {
-      margin-left: 30px;
-    }
-
-    .container aside {
-      margin-left: 24px;
-      width: 300px;
-    }
-
-    @media (max-width: 767px) {
       :host {
-        padding: 0;
+        background: #FFF;
+        opacity: 1;
+        transition: opacity 500ms;
+        display: block;
+        padding: 0 40px;
+      }
+
+      :host([loading]) {
+        opacity: 0;
+        transition: none;
       }
 
       .container {
-        flex-direction: column;
-      }
-
-      .cover {
-        background: #000;
-      }
-
-      .cover-text {
-        position: relative;
         display: flex;
-        flex-direction: column;
-        height: 100vh;
-        box-sizing: border-box;
-        color: #FFF;
-        padding: 0 24px;
-        z-index: 1;
+      }
+
+      .flex {
+        flex: 1;
       }
 
       .cover-text .category {
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        display: inline-block;
+        text-transform: capitalize;
+        padding: 6px 20px 7px;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        font-size: 11px;
+        font-weight: bold;
+        color: #000;
+        text-decoration: none;
+      }
+
+      .cover-text h1 {
+        font-weight: normal;
+        font-size: 37px;
+        line-height: 47px;
+        margin: 24px 0;
       }
 
       .cover-text .meta {
         font-size: 11px;
         font-weight: bold;
-        border-top: 1px solid rgba(255, 255, 255, 0.5);
+        border-top: 1px solid rgba(0, 0, 0, 0.5);
+        padding: 24px 0;
       }
 
       .cover-img-container {
-        position: absolute;
-        top: 0;
+        position: relative;
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
       }
 
-      .cover-img-container .scrim {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+      .cover-img-container > img {
+        display: block;
+        width: 100%;
+        height: auto;
+        min-height: 60vh;
+        object-fit: cover;
       }
 
       #content {
-        padding: 24px;
+        font-size: 16px;
+        line-height: 26px;
+      }
+
+      #content .kicker,
+      #content h1 {
+        display: none;
+      }
+
+      #content img {
+        max-width: 100%;
+      }
+
+      #content .byline {
+        font-weight: bold;
+      }
+
+      #content .date {
+        display: none;
+      }
+
+      .timer-icon {
+        margin-left: 30px;
       }
 
       .container aside {
-        margin-left: auto;
-        width: auto;
-        padding: 0 24px;
+        margin-left: 24px;
+        width: 300px;
       }
-    }
+
+      @media (max-width: 767px) {
+        :host {
+          padding: 0;
+        }
+
+        .container {
+          flex-direction: column;
+        }
+
+        .cover {
+          background: #000;
+        }
+
+        .cover-text {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+          box-sizing: border-box;
+          color: #FFF;
+          padding: 0 24px;
+          z-index: 1;
+        }
+
+        .cover-text .category {
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cover-text .meta {
+          font-size: 11px;
+          font-weight: bold;
+          border-top: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cover-img-container {
+          position: absolute;
+          top: 0;
+        }
+
+        .cover-img-container .scrim {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+        }
+
+        #content {
+          padding: 24px;
+        }
+
+        .container aside {
+          margin-left: auto;
+          width: auto;
+          padding: 0 24px;
+        }
+      }
     </style>
 
     <news-category-data category-name="[[_routeData.category]]" category="{{_category}}"></news-category-data>
@@ -197,7 +197,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
 
           <div class="cover-img-container">
-            <img src="[[_getArticleImage(_item)]]">
+            <img src="[[_getArticleImage(_item)]]" alt="[[headline]]">
             <div class="scrim"></div>
           </div>
         </div>

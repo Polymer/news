@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .sticky-header-center {
-        width: calc(100% - 80px);
+        width: calc(100% - 120px);
       }
 
       .logo {
@@ -130,6 +130,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: black;
       }
 
+      :host([page=list]) news-sticky-header paper-icon-button[icon=mail],
+      :host([page=list]) news-sticky-header paper-icon-button[icon=share] {
+        display: none;
+      }
+
       .drawer-list a.iron-selected {
         background: rgba(255,255,255,0.1);
       }
@@ -195,11 +200,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         news-sticky-header .logo,
-        :host([page=article]) news-sticky-header .date-line ,
+        :host([page=article]) news-sticky-header .date-line,
+        :host([page=article]) news-sticky-header paper-icon-button[icon=search],
         :host([page=list]) news-sticky-header .article-headline {
           display: none;
         }
-
       }
 
       /* desktop */
@@ -325,6 +330,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             [[articleHeadline]]
           </div>
         </div>
+        <paper-icon-button icon="mail"></paper-icon-button>
+        <paper-icon-button icon="share"></paper-icon-button>
         <paper-icon-button icon="search"></paper-icon-button>
       </div>
       <div class="expanded-header" shown$="[[drawerOpened]]">
@@ -383,7 +390,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         categoryName: String,
 
-        categoryTitle: String
+        categoryTitle: {
+          type: String,
+          value: 'Top Stories'
+        }
       },
 
       observers: [

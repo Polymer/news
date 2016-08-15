@@ -107,9 +107,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-left: 30px;
       }
 
-      .container aside {
+      aside {
         margin-left: 24px;
         width: 300px;
+      }
+
+      .share-link {
+        display: inline-block;
+        margin-right: 24px;
+        margin-bottom: 10px;
+        color: #000;
+        font-size: 11px;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      .share-link iron-icon {
+        margin-right: 8px;
       }
 
       @media (max-width: 767px) {
@@ -165,7 +179,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 24px;
         }
 
-        .container aside {
+        aside {
           margin-left: auto;
           width: auto;
           padding: 0 24px;
@@ -218,6 +232,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </main>
 
       <aside>
+        <a href="#" class="share-link">
+          <iron-icon icon="mail"></iron-icon>
+          Email
+        </a>
+        <a href="#" class="share-link">
+          <iron-icon icon="share"></iron-icon>
+          Share
+        </a>
         <news-side-list
             items="[[_category.items]]"
             category-name="[[_routeData.category]]">Most Read</news-side-list>

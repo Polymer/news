@@ -10,7 +10,7 @@ module.exports = {
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/img\.washingtonpost\.com|https:\/\/www\.washingtonpost\.com\/pb\/resources\/img/,
-      handler: 'cacheFirst',
+      handler: 'fastest',
       options: {
         cache: {
           maxEntries: 200,
@@ -20,7 +20,7 @@ module.exports = {
     },
     {
       urlPattern: /^https:\/\/www\.washingtonpost\.com\/pwa\/api/,
-      handler: 'fastest',
+      handler: 'networkFirst',
       options: {
         cache: {
           maxEntries: 100,

@@ -50,10 +50,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         z-index: 10;
       }
 
-      .sticky-header-center {
-        width: calc(100% - 120px);
-      }
-
       .logo {
         text-align: center;
       }
@@ -205,6 +201,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :host([page=list]) news-sticky-header .article-headline {
           display: none;
         }
+
+        /* Can't use flex because we need a fixed width to clip text overflow. */
+        :host([page=article]) .sticky-header-center {
+          width: calc(100% - 120px); /* 40px * 3 buttons */
+        }
+
+        /* Can't use flex because we need a fixed width to clip text overflow. */
+        :host([page=list]) .sticky-header-center {
+          width: calc(100% - 80px); /* 40px * 2 buttons */
+        }
       }
 
       /* desktop */
@@ -225,6 +231,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         news-sticky-header {
           height: auto;
+        }
+
+        .sticky-header-center {
+          flex: 1;
         }
 
         news-sticky-header .logo a {

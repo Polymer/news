@@ -50,10 +50,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         z-index: 10;
       }
 
-      .sticky-header-center {
-        width: calc(100% - 80px);
-      }
-
       .logo {
         text-align: center;
       }
@@ -130,6 +126,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background-color: black;
       }
 
+      :host([page=list]) news-sticky-header paper-icon-button[icon=mail],
+      :host([page=list]) news-sticky-header paper-icon-button[icon=share] {
+        display: none;
+      }
+
       .drawer-list a.iron-selected {
         background: rgba(255,255,255,0.1);
       }
@@ -195,11 +196,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         news-sticky-header .logo,
-        :host([page=article]) news-sticky-header .date-line ,
+        :host([page=article]) news-sticky-header .date-line,
+        :host([page=article]) news-sticky-header paper-icon-button[icon=search],
         :host([page=list]) news-sticky-header .article-headline {
           display: none;
         }
 
+        /* Can't use flex because we need a fixed width to clip text overflow. */
+        :host([page=article]) .sticky-header-center {
+          width: calc(100% - 120px); /* 40px * 3 buttons */
+        }
+
+        /* Can't use flex because we need a fixed width to clip text overflow. */
+        :host([page=list]) .sticky-header-center {
+          width: calc(100% - 80px); /* 40px * 2 buttons */
+        }
       }
 
       /* desktop */
@@ -220,6 +231,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         news-sticky-header {
           height: auto;
+        }
+
+        .sticky-header-center {
+          flex: 1;
         }
 
         news-sticky-header .logo a {
@@ -325,6 +340,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             [[articleHeadline]]
           </div>
         </div>
+        <paper-icon-button icon="mail"></paper-icon-button>
+        <paper-icon-button icon="share"></paper-icon-button>
         <paper-icon-button icon="search"></paper-icon-button>
       </div>
       <div class="expanded-header" shown$="[[drawerOpened]]">
@@ -383,7 +400,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         categoryName: String,
 
-        categoryTitle: String
+        categoryTitle: {
+          type: String,
+          value: 'Top Stories'
+        }
       },
 
       observers: [

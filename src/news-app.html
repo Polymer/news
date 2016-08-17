@@ -66,12 +66,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .logo a {
         font-weight: 600;
-        letter-spacing: 6px;
+        letter-spacing: 10px;
+        /* To offset letter-spacing for the last character. */
+        margin-right: -10px;
         text-decoration: none;
         /* required for IE 11, so this <a> can receive pointer events */
         display: inline-block;
         pointer-events: auto;
-        color: black;
+        color: inherit;
       }
 
       iron-pages {
@@ -81,15 +83,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       app-drawer {
         --app-drawer-content-container: {
-          background: #212121;
-          color: white;
+          background: #222;
+          color: #FFF;
         };
         --app-drawer-width: 230px;
         z-index: 11;
       }
 
       app-drawer paper-icon-button {
-        --paper-icon-button-ink-color: white;
+        --paper-icon-button-ink-color: #FFF;
         margin: 10px;
       }
 
@@ -102,7 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 0 24px;
         line-height: 48px;
         text-decoration: none;
-        color: white;
+        color: #FFF;
       }
 
       .expanded-header {
@@ -111,19 +113,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .expanded-header a {
         display: block;
-        line-height: 26px;
-        font-size: 13px;
+        line-height: 32px;
+        font-size: 15px;
         text-decoration: none;
-        color: rgba(255, 255, 255, 0.9);
+        color: #CCC;
       }
 
       .expanded-header a.iron-selected {
         font-weight: bold;
-        color: white;
+        color: #FFF;
       }
 
       .compressed-header {
-        background-color: black;
+        background-color: #222;
       }
 
       :host([page=list]) news-sticky-header paper-icon-button[icon=mail],
@@ -132,21 +134,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .drawer-list a.iron-selected {
-        background: rgba(255,255,255,0.1);
+        background: #555;
       }
 
       .menu-list {
         display: block;
         text-align: center;
         font-size: 13px;
-        border-top: 1px solid #dfdfdf;
-        border-bottom: 1px solid #dfdfdf;
+        border-top: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
         padding: 8px 0;
         margin: 40px;
       }
 
       .menu-list a {
-        color: #333;
+        color: inherit;
         text-decoration: none;
         margin: 0 10px;
       }
@@ -186,7 +188,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         header,
         .logo a {
-          color: white;
+          color: #FFF;
         }
 
         header .date-line {
@@ -217,7 +219,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       @media (min-width: 768px) {
 
         header {
-          background-color: white;
+          background-color: #FFF;
         }
 
         .logo {
@@ -238,11 +240,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         news-sticky-header .logo a {
-          color: white;
+          color: #FFF;
         }
 
         news-sticky-header .logo {
-          font-size: 26px;
+          font-size: 23px;
           padding-top: 16px;
         }
 
@@ -262,12 +264,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           left: 0;
           right: 0;
           bottom: 0;
-          background-color: black;
+          background-color: #222;
           transition: transform 0.2s ease-in-out;
           will-change: transform;
           z-index: -1;
-          padding-top: 12px;
-          padding-bottom: 24px;
+          padding-top: 20px;
+          padding-bottom: 40px;
         }
 
         .expanded-header .grid-container {
@@ -314,7 +316,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button icon="search"></paper-icon-button>
       </app-toolbar>
       <div class="date-line">
-        [[categoryTitle]] &middot; [[_currentTime()]]
+        [[categoryTitle]] &nbsp; &middot; &nbsp; [[_currentTime()]]
       </div>
       <template is="dom-if" if="[[!smallScreen]]">
         <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
@@ -334,7 +336,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="sticky-header-center">
           <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
           <div class="date-line">
-            [[categoryTitle]] &middot; [[_currentTime()]]
+            [[categoryTitle]] &nbsp; &middot; &nbsp; [[_currentTime()]]
           </div>
           <div class="article-headline">
             [[articleHeadline]]

@@ -29,7 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: relative;
         box-sizing: border-box;
         text-decoration: none;
-        color: #282828;
+        color: inherit;
         overflow: hidden;
       }
 
@@ -56,7 +56,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .kicker {
         padding: 6px 20px 7px 20px;
-        border: 1px solid #C2C2C2;
+        border: 1px solid #CCC;
         display: inline-block;
         font-family: Georgia;
         font-weight: bold;
@@ -91,11 +91,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       @media (max-width: 767px) {
 
         a {
-          border-bottom: 1px solid #ddd;
+          margin: 0 24px;
+          padding: 24px 0;
+          border-bottom: 1px solid #CCC;
         }
 
-        .headline {
-          padding: 24px;
+        :host([featured]) a {
+          margin: 0;
+          padding: 0;
         }
 
       }
@@ -107,7 +110,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           height: 100vh;
           border-bottom: 0;
           background-color: #000;
-          color: #fff;
+          color: #FFF;
         }
 
         :host([featured]) .image {
@@ -132,7 +135,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         :host([featured]) .kicker {
           border-color: rgba(255, 255, 255, 0.5);
-          color: #fff;
+          color: #FFF;
         }
 
         :host([featured]) .details {

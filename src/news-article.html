@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         opacity: 1;
         transition: opacity 500ms;
         display: block;
-        padding: 0 40px;
+        padding: 0 32px;
       }
 
       :host([loading]) {
@@ -197,7 +197,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
 
-      @media (max-width: 1259px) {
+      @media (max-width: 1309px) {
         h1 {
           font-size: 6vh;
           line-height: 7vh;
@@ -214,7 +214,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <app-route
         route="[[route]]"
-        pattern="/:category/:page"
+        pattern="/:category"
+        query-params="{{_queryParams}}"
         data="{{_routeData}}"></app-route>
 
     <div class="container">
@@ -287,13 +288,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _item: {
           type: Object,
-          computed: '_computeItem(_category.items, _routeData.page)'
+          computed: '_computeItem(_category.items, _queryParams.page)'
         }
 
       },
 
       observers: [
-        '_fetchArticle(_routeData.page)'
+        '_fetchArticle(_queryParams.page)'
       ],
 
       _fetchArticle: function(page) {

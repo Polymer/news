@@ -298,12 +298,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _fetchArticle: function(page) {
-        this.setAttribute('loading', '');
-        var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + page;
-        var xhr = new XMLHttpRequest();
-        xhr.addEventListener('load', this._loadArticle.bind(this));
-        xhr.open('GET', url);
-        xhr.send();
+        if (page) {
+          this.setAttribute('loading', '');
+          var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + page;
+          var xhr = new XMLHttpRequest();
+          xhr.addEventListener('load', this._loadArticle.bind(this));
+          xhr.open('GET', url);
+          xhr.send();
+        }
       },
 
       _loadArticle: function(e) {

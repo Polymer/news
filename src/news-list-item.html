@@ -87,6 +87,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         white-space: nowrap;
       }
 
+      p {
+        margin: 0;
+        line-height: 26px;
+        font-size: 16px;
+      }
+
       /* mobile */
       @media (max-width: 767px) {
 
@@ -164,6 +170,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 24px;
         }
 
+        p {
+          display: none;
+        }
+
       }
 
       /* desktop small */
@@ -189,6 +199,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           margin-top: 20px;
         }
 
+        :host(:not([featured])) p {
+          display: none;
+        }
+
       }
 
       /* desktop large */
@@ -196,7 +210,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         :host([featured]) .img-container {
           width: 472px;
-          height: 338px;
           min-width: 472px;
           margin-right: 24px;
         }
@@ -206,12 +219,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         :host([featured]) h2 {
-          font-size: 42px;
-          line-height: 53px;
+          font-size: 38px;
+          line-height: 48px;
         }
 
         :host([featured]) .details {
-          padding-top: 24px;
+          padding: 24px 0;
           border-top: 1px solid #ddd;
         }
 
@@ -223,22 +236,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           margin-top: 20px;
         }
 
+        :host(:not([featured])) p {
+          display: none;
+        }
+
       }
 
     </style>
 
     <a href="[[_getItemHref(item, categoryName)]]">
       <div class="img-container">
-        <news-img class="image"  alt="[[item.web_headline]]" src="[[_getArticleImage(item)]]"></news-img>
+        <news-img class="image" alt="[[item.web_headline]]" src="[[_getArticleImage(item)]]"></news-img>
         <div class="scrim"></div>
       </div>
       <div class="headline">
         <div class="kicker" hidden$="[[!item.kicker]]">[[item.kicker]]</div>
-        <h2>[[_unescapeText(item.web_headline)]]</h2>
+        <h2 inner-h-t-m-l="[[item.web_headline]]"></h2>
         <div class="details">
           <div class="timestamp">[[_ago(item.display_date_num)]]</div>
           <div class="author">[[item.byline]]</div>
         </div>
+        <p>[[_trimRight(item.blurb, 100)]]</p>
       </div>
     </a>
   </template>
@@ -265,6 +283,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true
         }
 
+      },
+
+      _trimRight: function(text, maxLength) {
+        var breakIdx = text.indexOf(' ', maxLength);
+        return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
       }
 
     });

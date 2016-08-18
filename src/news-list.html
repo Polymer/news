@@ -24,12 +24,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       :host {
         display: block;
-        --paper-icon-button-ink-color: white;
+        --paper-icon-button-ink-color: #FFF;
       }
 
-      ul {
-        padding: 0;
-        margin: 0 !important;
+      .article-grid {
+        margin: 0;
+        padding-top: 0;
         list-style: none;
       }
 
@@ -41,10 +41,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         @apply(--app-grid-expandible-item);
       }
 
+      aside {
+        margin: 0 32px;
+      }
+
       /* desktop 1 */
       @media (min-width: 768px) {
         :host {
-          padding: 0 40px;
           --app-grid-columns: 4;
           --app-grid-gutter: 32px;
           --app-grid-expandible-item-columns: 4;
@@ -52,7 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       /* desktop 2 */
-      @media (min-width: 1260px) {
+      @media (min-width: 1310px) {
         .container {
           @apply(--layout-horizontal);
         }
@@ -62,7 +65,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .container > aside {
-          margin-left: 24px;
+          margin-left: 0;
           width: 300px;
           min-width: 300px;
         }
@@ -96,7 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="container">
       <main>
-        <ul class="app-grid">
+        <ul class="app-grid article-grid">
           <li>
             <news-list-item
                 featured

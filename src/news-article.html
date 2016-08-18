@@ -21,11 +21,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <style>
       :host {
-        background: #FFF;
         opacity: 1;
         transition: opacity 500ms;
         display: block;
-        padding: 0 40px;
+        padding: 0 32px;
       }
 
       :host([loading]) {
@@ -45,10 +44,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: inline-block;
         text-transform: capitalize;
         padding: 6px 20px 7px;
-        border: 1px solid rgba(0, 0, 0, 0.5);
+        border: 1px solid #CCC;
         font-size: 11px;
         font-weight: bold;
-        color: #000;
+        color: inherit;
         text-decoration: none;
       }
 
@@ -62,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .cover-text .meta {
         font-size: 11px;
         font-weight: bold;
-        border-top: 1px solid rgba(0, 0, 0, 0.5);
+        border-top: 1px solid #CCC;
         padding: 24px 0;
       }
 
@@ -95,6 +94,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         max-width: 100%;
       }
 
+      #content figure {
+        margin-left: 0;
+        margin-right: 0;
+        font-style: italic;
+        color: #999;
+      }
+
+      #content a {
+        color: inherit;
+        font-weight: bold;
+      }
+
       #content .byline {
         font-weight: bold;
       }
@@ -115,8 +126,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .share-link {
         display: inline-block;
         margin-right: 24px;
-        margin-bottom: 10px;
-        color: #000;
+        margin-bottom: 24px;
+        color: inherit;
         font-size: 11px;
         font-weight: bold;
         text-decoration: none;
@@ -151,7 +162,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .cover-text .category {
-          color: white;
+          color: #FFF;
           border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
@@ -186,7 +197,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
 
-      @media (max-width: 1259px) {
+      @media (max-width: 1309px) {
         h1 {
           font-size: 6vh;
           line-height: 7vh;
@@ -203,7 +214,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <app-route
         route="[[route]]"
-        pattern="/:category/:page"
+        pattern="/:category"
+        query-params="{{_queryParams}}"
         data="{{_routeData}}"></app-route>
 
     <div class="container">
@@ -276,22 +288,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _item: {
           type: Object,
-          computed: '_computeItem(_category.items, _routeData.page)'
+          computed: '_computeItem(_category.items, _queryParams.page)'
         }
 
       },
 
       observers: [
-        '_fetchArticle(_routeData.page)'
+        '_fetchArticle(_queryParams.page)'
       ],
 
       _fetchArticle: function(page) {
-        this.setAttribute('loading', '');
-        var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + page;
-        var xhr = new XMLHttpRequest();
-        xhr.addEventListener('load', this._loadArticle.bind(this));
-        xhr.open('GET', url);
-        xhr.send();
+        if (page) {
+          this.setAttribute('loading', '');
+          var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + page;
+          var xhr = new XMLHttpRequest();
+          xhr.addEventListener('load', this._loadArticle.bind(this));
+          xhr.open('GET', url);
+          xhr.send();
+        }
       },
 
       _loadArticle: function(e) {

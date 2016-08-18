@@ -29,7 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: relative;
         box-sizing: border-box;
         text-decoration: none;
-        color: #282828;
+        color: inherit;
         overflow: hidden;
       }
 
@@ -56,7 +56,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .kicker {
         padding: 6px 20px 7px 20px;
-        border: 1px solid #C2C2C2;
+        border: 1px solid #CCC;
         display: inline-block;
         font-family: Georgia;
         font-weight: bold;
@@ -91,23 +91,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       @media (max-width: 767px) {
 
         a {
-          border-bottom: 1px solid #ddd;
+          margin: 0 24px;
+          padding: 24px 0;
+          border-bottom: 1px solid #CCC;
         }
 
-        .headline {
-          padding: 24px;
+        :host([featured]) a {
+          margin: 0;
+          padding: 0;
         }
 
       }
 
       /* mobile and desktop small */
-      @media (max-width: 1259px) {
+      @media (max-width: 1309px) {
 
         :host([featured]) a {
           height: 100vh;
           border-bottom: 0;
-          background-color: #000;
-          color: #fff;
+          background: #000;
+          color: #FFF;
         }
 
         :host([featured]) .image {
@@ -132,7 +135,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         :host([featured]) .kicker {
           border-color: rgba(255, 255, 255, 0.5);
-          color: #fff;
+          color: #FFF;
         }
 
         :host([featured]) .details {
@@ -164,7 +167,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       /* desktop small */
-      @media (min-width: 768px) and (max-width: 1259px) {
+      @media (min-width: 768px) and (max-width: 1309px) {
 
         :host([featured]) a {
           height: 50vmax;
@@ -189,7 +192,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       /* desktop large */
-      @media (min-width: 1260px) {
+      @media (min-width: 1310px) {
 
         :host([featured]) .img-container {
           width: 472px;

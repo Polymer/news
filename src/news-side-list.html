@@ -23,8 +23,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       h3 {
-        border-top: 1px solid rgba(0, 0, 0, 0.5);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        margin-top: 0;
+        border-top: 1px solid #CCC;
+        border-bottom: 1px solid #CCC;
         font-size: 13px;
         padding: 8px;
         text-align: center;
@@ -32,15 +33,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       a {
         text-decoration: none;
-        color: black;
+        color: inherit;
         display: block;
         margin: 20px 0;
       }
 
       .time-ago {
-        margin-left: 8px;
         font-size: 12px;
         font-weight: bold;
+        white-space: nowrap;
       }
 
     </style>
@@ -50,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </h3>
     <template is="dom-repeat" items="[[items]]">
       <a href$="[[_getItemHref(item, categoryName)]]">
-        [[_unescapeText(item.web_headline)]]
+        [[_unescapeText(item.web_headline)]] &nbsp;
         <span class="time-ago">[[_ago(item.display_date_num)]]</span>
       </a>
     </template>

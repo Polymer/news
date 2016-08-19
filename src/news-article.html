@@ -14,6 +14,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="news-article-item-behavior.html">
 <link rel="import" href="news-side-list.html">
+<link rel="import" href="news-side-list.html">
+<link rel="import" href="amp-viewer.html">
 
 <dom-module id="news-article">
 
@@ -40,82 +42,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         flex: 1;
       }
 
-      .cover-text .category {
-        display: inline-block;
-        text-transform: capitalize;
-        padding: 6px 20px 7px;
-        border: 1px solid #CCC;
-        font-size: 11px;
-        font-weight: bold;
-        color: inherit;
-        text-decoration: none;
-      }
-
-      h1 {
-        font-weight: normal;
-        font-size: 37px;
-        line-height: 47px;
-        margin: 24px 0;
-      }
-
-      .cover-text .meta {
-        font-size: 11px;
-        font-weight: bold;
-        border-top: 1px solid #CCC;
-        padding: 24px 0;
-      }
-
-      .cover-img-container {
-        position: relative;
-        background-repeat: no-repeat;
-        background-size: contain;
-        width: 100%;
-      }
-
-      .cover-img-container > img {
+      amp-viewer {
         display: block;
-        width: 100%;
-        height: auto;
-        min-height: 60vh;
-        object-fit: cover;
-      }
-
-      #content {
-        font-size: 16px;
-        line-height: 26px;
-      }
-
-      #content .kicker,
-      #content h1 {
-        display: none;
-      }
-
-      #content img {
-        max-width: 100%;
-      }
-
-      #content figure {
-        margin-left: 0;
-        margin-right: 0;
-        font-style: italic;
-        color: #999;
-      }
-
-      #content a {
-        color: inherit;
-        font-weight: bold;
-      }
-
-      #content .byline {
-        font-weight: bold;
-      }
-
-      #content .date {
-        display: none;
-      }
-
-      .timer-icon {
-        margin-left: 30px;
+        min-height: 100vh;
       }
 
       aside {
@@ -142,52 +71,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 0;
         }
 
+        amp-viewer {
+          border-top: 64px solid #222;
+        }
+
         .container {
           flex-direction: column;
-        }
-
-        .cover {
-          background: #000;
-        }
-
-        .cover-text {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          height: 100vh;
-          box-sizing: border-box;
-          color: #FFF;
-          padding: 0 24px;
-          z-index: 1;
-        }
-
-        .cover-text .category {
-          color: #FFF;
-          border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .cover-text .meta {
-          font-size: 11px;
-          font-weight: bold;
-          border-top: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .cover-img-container {
-          position: absolute;
-          top: 0;
-        }
-
-        .cover-img-container .scrim {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
-        }
-
-        #content {
-          padding: 24px;
         }
 
         aside {
@@ -220,29 +109,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="container">
       <main class="flex">
-        <div class="cover">
-          <div class="cover-text">
-            <div class="flex"></div>
-            <div>
-              <a class="category" href="/list/[[_articleData.section]]">[[_articleData.section]]</a>
-            </div>
-            <h1>[[headline]]</h1>
-            <div class="meta">
-              <span>[[_ago(_item.display_date_num)]]</span>
-              <iron-icon class="timer-icon" icon="timer"></iron-icon>
-              <span>[[_getReadTime(_articleData.html)]] min read</span>
-            </div>
-          </div>
-
-          <div class="cover-img-container">
-            <img src="[[_getArticleImage(_item)]]">
-            <div class="scrim"></div>
-          </div>
-        </div>
-
-        <div id="content" inner-h-t-m-l="[[_articleData.html]]"></div>
+        <amp-viewer src="[[_queryParams.page]]"></amp-viewer>
       </main>
-
       <aside>
         <a href="#" class="share-link">
           <iron-icon icon="mail"></iron-icon>
@@ -274,60 +142,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         route: Object,
 
-        headline: {
-          type: String,
-          computed: '_computeHeadline(_item)',
-          notify: true
-        },
-
         _routeData: Object,
 
-        _articleData: Object,
+        _category: Object
 
-        _category: Object,
-
-        _item: {
-          type: Object,
-          computed: '_computeItem(_category.items, _queryParams.page)'
-        }
-
-      },
-
-      observers: [
-        '_fetchArticle(_queryParams.page)'
-      ],
-
-      _fetchArticle: function(page) {
-        if (page) {
-          this.setAttribute('loading', '');
-          var url = 'https://www.washingtonpost.com/pwa/api/content/?url=' + page;
-          var xhr = new XMLHttpRequest();
-          xhr.addEventListener('load', this._loadArticle.bind(this));
-          xhr.open('GET', url);
-          xhr.send();
-        }
-      },
-
-      _loadArticle: function(e) {
-        this._articleData = JSON.parse(e.target.responseText);
-        this.scopeSubtree(this.$.content);
-        this.removeAttribute('loading');
-      },
-
-      _computeItem: function(items, page) {
-        var url = decodeURIComponent(page);
-        for (var i = 0; i < items.length; ++i) {
-          var item = items[i];
-          if (item.canonical_url === url) {
-            return item;
-          }
-        }
-
-        return null;
-      },
-
-      _computeHeadline: function(item) {
-        return item ? this._unescapeText(item.web_headline) : '';
       },
 
       _getReadTime: function(html) {

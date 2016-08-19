@@ -1,0 +1,131 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<script>
+  (function(win) {
+    'use strict';
+
+    document.registerElement('amp-viewer', {
+      prototype: {
+        __proto__: HTMLElement.prototype,
+
+        createdCallback: function() {
+          this._ampViewer = null;
+          this._src = '';
+          this._host = null;
+          this._documentCache = [];
+          this._CACHE_SIZE = 10;
+
+          win.AMP_SHADOW = true;
+          this._installScript('//cdn.ampproject.org/shadow-v0.js');
+          this._ampReadyPromise = new Promise(function(resolve) {
+            (win.AMP = win.AMP || []).push(resolve);
+          });
+
+          if (this.hasAttribute('src')) {
+            this.src = this.getAttribute('src');
+          }
+        },
+
+        set src(src) {
+          if (this._src == src) {
+            return;
+          }
+          if (!src) {
+            this.removeAttribute('src');
+          } else {
+            this._src = src;
+            this.setAttribute('src', src);
+            this._loadDocument(src);
+          }
+        },
+
+        get src() {
+          return this._src;
+        },
+
+        attributeChangedCallback: function(name, old, value) {
+          var desc = Object.getOwnPropertyDescriptor(this.__proto__, name);
+          if (desc && desc.set != null) {
+            this[name] = value;
+          }
+        },
+
+        _loadDocument: function(src) {
+          var ampSrc = src.replace('.com/', '.com/amphtml/');
+          var proxiedSrc = '//polymer-ampproxy.appspot.com/?url=' + ampSrc;
+          // Remove the current document's host
+          if (this._host) {
+            this.removeChild(this._host);
+            this._host = null;
+          }
+          this._fetchDocument(proxiedSrc).then(function(doc) {
+            this._ampReadyPromise.then(function(AMP) {
+              this._host = win.document.createElement('div');
+              this._host.classList.add('amp-doc-host');
+              this.appendChild(this._host);
+              this._ampViewer = AMP.attachShadowDoc(this._host, doc, ampSrc).viewer;
+            }.bind(this));
+          }.bind(this));
+        },
+
+        _installScript: function(src) {
+          var ownerDoc = this.ownerDocument;
+          var el = ownerDoc.createElement('script');
+          el.setAttribute('src', src);
+          ownerDoc.head.appendChild(el);
+        },
+
+        _fetchDocument: function(src) {
+          var documentCache = this._documentCache;
+          return new Promise(function(resolve, reject) {
+            var doc = documentCache.reduce(function(p, c) {
+              return c.src === src ? c.document : p;
+            }, null);
+
+            if (doc) {
+              resolve(doc);
+              return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', src, true);
+            xhr.responseType = 'document';
+            xhr.setRequestHeader('Accept', 'text/html');
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState < /* STATUS_RECEIVED */ 2) {
+                return;
+              }
+              if (xhr.status < 100 || xhr.status > 599) {
+                xhr.onreadystatechange = null;
+                reject(new Error('Unknown HTTP status ${xhr.status}'));
+                return;
+              }
+              if (xhr.readyState == /* COMPvarE */ 4) {
+                if (xhr.responseXML) {
+                  if (documentCache.length >= self._CACHE_SIZE) {
+                    documentCache.shift();
+                  }
+                  documentCache.push({ src: src, document: xhr.responseXML });
+                  resolve(xhr.responseXML);
+                } else {
+                  reject(new Error('No xhr.responseXML'));
+                }
+              }
+            };
+            xhr.onerror = function() { reject(new Error('Network failure')) };
+            xhr.onabort = function() { reject(new Error('Request aborted')) };
+            xhr.send();
+          });
+        }
+      }
+    });
+
+  })(window);
+</script>

@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="news-category-data.html">
 <link rel="import" href="news-list-item.html">
+<link rel="import" href="news-network-warning.html">
 <link rel="import" href="news-side-list.html">
 
 <dom-module id="news-list">
@@ -25,6 +26,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
         --paper-icon-button-ink-color: #FFF;
+      }
+
+      [hidden] {
+        display: none !important;
       }
 
       .article-grid {
@@ -86,41 +91,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-route
         route="[[route]]"
         pattern="/:category"
-        data="{{routeData}}"></app-route>
+        data="{{_routeData}}"></app-route>
 
     <!--
       news-category-data provides the category data for a given category name.
     -->
     <news-category-data
         id="categoryData"
-        category-name="[[routeData.category]]"
-        category="{{category}}"
-        failure="{{failure}}"></news-category-data>
+        category-name="[[_routeData.category]]"
+        category="{{_category}}"
+        failure="{{_failure}}"></news-category-data>
 
-    <div class="container">
+    <div class="container" hidden$="[[_failure]]">
       <main>
         <ul class="app-grid article-grid">
           <li>
             <news-list-item
                 featured
-                item="[[featuredItem]]"
-                category-name="[[routeData.category]]"></news-list-item>
+                item="[[_getFeaturedItem(_category.items)]]"
+                category-name="[[_routeData.category]]"></news-list-item>
           </li>
-          <template is="dom-repeat" items="[[_getListItems(category.items)]]">
+          <template is="dom-repeat" items="[[_getListItems(_category.items)]]">
             <li>
               <news-list-item
                   item="[[item]]"
-                  category-name="[[routeData.category]]"></news-list-item>
+                  category-name="[[_routeData.category]]"></news-list-item>
             </li>
           </template>
         </ul>
       </main>
       <aside>
         <news-side-list
-            items="[[category.items]]"
-            category-name="[[routeData.category]]">Most Read</news-side-list>
+            items="[[_category.items]]"
+            category-name="[[_routeData.category]]">Most Read</news-side-list>
       </aside>
     </div>
+
+    <news-network-warning
+        hidden$="[[!_failure]]"
+        offline="[[offline]]"
+        on-try-reconnect="_tryReconnect"></news-network-warning>
 
   </template>
 
@@ -132,23 +142,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
-        category: Object,
-
-        featuredItem: {
-          type: Object,
-          computed: '_computeFeaturedItem(category.items)'
-        },
-
         route: Object,
 
-        routeData: Object,
+        offline: Boolean,
 
-        failure: Boolean
+        _category: Object,
+
+        _routeData: Object,
+
+        _failure: Boolean
 
       },
 
       observers: [
-        '_categoryChanged(category)'
+        '_categoryChanged(_category)'
       ],
 
       created: function() {
@@ -163,7 +170,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         window.removeEventListener('resize', this._resizeHandler);
       },
 
-      _computeFeaturedItem: function(items) {
+      _getFeaturedItem: function(items) {
         return items ? items[0] : {web_headline: '......', blurb: ''};
       },
 

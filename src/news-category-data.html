@@ -114,7 +114,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       refresh: function() {
         if (this.categoryName) {
           // Try at most 3 times to get the items.
-          this._fetchItems(this._getCategoryObject(this.categoryName), true, 3);
+          this._fetchItems(this._getCategory(this.categoryName), true, 3);
         }
       }
 

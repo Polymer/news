@@ -19,7 +19,7 @@ module.exports = {
       }
     },
     {
-      urlPattern: /^https:\/\/www\.washingtonpost\.com\/pwa\/api/,
+      urlPattern: /^https:\/\/www\.washingtonpost\.com\/pwa\/api|(http|https):\/\/polymer-ampproxy2\.appspot\.com/,
       handler: 'networkFirst',
       options: {
         cache: {

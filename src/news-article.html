@@ -233,7 +233,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         failure="{{_failure}}"></news-article-data>
 
     <div class="container" loading$="[[_loading]]" hidden$="[[_failure]]">
-      <main class="flex">
+      <article class="flex">
         <div class="cover">
           <div class="cover-text">
             <div class="flex"></div>
@@ -253,18 +253,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div class="scrim"></div>
           </div>
         </div>
-
         <div id="content"></div>
-      </main>
+      </article>
 
       <aside>
-        <a href="#" class="share-link">
-          <iron-icon icon="mail"></iron-icon>
-          Email
+        <a href="#" class="share-link" aria-label="Send by email">
+          <iron-icon icon="mail"></iron-icon> Email
         </a>
-        <a href="#" class="share-link">
-          <iron-icon icon="share"></iron-icon>
-          Share
+        <a href="#" class="share-link" aria-label="Share on social networks">
+          <iron-icon icon="share"></iron-icon> Share
         </a>
         <news-side-list
             items="[[_category.items]]"
@@ -346,7 +343,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return item;
           }
         }
-
         return null;
       },
 

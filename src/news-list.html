@@ -102,23 +102,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         failure="{{_failure}}"></news-category-data>
 
     <div class="container" hidden$="[[_failure]]">
-      <main>
-        <ul class="app-grid article-grid">
+      <ul class="app-grid article-grid">
+        <li>
+          <news-list-item
+              featured
+              item="[[_getFeaturedItem(_category.items)]]"
+              category-name="[[_routeData.category]]"></news-list-item>
+        </li>
+        <template is="dom-repeat" items="[[_getListItems(_category.items)]]">
           <li>
             <news-list-item
-                featured
-                item="[[_getFeaturedItem(_category.items)]]"
+                item="[[item]]"
                 category-name="[[_routeData.category]]"></news-list-item>
           </li>
-          <template is="dom-repeat" items="[[_getListItems(_category.items)]]">
-            <li>
-              <news-list-item
-                  item="[[item]]"
-                  category-name="[[_routeData.category]]"></news-list-item>
-            </li>
-          </template>
-        </ul>
-      </main>
+        </template>
+      </ul>
       <aside>
         <news-side-list
             items="[[_category.items]]"

@@ -318,13 +318,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!--
       Header at the scroll top of the page.
     -->
-    <header id="header">
+    <header>
       <app-toolbar class="logo-toolbar">
-        <paper-icon-button class="toggle-drawer-btn" icon="menu" on-click="_toggleDrawer"></paper-icon-button>
+        <paper-icon-button arial-label="Main navigation"
+            class="toggle-drawer-btn" icon="menu" on-click="_toggleDrawer"></paper-icon-button>
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
         <paper-icon-button icon="search" aria-label="Search"></paper-icon-button>
       </app-toolbar>
-      <div class="date-line" role="heading">[[categoryTitle]] &nbsp; &middot; &nbsp; [[_currentTime()]]</div>
+      <div class="date-line" role="heading">
+        [[categoryTitle]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
+      </div>
       <template is="dom-if" if="[[!smallScreen]]">
         <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
           <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
@@ -337,19 +340,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!--
       Sticky nav reveals when scrolled down on the page.
     -->
-    <app-box class="sticky-nav" threshold="[[_getScrollThreshold(smallScreen)]]">
+    <app-box role="banner" class="sticky-nav" threshold="[[_getScrollThreshold(smallScreen)]]">
       <app-toolbar class="sticky-nav-toolbar">
-        <paper-icon-button icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
+        <paper-icon-button
+          arial-label="Main navigation"
+          icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
         <div class="sticky-nav-center">
           <div class="logo"><a href="/" aria-label="NEWS Home">NEWS</a></div>
-          <div class="date-line">[[categoryTitle]] &nbsp; &middot; &nbsp; [[_currentTime()]]</div>
+          <div class="date-line" role="heading">
+            [[categoryTitle]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
+          </div>
           <div class="article-headline">[[articleHeadline]]</div>
         </div>
         <paper-icon-button icon="mail" aria-label="Send by mail"></paper-icon-button>
-        <paper-icon-button icon="share" aria-label="Share"></paper-icon-button>
+        <paper-icon-button icon="share" aria-label="Share on social networks"></paper-icon-button>
         <paper-icon-button icon="search" aria-label="Search"></paper-icon-button>
       </app-toolbar>
-      <div role="navigation" class="sticky-nav-menu" shown$="[[drawerOpened]]">
+      <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
         <iron-selector class="grid-container" role="navigation"
             selected="[[categoryName]]" attr-for-selected="name">
           <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">

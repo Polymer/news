@@ -34,11 +34,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: 300;
       }
 
+      button {
+        background: #FAFAFA;
+        border: 2px solid #222;
+        padding: 10px 20px;
+        font-weight: 600;
+      }
+
       @media (max-width: 767px) {
         :host {
           box-sizing: border-box;
           height: 100vh;
           background: #222;
+          color: #FFF;
+        }
+
+        button {
+          background: #222;
+          border: 2px solid #FFF;
           color: #FFF;
         }
       }

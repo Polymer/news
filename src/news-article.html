@@ -14,7 +14,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="news-article-data.html">
 <link rel="import" href="news-article-item-behavior.html">
-<link rel="import" href="news-network-warning.html">
 <link rel="import" href="news-side-list.html">
 
 <dom-module id="news-article">
@@ -37,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         transition: opacity 500ms;
       }
 
-      #container.loading {
+      #container[loading] {
         opacity: 0;
         transition: none;
       }
@@ -230,9 +229,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         id="articleData"
         article-url="[[_queryParams.page]]"
         article="{{_article}}"
+        loading="{{_loading}}"
         failure="{{_failure}}"></news-article-data>
 
-    <div id="container" hidden$="[[_failure]]">
+    <div id="container" loading$="[[_loading]]" hidden$="[[_failure]]">
       <main class="flex">
         <div class="cover">
           <div class="cover-text">
@@ -254,7 +254,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
         </div>
 
-        <div id="content" inner-h-t-m-l="[[_article.html]]"></div>
+        <div id="content"></div>
       </main>
 
       <aside>
@@ -312,28 +312,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           computed: '_computeItem(_category.items, _queryParams.page)'
         },
 
+        _loading: Boolean,
+
         _failure: Boolean
 
       },
 
       observers: [
-        '_fetchArticle(_queryParams.page)',
-        '_loadArticle(_article)'
+        '_loadArticle(_article)',
+        '_offlineChanged(offline)'
       ],
 
-      _fetchArticle: function(page) {
-        if (page) {
-          this.$.container.classList.add('loading');
-        }
-      },
-
-      _loadArticle: function(e) {
+      _loadArticle: function(article) {
+        this.$.content.innerHTML = article.html;
         this.scopeSubtree(this.$.content);
-        this.$.container.classList.remove('loading');
       },
 
       _tryReconnect: function() {
         this.$.articleData.refresh();
+      },
+
+      _offlineChanged: function(offline) {
+        if (!offline) {
+          this._tryReconnect();
+        }
       },
 
       _computeItem: function(items, page) {

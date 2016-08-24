@@ -27,6 +27,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         },
 
+        loading: {
+          type: Boolean,
+          notify: true,
+          readOnly: true
+        },
+
         failure: {
           type: Boolean,
           notify: true,
@@ -43,14 +49,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!articleUrl) {
           return;
         }
+        this._setLoading(true);
         this._setFailure(false);
         this._getResource({
           url: 'https://www.washingtonpost.com/pwa/api/content/?url=' + articleUrl,
           onLoad: function(e) {
             this.article = JSON.parse(e.target.responseText);
+            this._setLoading(false);
           },
           onError: function(e) {
             this._setFailure(true);
+            this._setLoading(false);
           }
         }, attempts || 1);
       },

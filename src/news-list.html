@@ -14,7 +14,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="news-category-data.html">
 <link rel="import" href="news-list-item.html">
-<link rel="import" href="news-network-warning.html">
 <link rel="import" href="news-side-list.html">
 
 <dom-module id="news-list">
@@ -155,7 +154,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_categoryChanged(_category)'
+        '_categoryChanged(_category)',
+        '_offlineChanged(offline)'
       ],
 
       created: function() {

@@ -369,9 +369,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" route="[[subroute]]"></news-list>
+      <news-list id="list" name="list" route="[[subroute]]" offline="[[offline]]"></news-list>
       <!-- article view -->
-      <news-article name="article" route="[[subroute]]" headline="{{articleHeadline}}"></news-article>
+      <news-article name="article" route="[[subroute]]" headline="{{articleHeadline}}" offline="[[offline]]"></news-article>
     </iron-pages>
 
     <footer>
@@ -402,6 +402,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         categoryTitle: {
           type: String,
           value: 'Top Stories'
+        },
+
+        offline: {
+          type: Boolean,
+          readOnly: true
         }
       },
 
@@ -413,9 +418,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         'change-section': '_onChangeSection'
       },
 
+      _networkSnackbar: null,
+
       created: function() {
         // Custom elements polyfill safe way to indicate an element has been upgraded.
         this.removeAttribute('unresolved');
+      },
+
+      ready: function() {
+        // listen for online/offline
+        Polymer.RenderStatus.afterNextRender(this, function() {
+          this.listen(window, 'online', '_notifyNetworkStatus');
+          this.listen(window, 'offline', '_notifyNetworkStatus');
+        });
       },
 
       _menuIcon: function(drawerOpened) {
@@ -475,9 +490,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/service-worker.js');
               }
+              this._notifyNetworkStatus();
               this.loadComplete = true;
             });
           });
+        }
+      },
+
+      _notifyNetworkStatus: function() {
+        var oldOffline = this.offline;
+        this._setOffline(!navigator.onLine);
+        // Show the snackbar if the user is offline when starting a new session
+        // or if the network status changed.
+        if (this.offline || (!this.offline && oldOffline === true)) {
+          if (!this._networkSnackbar) {
+            this._networkSnackbar = document.createElement('news-snackbar');
+            Polymer.dom(this.root).appendChild(this._networkSnackbar);
+          }
+          Polymer.dom(this._networkSnackbar).textContent = this.offline ?
+              'You are offline' : 'You are online';
+          this._networkSnackbar.open();
         }
       },
 

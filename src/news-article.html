@@ -30,13 +30,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none !important;
       }
 
-      #container {
+      .container {
         display: flex;
         opacity: 1;
         transition: opacity 500ms;
       }
 
-      #container[loading] {
+      .container[loading] {
         opacity: 0;
         transition: none;
       }
@@ -147,7 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 0;
         }
 
-        #container {
+        .container {
           display: block;
         }
 
@@ -232,7 +232,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         loading="{{_loading}}"
         failure="{{_failure}}"></news-article-data>
 
-    <div id="container" loading$="[[_loading]]" hidden$="[[_failure]]">
+    <div class="container" loading$="[[_loading]]" hidden$="[[_failure]]">
       <main class="flex">
         <div class="cover">
           <div class="cover-text">

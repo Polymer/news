@@ -14,7 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="news-article-item-behavior.html">
 <link rel="import" href="news-img.html">
 
-<dom-module id="news-list-item">
+<dom-module id="news-list-featured-item">
 
   <template>
 
@@ -22,10 +22,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       :host {
         display: block;
-      }
-
-      :host(:last-of-type) > a {
-        border: none;
       }
 
       a {
@@ -104,6 +100,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           margin: 0 24px;
           padding: 24px 0;
           border-bottom: 1px solid #CCC;
+          margin: 0;
+          padding: 0;
         }
 
       }
@@ -111,8 +109,58 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* mobile and desktop small */
       @media (max-width: 1309px) {
 
-        .img-container {
-          display: none;
+        a {
+          height: 100vh;
+          border-bottom: 0;
+          background: #000;
+          color: #FFF;
+        }
+
+        .image {
+          min-height: 60vh;
+        }
+
+        .headline {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
+
+        h2 {
+          font-size: 6vh;
+          line-height: 7vh;
+          max-height: calc(7vh * 7);
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 7;
+          -webkit-box-orient: vertical;
+        }
+
+        .kicker {
+          border-color: rgba(255, 255, 255, 0.5);
+          color: #FFF;
+        }
+
+        .details {
+          border-top: 1px solid rgba(255, 255, 255, 0.5);
+          padding: 24px 0 12px 0;
+        }
+
+        h2 {
+          margin: 24px 0;
+        }
+
+        .scrim {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+        }
+
+        .headline {
+          padding: 24px;
         }
 
         p {
@@ -124,24 +172,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop small */
       @media (min-width: 768px) and (max-width: 1309px) {
 
-        .image {
-          height: 150px;
-        }
-
-        .img-container {
-          display: block;
-        }
-
-        .image {
-          height: 150px;
-        }
-
-        .kicker {
-          margin-top: 20px;
-        }
-
-        p {
-          display: none;
+        a {
+          height: 50vmax;
         }
 
       }
@@ -149,34 +181,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop large */
       @media (min-width: 1310px) {
 
-        .image {
-          height: 150px;
-        }
-
-        .kicker {
-          margin-top: 20px;
-        }
-
-        p {
-          display: none;
-        }
-
-        :host([horizontal]) a {
-          @apply(--layout-horizontal);
-        }
-
-        :host([horizontal]) .image {
-          width: 150px;
+        .img-container {
+          width: 472px;
+          min-width: 472px;
+          min-height: 340px;
           margin-right: 24px;
         }
 
-        :host([horizontal]) .kicker {
-          display: none;
+        a {
+          @apply(--layout-horizontal);
         }
 
-        :host([horizontal]) {
-          margin-bottom: 24px;
+        h2 {
+          font-size: 38px;
+          line-height: 48px;
         }
+
+        .details {
+          padding: 24px 0;
+          border-top: 1px solid #ddd;
+        }
+
       }
 
     </style>
@@ -202,7 +227,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'news-list-item',
+      is: 'news-list-featured-item',
 
       behaviors: [
         NewsArticleItemBehavior
@@ -212,14 +237,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         item: Object,
 
-        categoryName: String,
-
-        featured: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
-        }
-
+        categoryName: String
       },
 
       _trimRight: function(text, maxLength) {

@@ -33,6 +33,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-family: Georgia;
         --paper-icon-button-ink-color: white;
         --app-sticky-nav-bg-color: #222;
+        --app-sub-section-headline: {
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+          font-size: 13px;
+          padding: 8px;
+          text-align: center;
+          margin: 0;
+        }; 
       }
 
       header,
@@ -154,7 +162,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         border-top: 1px solid #CCC;
         border-bottom: 1px solid #CCC;
         padding: 8px 0;
-        margin: 32px;
+        margin: 32px 0;
       }
 
       .menu-list a {
@@ -227,6 +235,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* desktop */
       @media (min-width: 768px) {
+
+        :host {
+          margin: 0 40px;
+        }
 
         .logo {
           font-size: 39px;

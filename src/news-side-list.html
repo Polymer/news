@@ -23,12 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       h3 {
-        margin-top: 0;
-        border-top: 1px solid #CCC;
-        border-bottom: 1px solid #CCC;
-        font-size: 13px;
-        padding: 8px;
-        text-align: center;
+        @apply(--app-sub-section-headline);
       }
 
       a {
@@ -38,10 +33,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 20px 0;
       }
 
-      .time-ago {
+      .detail {
         font-size: 12px;
         font-weight: bold;
         white-space: nowrap;
+      }
+
+      .kicker {
+        padding: 6px 20px 7px 20px;
+        border: 1px solid #ccc;
+        font-family: Georgia;
+        font-weight: bold;
+        font-size: 11px;
+        display: none;
+      }
+
+      .author {
+        padding-left: 35px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: none;
+      }
+
+      :host([featured]) > .story {
+        margin: 24px 0;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      :host([featured]) > .story:last-of-type {
+        border-bottom: none;
+      }
+
+      :host([featured]) .author {
+        display: block;
+      }
+
+      :host([featured]) .kicker {
+        display: inline-block;
       }
 
     </style>
@@ -50,10 +80,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <content></content>
     </h3>
     <template is="dom-repeat" items="[[items]]">
-      <a href$="[[_getItemHref(item, categoryName)]]">
-        [[_unescapeText(item.web_headline)]] &nbsp;
-        <span class="time-ago">[[_ago(item.display_date_num)]]</span>
-      </a>
+      <div class="story">
+        <div class="kicker">[[item.kicker]]</div>
+        <a href$="[[_getItemHref(item, categoryName)]]">[[_unescapeText(item.web_headline)]]</a>
+        <div class="detail">
+          <span class="time-ago">[[_ago(item.display_date_num)]]</span>
+        </div>
+      </div>
     </template>
   </template>
 

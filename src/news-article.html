@@ -23,7 +23,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
-        padding: 0 32px;
       }
 
       [hidden] {
@@ -126,6 +125,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       aside {
         margin-left: 24px;
         width: 300px;
+      }
+
+      news-side-list {
+        margin-bottom: 32px;
       }
 
       .share-link {
@@ -264,8 +267,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-icon icon="share"></iron-icon> Share
         </a>
         <news-side-list
-            items="[[_category.items]]"
+            items="[[_slice(_category.items, 0, 3)]]"
             category-name="[[_routeData.category]]">Most Read</news-side-list>
+        <news-side-list featured
+            items="[[_slice(_category.items, 3, 9)]]"
+            category-name="[[_routeData.category]]">Top Stories</news-side-list>
       </aside>
     </div>
 
@@ -352,6 +358,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _getReadTime: function(html) {
         return Math.max(2, Math.round(html.length / 3000));
+      },
+
+      _slice: function(list, begin, end) {
+        return list.slice(begin, end);
       }
 
     });

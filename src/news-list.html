@@ -15,6 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="news-category-data.html">
 <link rel="import" href="news-list-item.html">
 <link rel="import" href="news-side-list.html">
+<link rel="import" href="news-list-featured-item.html">
 
 <dom-module id="news-list">
 
@@ -31,35 +32,70 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none !important;
       }
 
-      .article-grid {
+      .flex {
+        @apply(--layout-flex-auto);
+      }
+
+      .article-grid,
+      .opinions-grid {
         margin: 0;
-        padding-top: 0;
+        padding: 0;
         list-style: none;
+      }
+
+      .article-grid > li:first-child {
+        @apply(--app-grid-expandible-item);
       }
 
       li {
         display: block;
       }
 
-      li:first-child {
-        @apply(--app-grid-expandible-item);
+      aside {
+        margin-left: 24px;
       }
 
-      aside {
-        margin: 0 32px;
+      h3 {
+        @apply(--app-sub-section-headline);
+        margin: 24px;
+      }
+
+      news-side-list {
+        margin-bottom: 32px;
+      }
+
+      /* mobile */
+      @media (max-width: 767px) {
+
+        aside {
+          display: none;
+        }
       }
 
       /* desktop 1 */
       @media (min-width: 768px) {
+
         :host {
           --app-grid-columns: 4;
           --app-grid-gutter: 32px;
           --app-grid-expandible-item-columns: 4;
         }
+
+        .opinions-grid {
+          @apply(--layout-horizontal);
+          @apply(--layout-wrap);
+        }
+
+        .opinions-grid li {
+          width: calc(50% - 32px);
+          margin-right: 32px;
+
+        }
       }
 
       /* desktop 2 */
       @media (min-width: 1310px) {
+
         .container {
           @apply(--layout-horizontal);
         }
@@ -73,13 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           width: 300px;
           min-width: 300px;
         }
-      }
 
-      /* mobile */
-      @media (max-width: 767px) {
-        aside {
-          display: none;
-        }
       }
 
     </style>
@@ -102,25 +132,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         failure="{{_failure}}"></news-category-data>
 
     <div class="container" hidden$="[[_failure]]">
-      <ul class="app-grid article-grid">
-        <li>
-          <news-list-item
-              featured
-              item="[[_getFeaturedItem(_category.items)]]"
-              category-name="[[_routeData.category]]"></news-list-item>
-        </li>
-        <template is="dom-repeat" items="[[_getListItems(_category.items)]]">
+      <div class="flex">
+        <ul class="app-grid article-grid">
           <li>
-            <news-list-item
-                item="[[item]]"
+            <news-list-featured-item
+                item="[[_getFeaturedItem(_category.items)]]"
                 category-name="[[_routeData.category]]"></news-list-item>
           </li>
-        </template>
-      </ul>
+          <template is="dom-repeat" items="[[_slice(_category.items, 1, 5)]]">
+            <li>
+              <news-list-item
+                  item="[[item]]"
+                  category-name="[[_routeData.category]]"></news-list-item>
+            </li>
+          </template>
+        </ul>
+
+        <h3>Opinions</h3>
+        <ul class="opinions-grid">
+          <template is="dom-repeat" items="[[_slice(_category.items, 5)]]">
+            <li>
+              <news-list-item horizontal
+                  item="[[item]]"
+                  category-name="[[_routeData.category]]"></news-list-item>
+            </li>
+          </template>
+        </ul>
+
+      </div>
       <aside>
         <news-side-list
-            items="[[_category.items]]"
+            items="[[_slice(_category.items, 0, 3)]]"
             category-name="[[_routeData.category]]">Most Read</news-side-list>
+        <news-side-list featured
+            items="[[_slice(_category.items, 3, 9)]]"
+            category-name="[[_routeData.category]]">More Top Stories</news-side-list>
       </aside>
     </div>
 
@@ -172,10 +218,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return items ? items[0] : {web_headline: '......', blurb: ''};
       },
 
-      _getListItems: function(items) {
-        return items ? items.slice(1) : [];
-      },
-
       _categoryChanged: function(category) {
         this.debounce('change-section', function() {
           // Notify the category and the page's title
@@ -198,6 +240,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _resizeHandler: function() {
         this.debounce('_resize', this.updateStyles, 50);
+      },
+
+      _slice: function(list, begin, end) {
+        return list.slice(begin, end);
       }
 
     });

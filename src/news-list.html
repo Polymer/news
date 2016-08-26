@@ -9,10 +9,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
 
-<link rel="import" href="news-category-data.html">
 <link rel="import" href="news-list-item.html">
 <link rel="import" href="news-side-list.html">
 
@@ -84,48 +82,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <!--
-      app-route provides the name of the category.
-    -->
-    <app-route
-        route="[[route]]"
-        pattern="/:category"
-        data="{{_routeData}}"></app-route>
-
-    <!--
-      news-category-data provides the category data for a given category name.
-    -->
-    <news-category-data
-        id="categoryData"
-        category-name="[[_routeData.category]]"
-        category="{{_category}}"
-        failure="{{_failure}}"></news-category-data>
-
-    <div class="container" hidden$="[[_failure]]">
+    <div class="container" hidden$="[[failure]]">
       <ul class="app-grid article-grid">
         <li>
           <news-list-item
               featured
-              item="[[_getFeaturedItem(_category.items)]]"
-              category-name="[[_routeData.category]]"></news-list-item>
+              item="[[_getFeaturedItem(category.items)]]"
+              category-name="[[category.name]]"></news-list-item>
         </li>
-        <template is="dom-repeat" items="[[_getListItems(_category.items)]]">
+        <template is="dom-repeat" items="[[_getListItems(category.items)]]">
           <li>
             <news-list-item
                 item="[[item]]"
-                category-name="[[_routeData.category]]"></news-list-item>
+                category-name="[[category.name]]"></news-list-item>
           </li>
         </template>
       </ul>
       <aside>
         <news-side-list
-            items="[[_category.items]]"
-            category-name="[[_routeData.category]]">Most Read</news-side-list>
+            items="[[category.items]]"
+            category-name="[[category.name]]">Most Read</news-side-list>
       </aside>
     </div>
 
     <news-network-warning
-        hidden$="[[!_failure]]"
+        hidden$="[[!failure]]"
         offline="[[offline]]"
         on-try-reconnect="_tryReconnect"></news-network-warning>
 
@@ -139,22 +120,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
-        route: Object,
-
         offline: Boolean,
 
-        _category: Object,
+        category: Object,
 
-        _routeData: Object,
-
-        _failure: Boolean
+        failure: Boolean
 
       },
-
-      observers: [
-        '_categoryChanged(_category)',
-        '_offlineChanged(offline)'
-      ],
 
       created: function() {
         this._resizeHandler = this._resizeHandler.bind(this);
@@ -174,26 +146,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _getListItems: function(items) {
         return items ? items.slice(1) : [];
-      },
-
-      _categoryChanged: function(category) {
-        this.debounce('change-section', function() {
-          // Notify the category and the page's title
-          this.fire('change-section', {
-            category: category.name,
-            title: category.title
-          });
-        });
-      },
-
-      _tryReconnect: function() {
-        this.$.categoryData.refresh();
-      },
-
-      _offlineChanged: function(offline) {
-        if (!offline) {
-          this._tryReconnect();
-        }
       },
 
       _resizeHandler: function() {

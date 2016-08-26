@@ -36,6 +36,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
+        categoryName: String,
+
+        offline: Boolean,
+
         categories: {
           type: Array,
           value: categoryList,
@@ -43,21 +47,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         },
 
-        categoryName: String,
-
         category: {
           type: Object,
-          computed: '_computeCategory(categoryName)',
+          readOnly: true,
           notify: true
         },
 
         failure: {
           type: Boolean,
-          notify: true,
-          readOnly: true
+          readOnly: true,
+          notify: true
         }
 
       },
+
+      observers: [
+        '_fetchItems(categoryName, offline)'
+      ],
 
       _getCategory: function(categoryName) {
         for (var i = 0, c; c = this.categories[i]; ++i) {
@@ -68,23 +74,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return null;
       },
 
-      _computeCategory: function(categoryName) {
-        // Fetch the items of the category. Note that the fetch is asynchronous,
-        // which means `category.items` may not be set initially (but that path
-        // will be notified when the fetch completes).
-        var category = this._getCategory(categoryName);
-        if (!category)
-          return;
-        this._fetchItems(category);
-        return category;
-      },
-
-      _fetchItems: function(category, force, attempts) {
-        this._setFailure(false);
-        // Only fetch the items of a category it has not been previously set or if `force` is true
-        if (!force && (!category || category.items)) {
+      _fetchItems: function(categoryName, offline, attempts) {
+        if (offline) {
           return;
         }
+        var category = this._getCategory(categoryName);
+        if (!category) {
+          return;
+        }
+        this._setCategory(category);
+        this._setFailure(false);
         var path = category.name.replace('_', '/');
         this._getResource({
           url: 'https://www.washingtonpost.com/pwa/api/section/' + path + '/?outputType=jsonFront',
@@ -158,7 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       refresh: function() {
         if (this.categoryName) {
           // Try at most 3 times to get the items.
-          this._fetchItems(this._getCategory(this.categoryName), true, 3);
+          this._fetchItems(this.categoryName, this.offline, 3);
         }
       }
 

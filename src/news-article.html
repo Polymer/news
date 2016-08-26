@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
 <link rel="import" href="news-article-data.html">
@@ -213,19 +212,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <app-route
-        route="[[route]]"
-        pattern="/:category"
-        query-params="{{_queryParams}}"
-        data="{{_routeData}}"></app-route>
-
-
-    <news-category-data
-        category-name="[[_routeData.category]]"
-        category="{{_category}}"></news-category-data>
     <news-article-data
-        id="articleData"
-        article-url="[[_queryParams.page]]"
+        article-url="[[queryParams.page]]"
+        offline="[[offline]]"
         article="{{_article}}"
         loading="{{_loading}}"
         failure="{{_failure}}"></news-article-data>
@@ -262,8 +251,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-icon icon="share"></iron-icon> Share
         </a>
         <news-side-list
-            items="[[_category.items]]"
-            category-name="[[_routeData.category]]">Most Read</news-side-list>
+            items="[[category.items]]"
+            category-name="[[category.name]]">Most Read</news-side-list>
       </aside>
     </div>
 
@@ -286,7 +275,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
-        route: Object,
+        queryParams: Object,
 
         headline: {
           type: String,
@@ -296,15 +285,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         offline: Boolean,
 
-        _routeData: Object,
-
         _article: Object,
 
-        _category: Object,
+        category: Object,
 
         _item: {
           type: Object,
-          computed: '_computeItem(_category.items, _queryParams.page)'
+          computed: '_computeItem(category.items, queryParams.page)'
         },
 
         _loading: Boolean,
@@ -314,23 +301,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_loadArticle(_article)',
-        '_offlineChanged(offline)'
+        '_loadArticle(_article)'
       ],
 
       _loadArticle: function(article) {
         this.$.content.innerHTML = article.html;
         this.scopeSubtree(this.$.content);
-      },
-
-      _tryReconnect: function() {
-        this.$.articleData.refresh();
-      },
-
-      _offlineChanged: function(offline) {
-        if (!offline) {
-          this._tryReconnect();
-        }
       },
 
       _computeItem: function(items, page) {
@@ -345,7 +321,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _computeHeadline: function(item) {
-        return item.title;
+        return item ? item.title : '';
       },
 
       _getReadTime: function(html) {

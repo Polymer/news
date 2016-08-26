@@ -308,16 +308,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
-        pattern="/:page"
+        pattern="/:page/:category"
         data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
+        query-params="{{queryParams}}"></app-route>
 
     <iron-media-query query="max-width: 767px" query-matches="{{smallScreen}}"></iron-media-query>
 
     <!--
-      news-category-data provides the list of categories and the articles for the category.
+      news-category-data provides the data for each category.
     -->
-    <news-category-data categories="{{categories}}"></news-category-data>
+    <news-category-data
+        id="categoryData"
+        category-name="[[routeData.category]]"
+        offline="[[offline]]"
+        categories="{{categories}}"
+        category="{{category}}"
+        failure="{{failure}}"></news-category-data>
 
     <!--
       Header at the scroll top of the page.
@@ -330,10 +336,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button icon="search" aria-label="Search"></paper-icon-button>
       </app-toolbar>
       <div class="date-line" role="heading">
-        [[categoryTitle]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
+        [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
       </div>
       <template is="dom-if" if="[[!smallScreen]]">
-        <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
+        <iron-selector role="navigation" class="menu-list" selected="[[routeData.category]]" attr-for-selected="name">
           <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
           </template>
@@ -352,7 +358,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="sticky-nav-center">
           <div class="logo"><a href="/" aria-label="NEWS Home">NEWS</a></div>
           <div class="date-line" role="heading">
-            [[categoryTitle]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
+            [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
           </div>
           <div class="article-headline">[[articleHeadline]]</div>
         </div>
@@ -362,7 +368,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-toolbar>
       <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
         <iron-selector class="grid-container" role="navigation"
-            selected="[[categoryName]]" attr-for-selected="name">
+            selected="[[routeData.category]]" attr-for-selected="name">
           <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
           </template>
@@ -376,7 +382,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template is="dom-if" if="[[_shouldRenderDrawer(smallScreen, loadComplete)]]">
       <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
         <paper-icon-button icon="close" on-click="_toggleDrawer"></paper-icon-button>
-        <iron-selector role="navigation" class="drawer-list" selected="[[categoryName]]" attr-for-selected="name">
+        <iron-selector role="navigation" class="drawer-list" selected="[[routeData.category]]" attr-for-selected="name">
           <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
           </template>
@@ -386,9 +392,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" route="[[subroute]]" offline="[[offline]]"></news-list>
+      <news-list id="list" name="list" category="[[category]]" offline="[[offline]]" failure="[[failure]]"></news-list>
       <!-- article view -->
-      <news-article name="article" route="[[subroute]]" headline="{{articleHeadline}}" offline="[[offline]]"></news-article>
+      <news-article name="article" query-params="[[queryParams]]" category="[[category]]" headline="{{articleHeadline}}" offline="[[offline]]"></news-article>
     </iron-pages>
 
     <footer>
@@ -414,12 +420,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         articleHeadline: String,
 
-        categoryName: String,
+        route: Object,
 
-        categoryTitle: {
-          type: String,
-          value: 'Top Stories'
-        },
+        routeData: Object,
+
+        queryParams: Object,
+
+        categories: Object,
+
+        category: Object,
+
+        failure: Boolean,
 
         offline: {
           type: Boolean,
@@ -428,7 +439,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_routePageChanged(routeData.page)'
+        '_routePageChanged(routeData.page)',
+        '_categoryChanged(category)'
       ],
 
       listeners: {
@@ -534,15 +546,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.drawerOpened = !this.drawerOpened;
       },
 
-      // Elements in the app can notify section changes.
       // Response by a11y announcing the section and syncronizing the category.
-      _onChangeSection: function(event) {
-        var detail = event.detail;
-        this.categoryName = detail.category || '';
-        this.categoryTitle = detail.title || '';
-        // Announce the page's title
-        if (detail.title) {
-          document.title = detail.title + ' - NEWS';
+      _categoryChanged: function(category) {
+        if (category.title) {
+          document.title = category.title + ' - NEWS';
         }
       },
 

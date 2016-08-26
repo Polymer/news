@@ -28,6 +28,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       {name: 'sports', title: 'Sports'}
     ];
 
+    var textarea = document.createElement('textarea');
+
     Polymer({
 
       is: 'news-category-data',
@@ -87,12 +89,54 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._getResource({
           url: 'https://www.washingtonpost.com/pwa/api/section/' + path + '/?outputType=jsonFront',
           onLoad: function(e) {
-            this.set('category.items', JSON.parse(e.target.responseText).entries);
+            this.set('category.items', this._parseItems(e.target.responseText));
           },
           onError: function(e) {
             this._setFailure(true);
           }
         }, attempts || 1);
+      },
+
+      _parseItems: function(responseText) {
+        var entries = JSON.parse(responseText).entries;
+        var items = [];
+
+        for (var i = 0; i < entries.length; ++i) {
+          var item = entries[i];
+          items.push({
+            title: this._unescapeText(item.web_headline),
+            href: this._getItemHref(item),
+            sourceUrl: item.canonical_url,
+            imageUrl: this._getItemImage(item),
+            category: item.kicker,
+            timestamp: item.display_date_num,
+            author: item.byline,
+            summary: this._trimRight(item.blurb, 100)
+          });
+        }
+
+        return items;
+      },
+
+      _unescapeText: function(text) {
+        textarea.innerHTML = text;
+        return textarea.textContent;
+      },
+
+      _getItemHref: function(item) {
+        // By returning null when `canonical_url` is undefined, the href attribute won't be set and
+        // the link will be disabled.
+        return item.canonical_url ? '/article/' + this.categoryName + '?page=' + encodeURIComponent(item.canonical_url) : null;
+      },
+
+      _getItemImage: function(item) {
+        return (item && item.thumbnail && item.thumbnail.featured &&
+          item.thumbnail.featured.url) || '';
+      },
+
+      _trimRight: function(text, maxLength) {
+        var breakIdx = text.indexOf(' ', maxLength);
+        return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
       },
 
       _getResource: function(rq, attempts) {

@@ -12,16 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <script>
 
-(function(scope) {
-
-  var textarea = document.createElement('textarea');
-
-  scope.NewsArticleItemBehavior = {
-
-    _unescapeText: function(text) {
-      textarea.innerHTML = text;
-      return textarea.textContent;
-    },
+  window.NewsArticleItemBehavior = {
 
     _ago: function(timestamp) {
       if (timestamp == undefined)
@@ -42,21 +33,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return '1 day ago';
 
       return Math.floor(hours / 24) + ' days ago';
-    },
-
-    _getItemHref: function(item, categoryName) {
-      // By returning null when `itemId` is undefined, the href attribute won't be set and
-      // the link will be disabled.
-      return item.canonical_url ? '/article/' + categoryName + '?page=' + encodeURIComponent(item.canonical_url) : null;
-    },
-
-    _getArticleImage: function(item) {
-      return (item && item.thumbnail && item.thumbnail.featured &&
-        item.thumbnail.featured.url) || '';
     }
 
   };
-
-})(window);
 
 </script>

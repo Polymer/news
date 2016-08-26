@@ -54,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._getResource({
           url: 'https://www.washingtonpost.com/pwa/api/content/?url=' + articleUrl,
           onLoad: function(e) {
-            this.article = JSON.parse(e.target.responseText);
+            this.article = this._parseItem(e.target.responseText);
             this._setLoading(false);
           },
           onError: function(e) {
@@ -64,8 +64,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }, attempts || 1);
       },
 
-      _loadArticle: function(e) {
-        this.article = JSON.parse(e.target.responseText);
+      _parseItem: function(responseText) {
+        var item = JSON.parse(responseText);
+        return {
+          readTime: Math.max(2, Math.round(item.html.length / 3000)) + ' min read',
+          html: item.html
+        };
       },
 
       _getResource: function(rq, attempts) {

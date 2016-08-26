@@ -54,8 +54,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         line-height: 28px;
       }
 
-      .kicker {
-        padding: 6px 20px 7px 20px;
+      .category {
+        padding: 6px 20px 7px;
         border: 1px solid #CCC;
         display: inline-block;
         font-family: Georgia;
@@ -63,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 11px;
       }
 
-      .kicker[hidden] {
+      .category[hidden] {
         visibility: hidden;
         height: 0px;
         margin-top: 0px;
@@ -139,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           -webkit-box-orient: vertical;
         }
 
-        :host([featured]) .kicker {
+        :host([featured]) .category {
           border-color: rgba(255, 255, 255, 0.5);
           color: #FFF;
         }
@@ -195,7 +195,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           height: 150px;
         }
 
-        :host(:not([featured])) .kicker {
+        :host(:not([featured])) .category {
           margin-top: 20px;
         }
 
@@ -232,7 +232,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           height: 150px;
         }
 
-        :host(:not([featured])) .kicker {
+        :host(:not([featured])) .category {
           margin-top: 20px;
         }
 
@@ -244,19 +244,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <a href$="[[_getItemHref(item, categoryName)]]">
+    <a href$="[[item.href]]">
       <div class="img-container">
-        <news-img class="image" alt="[[item.web_headline]]" src="[[_getArticleImage(item)]]"></news-img>
+        <news-img class="image" alt="[[item.title]]" src="[[item.imageUrl]]"></news-img>
         <div class="scrim"></div>
       </div>
       <div class="headline">
-        <div class="kicker" hidden$="[[!item.kicker]]">[[item.kicker]]</div>
-        <h2 inner-h-t-m-l="[[item.web_headline]]"></h2>
+        <div class="category" hidden$="[[!item.category]]">[[item.category]]</div>
+        <h2 inner-h-t-m-l="[[item.title]]"></h2>
         <div class="details">
-          <div class="timestamp">[[_ago(item.display_date_num)]]</div>
-          <div class="author">[[item.byline]]</div>
+          <div class="timestamp">[[_ago(item.timestamp)]]</div>
+          <div class="author">[[item.author]]</div>
         </div>
-        <p>[[_trimRight(item.blurb, 100)]]</p>
+        <p>[[item.summary]]</p>
       </div>
     </a>
   </template>
@@ -283,11 +283,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true
         }
 
-      },
-
-      _trimRight: function(text, maxLength) {
-        var breakIdx = text.indexOf(' ', maxLength);
-        return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
       }
 
     });

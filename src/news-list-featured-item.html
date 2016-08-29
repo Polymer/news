@@ -33,10 +33,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         overflow: hidden;
       }
 
-      .image {
-        height: 100%;
-      }
-
       .img-container {
         position: relative;
       }
@@ -116,7 +112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           color: #FFF;
         }
 
-        .image {
+        news-img {
           min-height: 60vh;
         }
 
@@ -181,13 +177,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop large */
       @media (min-width: 1310px) {
 
-        .img-container {
-          width: 472px;
-          min-width: 472px;
-          min-height: 340px;
-          margin-right: 24px;
-        }
-
         a {
           @apply(--layout-horizontal);
         }
@@ -195,6 +184,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         h2 {
           font-size: 38px;
           line-height: 48px;
+        }
+
+        news-img {
+          @apply(--layout-fit);
+        }
+
+        .img-container {
+          width: 472px;
+          min-width: 472px;
+          min-height: 340px;
+          margin-right: 24px;
         }
 
         .details {
@@ -208,7 +208,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <a href$="[[_getItemHref(item, categoryName)]]">
       <div class="img-container">
-        <news-img class="image" alt="[[item.web_headline]]" src="[[_getArticleImage(item)]]"></news-img>
+        <news-img alt="[[item.web_headline]]" src="[[_getArticleImage(item)]]"></news-img>
         <div class="scrim"></div>
       </div>
       <div class="headline">

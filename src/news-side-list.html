@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 20px 0;
       }
 
-      .detail {
+      .time-ago {
         font-size: 12px;
         font-weight: bold;
         white-space: nowrap;
@@ -56,13 +56,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none;
       }
 
-      :host([featured]) > .story {
-        margin: 24px 0;
+      :host([featured]) > a {
         padding-bottom: 24px;
         border-bottom: 1px solid #ccc;
       }
 
-      :host([featured]) > .story:last-of-type {
+      :host([featured]) > a:last-of-type {
         border-bottom: none;
       }
 
@@ -74,19 +73,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: inline-block;
       }
 
+      :host([featured]) .time-ago {
+        display: block;
+      }
+
+      :host([featured]) .headline {
+        display: block;
+        margin: 20px 0;
+      }
+
     </style>
 
     <h3>
       <content></content>
     </h3>
     <template is="dom-repeat" items="[[items]]">
-      <div class="story">
+      <a href$="[[_getItemHref(item, categoryName)]]">
         <div class="kicker">[[item.kicker]]</div>
-        <a href$="[[_getItemHref(item, categoryName)]]">[[_unescapeText(item.web_headline)]]</a>
-        <div class="detail">
-          <span class="time-ago">[[_ago(item.display_date_num)]]</span>
-        </div>
-      </div>
+        <span class="headline">[[_unescapeText(item.web_headline)]]</span>
+        <span class="time-ago">[[_ago(item.display_date_num)]]</span>
+      </a>
     </template>
   </template>
 

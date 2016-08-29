@@ -32,7 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none !important;
       }
 
-      .flex {
+      .content {
         @apply(--layout-flex-auto);
       }
 
@@ -43,21 +43,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         list-style: none;
       }
 
-      .article-grid > li:first-child {
-        @apply(--app-grid-expandible-item);
+      .article-grid {
+        margin-top: 32px;
       }
 
       li {
         display: block;
       }
 
-      aside {
-        margin-left: 24px;
-      }
-
       h3 {
         @apply(--app-sub-section-headline);
-        margin: 24px;
+        margin: 24px 0;
       }
 
       news-side-list {
@@ -70,6 +66,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         aside {
           display: none;
         }
+
+        .article-grid li,
+        .opinions-grid li{
+          border-bottom: 1px solid #ccc;
+          margin: 0px 24px 24px 24px;
+          padding-bottom: 24px;
+        }
+
+        .article-grid li:last-of-type,
+        .opinions-grid li:last-of-type {
+          border-bottom: none;
+        }
+
       }
 
       /* desktop 1 */
@@ -78,7 +87,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :host {
           --app-grid-columns: 4;
           --app-grid-gutter: 32px;
-          --app-grid-expandible-item-columns: 4;
         }
 
         .opinions-grid {
@@ -89,8 +97,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         .opinions-grid li {
           width: calc(50% - 32px);
           margin-right: 32px;
-
         }
+
+        .article-grid,
+        .opinions-grid {
+          margin-right: -32px;
+        }
+
       }
 
       /* desktop 2 */
@@ -100,16 +113,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           @apply(--layout-horizontal);
         }
 
-        .container > main {
-          @apply(--layout-flex-auto);
+        .content {
+          margin-right: 24px;
         }
 
-        .container > aside {
-          margin-left: 0;
+        aside {
           width: 300px;
           min-width: 300px;
         }
-
       }
 
     </style>
@@ -132,13 +143,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         failure="{{_failure}}"></news-category-data>
 
     <div class="container" hidden$="[[_failure]]">
-      <div class="flex">
-        <ul class="app-grid article-grid">
-          <li>
-            <news-list-featured-item
+      <div class="content">
+
+        <news-list-featured-item
                 item="[[_getFeaturedItem(_category.items)]]"
-                category-name="[[_routeData.category]]"></news-list-item>
-          </li>
+                category-name="[[_routeData.category]]"></news-list-featured-item>
+
+        <ul class="app-grid article-grid">
           <template is="dom-repeat" items="[[_slice(_category.items, 1, 5)]]">
             <li>
               <news-list-item
@@ -147,7 +158,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </li>
           </template>
         </ul>
-
         <h3>Opinions</h3>
         <ul class="opinions-grid">
           <template is="dom-repeat" items="[[_slice(_category.items, 5)]]">
@@ -158,7 +168,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </li>
           </template>
         </ul>
-
       </div>
       <aside>
         <news-side-list

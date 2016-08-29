@@ -83,20 +83,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         white-space: nowrap;
       }
 
-      p {
-        margin: 0;
-        line-height: 26px;
-        font-size: 16px;
-      }
-
       /* mobile and desktop small */
       @media (max-width: 1309px) {
 
         .img-container {
-          display: none;
-        }
-
-        p {
           display: none;
         }
 
@@ -111,10 +101,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         .kicker {
           margin-top: 20px;
-        }
-
-        p {
-          display: none;
         }
 
         :host([horizontal]) {
@@ -132,10 +118,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         .kicker {
           margin-top: 20px;
-        }
-
-        p {
-          display: none;
         }
 
         :host([horizontal]) a {
@@ -167,7 +149,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="timestamp">[[_ago(item.display_date_num)]]</div>
           <div class="author">[[item.byline]]</div>
         </div>
-        <p>[[_trimRight(item.blurb, 100)]]</p>
       </div>
     </a>
   </template>
@@ -194,11 +175,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true
         }
 
-      },
-
-      _trimRight: function(text, maxLength) {
-        var breakIdx = text.indexOf(' ', maxLength);
-        return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
       }
 
     });

@@ -96,9 +96,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       news-category-data provides the category data for a given category name.
     -->
     <news-category-data
-        id="categoryData"
+        id="data"
         category-name="[[_routeData.category]]"
         category="{{_category}}"
+        offline="[[offline]]"
         failure="{{_failure}}"></news-category-data>
 
     <div class="container" hidden$="[[_failure]]">
@@ -152,8 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_categoryChanged(_category)',
-        '_offlineChanged(offline)'
+        '_categoryChanged(_category)'
       ],
 
       created: function() {
@@ -169,7 +169,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _getFeaturedItem: function(items) {
-        return items ? items[0] : { title: '......', summary: '' };
+        return items ? items[0] : { headline: '......' };
       },
 
       _getListItems: function(items) {
@@ -187,13 +187,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _tryReconnect: function() {
-        this.$.categoryData.refresh();
-      },
-
-      _offlineChanged: function(offline) {
-        if (!offline) {
-          this._tryReconnect();
-        }
+        this.$.data.refresh();
       },
 
       _resizeHandler: function() {

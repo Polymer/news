@@ -12,8 +12,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
-<link rel="import" href="news-article-data.html">
 <link rel="import" href="news-article-item-behavior.html">
+<link rel="import" href="news-category-data.html">
 <link rel="import" href="news-side-list.html">
 
 <dom-module id="news-article">
@@ -219,16 +219,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         query-params="{{_queryParams}}"
         data="{{_routeData}}"></app-route>
 
-
     <news-category-data
+        id="data"
         category-name="[[_routeData.category]]"
-        category="{{_category}}"></news-category-data>
-    <news-article-data
-        id="articleData"
-        article-url="[[_queryParams.page]]"
+        category="{{_category}}"
+        article-id="[[_queryParams.id]]"
         article="{{_article}}"
+        offline="[[offline]]"
         loading="{{_loading}}"
-        failure="{{_failure}}"></news-article-data>
+        failure="{{_failure}}"></news-category-data>
 
     <div class="container" loading$="[[_loading]]" hidden$="[[_failure]]">
       <article class="flex">
@@ -236,18 +235,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="cover-text">
             <div class="flex"></div>
             <div>
-              <div class="category">[[_item.category]]</div>
+              <div class="category">[[_article.category]]</div>
             </div>
             <h1>[[headline]]</h1>
             <div class="meta">
-              <span>[[_ago(_item.timestamp)]]</span>
+              <span>[[_ago(_article.timestamp)]]</span>
               <iron-icon class="timer-icon" icon="timer"></iron-icon>
               <span>[[_article.readTime]]</span>
             </div>
           </div>
 
           <div class="cover-img-container">
-            <img src="[[_item.imageUrl]]">
+            <img src="[[_article.imageUrl]]">
             <div class="scrim"></div>
           </div>
         </div>
@@ -290,7 +289,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         headline: {
           type: String,
-          computed: '_computeHeadline(_item)',
+          computed: '_computeHeadline(_article.headline)',
           notify: true
         },
 
@@ -302,11 +301,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _category: Object,
 
-        _item: {
-          type: Object,
-          computed: '_computeItem(_category.items, _queryParams.page)'
-        },
-
         _loading: Boolean,
 
         _failure: Boolean
@@ -314,42 +308,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_loadArticle(_article)',
-        '_offlineChanged(offline)'
+        '_loadArticle(_article.html)'
       ],
 
-      _loadArticle: function(article) {
-        this.$.content.innerHTML = article.html;
+      _loadArticle: function(html) {
+        this.$.content.innerHTML = html;
         this.scopeSubtree(this.$.content);
       },
 
       _tryReconnect: function() {
-        this.$.articleData.refresh();
+        this.$.data.refresh();
       },
 
-      _offlineChanged: function(offline) {
-        if (!offline) {
-          this._tryReconnect();
-        }
-      },
-
-      _computeItem: function(items, page) {
-        var url = decodeURIComponent(page);
-        for (var i = 0; i < items.length; ++i) {
-          var item = items[i];
-          if (item.sourceUrl === url) {
-            return item;
-          }
-        }
-        return null;
-      },
-
-      _computeHeadline: function(item) {
-        return item.title;
-      },
-
-      _getReadTime: function(html) {
-        return Math.max(2, Math.round(html.length / 3000));
+      _computeHeadline: function(headline) {
+        return headline;
       }
 
     });

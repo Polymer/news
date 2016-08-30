@@ -29,6 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     ];
 
     var textarea = document.createElement('textarea');
+    var isFetching = false;
 
     Polymer({
 
@@ -86,22 +87,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _fetchArticle: function(article, offline, attempts) {
         // Don't fail if we become offline but already have a cached version, or if there's
-        // nothing to fetch.
-        if ((offline && article.html) || !article) {
+        // nothing to fetch, or if something else is already fetching (since all instances of
+        // news-category-data share the same data object).
+        if ((offline && article.html) || !article || isFetching) {
           return;
         }
-        this._setFailure(false);
-        this._getResource({
-          url: 'https://www.washingtonpost.com/pwa/api/content/?url=' + article.id,
-          onLoad: function(e) {
-            var item = JSON.parse(e.target.responseText);
-            this.set('article.readTime', Math.max(2, Math.round(item.html.length / 3000)) + ' min read');
-            this.set('article.html', item.html);
-          },
-          onError: function(e) {
-            this._setFailure(true);
-          }
-        }, attempts || 1);
+        this._fetch('https://www.washingtonpost.com/pwa/api/content/?url=' + article.id,
+          function(response) {
+            this.set('article.readTime', Math.max(2, Math.round(response.html.length / 3000)) + ' min read');
+            this.set('article.html', response.html);
+          }.bind(this),
+          attempts || 1);
       },
 
       _computeCategory: function(categoryName) {
@@ -115,29 +111,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _fetchCategory: function(category, offline, attempts) {
         // Don't fail if we become offline but already have a cached version, or if there's
-        // nothing to fetch.
-        if ((offline && category.items) || !category) {
+        // nothing to fetch, or if something else is already fetching (since all instances of
+        // news-category-data share the same data object).
+        if ((offline && category.items) || !category || isFetching) {
           return;
         }
-        this._setFailure(false);
         var path = category.name.replace('_', '/');
-        this._getResource({
-          url: 'https://www.washingtonpost.com/pwa/api/section/' + path + '/?outputType=jsonFront',
-          onLoad: function(e) {
-            this.set('category.items', this._parseCategoryItems(e.target.responseText));
-          },
-          onError: function(e) {
-            this._setFailure(true);
-          }
-        }, attempts || 1);
+        this._fetch('https://www.washingtonpost.com/pwa/api/section/' + path + '/?outputType=jsonFront',
+          function(response) {
+            this.set('category.items', this._parseCategoryItems(response));
+          }.bind(this),
+          attempts || 1);
       },
 
-      _parseCategoryItems: function(responseText) {
-        var entries = JSON.parse(responseText).entries;
+      _parseCategoryItems: function(response) {
         var items = [];
 
-        for (var i = 0; i < entries.length; ++i) {
-          var item = entries[i];
+        for (var i = 0; i < response.entries.length; ++i) {
+          var item = response.entries[i];
           items.push({
             headline: this._unescapeText(item.web_headline),
             href: this._getItemHref(item),
@@ -195,19 +186,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
       },
 
-      _getResource: function(rq, attempts) {
+      _fetch: function(url, callback, attempts) {
         var xhr = new XMLHttpRequest();
-        xhr.addEventListener('load', rq.onLoad.bind(this));
+        xhr.addEventListener('load', function(e) {
+          isFetching = false;
+          callback(JSON.parse(e.target.responseText));
+        });
         xhr.addEventListener('error', function(e) {
           // Flaky connections might fail fetching resources
           if (attempts > 1) {
-            this.debounce('_getResource', this._getResource.bind(this, rq, attempts - 1), 200);
+            this.debounce('_getResource',
+              this._getResource.bind(this, url, callback, attempts - 1), 200);
           } else {
-            rq.onError.call(this, e);
+            isFetching = false;
+            this._setFailure(true);
           }
         }.bind(this));
 
-        xhr.open('GET', rq.url);
+        isFetching = true;
+        this._setFailure(false);
+        xhr.open('GET', url);
         xhr.send();
       },
 

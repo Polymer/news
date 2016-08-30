@@ -146,16 +146,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="container" hidden$="[[_failure]]">
       <div class="content">
 
-        <news-list-featured-item
-                item="[[_getFeaturedItem(_category.items)]]"
-                category-name="[[_routeData.category]]"></news-list-featured-item>
+        <news-list-featured-item item="[[_getFeaturedItem(_category.items)]]">
+        </news-list-featured-item>
 
         <ul class="app-grid article-grid">
           <template is="dom-repeat" items="[[_slice(_category.items, 1, 5)]]">
             <li>
-              <news-list-item
-                  item="[[item]]"
-                  category-name="[[_routeData.category]]"></news-list-item>
+              <news-list-item item="[[item]]"></news-list-item>
             </li>
           </template>
         </ul>
@@ -163,20 +160,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <ul class="opinions-grid">
           <template is="dom-repeat" items="[[_slice(_category.items, 5)]]">
             <li>
-              <news-list-item horizontal
-                  item="[[item]]"
-                  category-name="[[_routeData.category]]"></news-list-item>
+              <news-list-item horizontal item="[[item]]"></news-list-item>
             </li>
           </template>
         </ul>
       </div>
       <aside>
-        <news-side-list
-            items="[[_slice(_category.items, 0, 3)]]"
-            category-name="[[_routeData.category]]">Most Read</news-side-list>
-        <news-side-list featured
-            items="[[_slice(_category.items, 3, 9)]]"
-            category-name="[[_routeData.category]]">More Top Stories</news-side-list>
+        <news-side-list items="[[_slice(_category.items, 0, 3)]]">
+          Most Read
+        </news-side-list>
+        <news-side-list featured items="[[_slice(_category.items, 3, 9)]]">
+          More Top Stories
+        </news-side-list>
       </aside>
     </div>
 

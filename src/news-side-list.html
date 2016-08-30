@@ -10,8 +10,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
-<link rel="import" href="news-article-item-behavior.html">
-
 <dom-module id="news-side-list">
 
   <template>
@@ -91,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <a href$="[[item.href]]">
         <div class="category">[[item.category]]</div>
         <span class="headline">[[item.headline]]</span>
-        <span class="time-ago">[[_ago(item.timestamp)]]</span>
+        <span class="time-ago">[[item.timeAgo]]</span>
       </a>
     </template>
   </template>
@@ -102,15 +100,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'news-side-list',
 
-      behaviors: [
-        NewsArticleItemBehavior
-      ],
-
       properties: {
 
-        items: Array,
-
-        categoryName: String
+        items: Array
 
       }
 

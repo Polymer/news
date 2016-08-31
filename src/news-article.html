@@ -30,13 +30,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .container {
         display: flex;
-        opacity: 1;
-        transition: opacity 500ms;
+        opacity: 0;
       }
 
-      .container[loading] {
-        opacity: 0;
-        transition: none;
+      .container[fade-in] {
+        opacity: 1;
+        transition: opacity 500ms;
       }
 
       .flex {
@@ -221,34 +220,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         query-params="{{_queryParams}}"
         data="{{_routeData}}"></app-route>
 
-    <news-category-data
-        id="data"
-        category-name="[[_routeData.category]]"
-        category="{{_category}}"
-        article-id="[[_queryParams.id]]"
-        article="{{_article}}"
-        offline="[[offline]]"
-        loading="{{_loading}}"
-        failure="{{_failure}}"></news-category-data>
-
-    <div class="container" loading$="[[_loading]]" hidden$="[[_failure]]">
+    <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
       <article class="flex">
         <div class="cover">
           <div class="cover-text">
             <div class="flex"></div>
             <div>
-              <div class="category">[[_article.category]]</div>
+              <div class="category">[[article.category]]</div>
             </div>
-            <h1>[[headline]]</h1>
+            <h1>[[article.headline]]</h1>
             <div class="meta">
-              <span>[[_article.timeAgo]]</span>
+              <span>[[article.timeAgo]]</span>
               <iron-icon class="timer-icon" icon="timer"></iron-icon>
-              <span>[[_article.readTime]]</span>
+              <span>[[article.readTime]]</span>
             </div>
           </div>
 
           <div class="cover-img-container">
-            <img src="[[_article.imageUrl]]">
+            <img src="[[article.imageUrl]]">
             <div class="scrim"></div>
           </div>
         </div>
@@ -262,17 +251,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <a href="#" class="share-link" aria-label="Share on social networks">
           <iron-icon icon="share"></iron-icon> Share
         </a>
-        <news-side-list items="[[_slice(_category.items, 0, 3)]]">
+        <news-side-list items="[[_slice(category.items, 0, 3)]]">
           Most Read
         </news-side-list>
-        <news-side-list featured items="[[_slice(_category.items, 3, 9)]]">
+        <news-side-list featured items="[[_slice(category.items, 3, 9)]]">
           Top Stories
         </news-side-list>
       </aside>
     </div>
 
     <news-network-warning
-        hidden$="[[!_failure]]"
+        hidden$="[[!failure]]"
         offline="[[offline]]"
         on-try-reconnect="_tryReconnect"></news-network-warning>
 
@@ -288,28 +277,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         route: Object,
 
-        headline: {
-          type: String,
-          computed: '_computeHeadline(_article.headline)',
-          notify: true
-        },
+        category: Object,
+
+        article: Object,
+
+        loading: Boolean,
 
         offline: Boolean,
 
-        _routeData: Object,
+        failure: Boolean,
 
-        _article: Object,
+        categoryName: {
+          type: Boolean,
+          computed: '_return(_routeData.category)',
+          notify: true
+        },
 
-        _category: Object,
+        articleId: {
+          type: Boolean,
+          computed: '_return(_queryParams.id)',
+          notify: true
+        },
 
-        _loading: Boolean,
-
-        _failure: Boolean
+        _routeData: Object
 
       },
 
       observers: [
-        '_loadArticle(_article.html)'
+        '_loadArticle(article.html)'
       ],
 
       _loadArticle: function(html) {
@@ -318,15 +313,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _tryReconnect: function() {
-        this.$.data.refresh();
-      },
-
-      _computeHeadline: function(headline) {
-        return headline;
+        this.fire('refresh-data');
       },
 
       _slice: function(list, begin, end) {
         return list.slice(begin, end);
+      },
+
+      _return: function(value) {
+        return value;
       }
 
     });

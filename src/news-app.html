@@ -328,7 +328,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!--
       news-category-data provides the list of categories and the articles for the category.
     -->
-    <news-category-data categories="{{categories}}"></news-category-data>
+    <news-category-data
+        id="data"
+        categories="{{categories}}"
+        category-name="[[categoryName]]"
+        category="{{category}}"
+        article-id="[[articleId]]"
+        article="{{article}}"
+        loading="{{loading}}"
+        offline="[[offline]]"
+        failure="{{failure}}"></news-category-data>
 
     <!--
       Header at the scroll top of the page.
@@ -341,7 +350,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button icon="search" aria-label="Search"></paper-icon-button>
       </app-toolbar>
       <div class="date-line" role="heading">
-        [[categoryTitle]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
+        [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
       </div>
       <template is="dom-if" if="[[!smallScreen]]">
         <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
@@ -363,7 +372,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="sticky-nav-center">
           <div class="logo"><a href="/" aria-label="NEWS Home">NEWS</a></div>
           <div class="date-line" role="heading">
-            [[categoryTitle]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
+            [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
           </div>
           <div class="article-headline">[[articleHeadline]]</div>
         </div>
@@ -397,9 +406,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" route="[[subroute]]" offline="[[offline]]"></news-list>
+      <news-list
+          id="list"
+          name="list"
+          route="[[subroute]]"
+          category-name="{{categoryName}}"
+          category="[[category]]"
+          loading="[[loading]]"
+          offline="[[offline]]"
+          failure="[[failure]]"></news-list>
       <!-- article view -->
-      <news-article name="article" route="[[subroute]]" headline="{{articleHeadline}}" offline="[[offline]]"></news-article>
+      <news-article
+          name="article"
+          route="[[subroute]]"
+          category-name="{{categoryName}}"
+          category="[[category]]"
+          article-id="{{articleId}}"
+          article="[[article]]"
+          loading="[[loading]]"
+          offline="[[offline]]"
+          failure="[[failure]]"></news-article>
     </iron-pages>
 
     <footer>
@@ -423,27 +449,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         categories: Array,
 
-        articleHeadline: String,
+        articleHeadline: {
+          type: String,
+          value: ''
+        },
 
         categoryName: String,
 
-        categoryTitle: {
-          type: String,
-          value: 'Top Stories'
-        },
+        category: Object,
+
+        articleId: String,
+
+        article: Object,
 
         offline: {
           type: Boolean,
           readOnly: true
-        }
+        },
+
+        failure: Boolean
       },
 
       observers: [
-        '_routePageChanged(routeData.page)'
+        '_routePageChanged(routeData.page)',
+        '_updateArticleHeadline(article.headline)',
+        '_updateDocumentTitle(page, category.title, articleHeadline)'
       ],
 
       listeners: {
-        'change-section': '_onChangeSection'
+        'refresh-data': '_refreshData'
       },
 
       _networkSnackbar: null,
@@ -545,16 +579,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.drawerOpened = !this.drawerOpened;
       },
 
+      _updateArticleHeadline: function(articleHeadline) {
+        this.articleHeadline = articleHeadline;
+      },
+
       // Elements in the app can notify section changes.
       // Response by a11y announcing the section and syncronizing the category.
-      _onChangeSection: function(event) {
-        var detail = event.detail;
-        this.categoryName = detail.category || '';
-        this.categoryTitle = detail.title || '';
-        // Announce the page's title
-        if (detail.title) {
-          document.title = detail.title + ' - NEWS';
-        }
+      _updateDocumentTitle: function(page, categoryTitle, articleHeadline) {
+        document.title = (page === 'list' ? categoryTitle : articleHeadline) + ' - NEWS';
       },
 
       _shouldRenderDrawer: function(smallScreen, loadComplete) {
@@ -563,6 +595,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _getScrollThreshold: function(smallScreen) {
         return smallScreen ? window.innerHeight - 64 : 162;
+      },
+
+      _refreshData: function() {
+        this.$.data.refresh();
       }
 
     });

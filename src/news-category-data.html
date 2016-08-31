@@ -29,7 +29,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     ];
 
     var textarea = document.createElement('textarea');
-    var isFetching = false;
 
     Polymer({
 
@@ -50,6 +49,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         offline: Boolean,
 
+        loading: {
+          type: Boolean,
+          readOnly: true,
+          notify: true
+        },
+
         category: {
           type: Object,
           computed: '_computeCategory(categoryName)',
@@ -64,8 +69,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         failure: {
           type: Boolean,
-          notify: true,
-          readOnly: true
+          readOnly: true,
+          notify: true
         }
 
       },
@@ -89,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Don't fail if we become offline but already have a cached version, or if there's
         // nothing to fetch, or if something else is already fetching (since all instances of
         // news-category-data share the same data object).
-        if ((offline && article.html) || !article || isFetching) {
+        if ((offline && article.html) || !article || this.loading) {
           return;
         }
         this._fetch('https://www.washingtonpost.com/pwa/api/content/?url=' + article.id,
@@ -113,7 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Don't fail if we become offline but already have a cached version, or if there's
         // nothing to fetch, or if something else is already fetching (since all instances of
         // news-category-data share the same data object).
-        if ((offline && category.items) || !category || isFetching) {
+        if ((offline && category.items) || !category || this.loading) {
           return;
         }
         var path = category.name.replace('_', '/');
@@ -189,21 +194,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _fetch: function(url, callback, attempts) {
         var xhr = new XMLHttpRequest();
         xhr.addEventListener('load', function(e) {
-          isFetching = false;
+          this._setLoading(false);
           callback(JSON.parse(e.target.responseText));
-        });
+        }.bind(this));
         xhr.addEventListener('error', function(e) {
           // Flaky connections might fail fetching resources
           if (attempts > 1) {
-            this.debounce('_getResource',
-              this._getResource.bind(this, url, callback, attempts - 1), 200);
+            this.debounce('_fetch', this._fetch.bind(this, url, callback, attempts - 1), 200);
           } else {
-            isFetching = false;
+            this._setLoading(false);
             this._setFailure(true);
           }
         }.bind(this));
 
-        isFetching = true;
+        this._setLoading(true);
         this._setFailure(false);
         xhr.open('GET', url);
         xhr.send();

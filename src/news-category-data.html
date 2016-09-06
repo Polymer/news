@@ -85,7 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         var path = category.name.replace('_', '/');
         this._getResource({
-          url: 'https://www.washingtonpost.com/pwa/api/section/' + path + '/?outputType=jsonFront',
+          url: 'https://pwa.washingtonpost.com/api/section/' + path + '/?outputType=jsonFront',
           onLoad: function(e) {
             this.set('category.items', JSON.parse(e.target.responseText).entries);
           },

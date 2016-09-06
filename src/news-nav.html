@@ -10,46 +10,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
+<link rel="import" href="news-drawer.html">
 <link rel="import" href="news-header.html">
 
 <dom-module id="news-nav">
 
   <template>
-
-    <style>
-
-      app-drawer {
-        --app-drawer-content-container: {
-          background: #222;
-          color: #FFF;
-        };
-        --app-drawer-width: 230px;
-        z-index: 11;
-      }
-
-      app-drawer paper-icon-button {
-        margin: 10px;
-      }
-
-      .drawer-list {
-        margin: 0 20px;
-      }
-
-      .drawer-list a {
-        display: block;
-        padding: 0 24px;
-        line-height: 48px;
-        text-decoration: none;
-        color: #FFF;
-      }
-
-      .drawer-list a.iron-selected {
-        background: #555;
-      }
-
-    </style>
 
     <iron-media-query query="max-width: 767px" query-matches="{{_smallScreen}}"></iron-media-query>
 
@@ -66,14 +33,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Lazy-create the drawer on small viewports.
     -->
     <template is="dom-if" if="[[_shouldRenderDrawer(_smallScreen, loadComplete)]]">
-      <app-drawer opened="{{_drawerOpened}}" swipe-open tabindex="0">
-        <paper-icon-button icon="close" on-click="_toggleDrawer"></paper-icon-button>
-        <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
-      </app-drawer>
+      <news-drawer
+          categories="[[categories]]"
+          category="[[category]]"
+          drawer-opened="{{_drawerOpened}}">
+      </news-drawer>
     </template>
 
   </template>
@@ -102,10 +66,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       closeDrawer: function() {
         this._drawerOpened = false;
-      },
-
-      _toggleDrawer: function() {
-        this._drawerOpened = !this._drawerOpened;
       },
 
       _shouldRenderDrawer: function(smallScreen, loadComplete) {

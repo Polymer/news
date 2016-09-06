@@ -97,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if ((offline && article.html) || !article || this.loading) {
           return;
         }
-        this._fetch('https://www.washingtonpost.com/pwa/api/content/?url=' + article.id,
+        this._fetch('https://pwa.washingtonpost.com/api/content/?url=' + article.id,
           function(response) {
             this.set('article.readTime', Math.max(2, Math.round(response.html.length / 3000)) + ' min read');
             this.set('article.html', response.html);
@@ -122,7 +122,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return;
         }
         var path = category.name.replace('_', '/');
-        this._fetch('https://www.washingtonpost.com/pwa/api/section/' + path + '/?outputType=jsonFront',
+        this._fetch('https://pwa.washingtonpost.com/api/section/' + path + '/?outputType=jsonFront',
           function(response) {
             this.set('category.items', this._parseCategoryItems(response));
           }.bind(this),

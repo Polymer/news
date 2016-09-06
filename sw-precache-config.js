@@ -19,7 +19,7 @@ module.exports = {
       }
     },
     {
-      urlPattern: /^https:\/\/www\.washingtonpost\.com\/pwa\/api/,
+      urlPattern: /^https:\/\/pwa\.washingtonpost\.com\/api/,
       handler: 'networkFirst',
       options: {
         cache: {

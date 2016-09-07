@@ -9,7 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-layout/app-box/app-box.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
@@ -323,9 +322,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _menuIcon: function(drawerOpened) {
-        if (drawerOpened)
-          return 'close';
-        return 'menu';
+        return drawerOpened ? 'close' : 'menu';
       },
 
       _currentTime: function() {

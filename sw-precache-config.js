@@ -9,7 +9,7 @@ module.exports = {
   navigateFallbackWhitelist: [/^(?!.*\.html$|\/data\/).*/],
   runtimeCaching: [
     {
-      urlPattern: /^https:\/\/img\.washingtonpost\.com|https:\/\/www\.washingtonpost\.com\/pb\/resources\/img/,
+      urlPattern: /^https:\/\/static01\.nyt\.com\/images/,
       handler: 'fastest',
       options: {
         cache: {
@@ -19,7 +19,7 @@ module.exports = {
       }
     },
     {
-      urlPattern: /^https:\/\/pwa\.washingtonpost\.com\/api/,
+      urlPattern: /^https:\/\/api\.nytimes\.com\/svc/,
       handler: 'networkFirst',
       options: {
         cache: {

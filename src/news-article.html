@@ -12,7 +12,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
+<link rel="import" href="intersection-observer.html">
 <link rel="import" href="news-side-list.html">
+<link rel="import" href="../elements/app-ad/app-ad.html">
 
 <dom-module id="news-article">
 
@@ -140,6 +142,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-right: 8px;
       }
 
+      app-ad {
+        width: 300px;
+        height: 250px;
+      }
+
+      .ad-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+
       @media (max-width: 767px) {
         :host {
           padding: 0;
@@ -248,6 +261,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </article>
 
       <aside>
+        <div class="ad-container">
+          <app-ad id="ad" preload$="[[preloadAd]]" type="a9" aax_size="300x250" aax_pubname="abc123" aax_src="302"></app-ad>
+        </div>
         <a href="#" class="share-link" aria-label="Send by email">
           <iron-icon icon="mail"></iron-icon> Email
         </a>
@@ -290,6 +306,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         failure: Boolean,
 
+        preloadAd: Boolean,
+
         categoryName: {
           type: Boolean,
           computed: '_return(_routeData.category)',
@@ -310,6 +328,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_loadArticle(article.html)'
       ],
 
+
+      attached: function() {
+        Polymer.IntersectionObserver.observe(this.$.ad, this._didAdVisibilityChange.bind(this));
+      },
+
+      detached: function() {
+        Polymer.IntersectionObserver.unobserve(this.$.ad);
+      },
+
       _loadArticle: function(html) {
         this.$.content.innerHTML = html;
         this.scopeSubtree(this.$.content);
@@ -325,6 +352,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _return: function(value) {
         return value;
+      },
+
+      _didAdVisibilityChange: function(visible) {
+        this.preloadAd = visible;
       }
 
     });

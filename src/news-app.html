@@ -9,17 +9,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-layout/app-box/app-box.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-layout/helpers/helpers.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
 <link rel="import" href="news-category-data.html">
+<link rel="import" href="news-nav.html">
 
 <dom-module id="news-app">
 
@@ -31,8 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         min-height: 100vh;
         font-family: Georgia;
-        --paper-icon-button-ink-color: white;
-        --app-sticky-nav-bg-color: #222;
+        --paper-icon-button-ink-color: #FFF;
         --app-sub-section-headline: {
           border-top: 1px solid #ccc;
           border-bottom: 1px solid #ccc;
@@ -42,136 +37,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }; 
       }
 
-      header,
-      .sticky-nav {
-        z-index: 10;
-      }
-
-      .logo {
-        text-align: center;
-      }
-
-      .date-line,
-      .article-headline {
-        text-align: center;
-        font-size: 11px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        margin: 0 16px;
-      }
-
-      .logo a {
-        font-weight: 600;
-        letter-spacing: 10px;
-        /* To offset letter-spacing for the last character. */
-        margin-right: -10px;
-        text-decoration: none;
-        /* required for IE 11, so this <a> can receive pointer events */
-        display: inline-block;
-        pointer-events: auto;
-        color: inherit;
-      }
-
-      .sticky-nav {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        position: fixed;
-        top: -1px;
-        left: 0;
-        right: 0;
-        color: #FFF;
-        visibility: hidden;
-        pointer-events: none;
-        transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        transform: translate3d(0, -100%, 0);
-      }
-
-      .sticky-nav[threshold-triggered] {
-        visibility: visible;
-        pointer-events: auto;
-        transform: translate3d(0, 0, 0);
-      }
-
-      .sticky-nav-toolbar {
-        background: var(--app-sticky-nav-bg-color);
-      }
-
       iron-pages {
         max-width: 1440px;
         margin: 0 auto;
-      }
-
-      app-drawer {
-        --app-drawer-content-container: {
-          background: #222;
-          color: #FFF;
-        };
-        --app-drawer-width: 230px;
-        z-index: 11;
-      }
-
-      app-drawer paper-icon-button {
-        --paper-icon-button-ink-color: #FFF;
-        margin: 10px;
-      }
-
-      .drawer-list {
-        margin: 0 20px;
-      }
-
-      .drawer-list a {
-        display: block;
-        padding: 0 24px;
-        line-height: 48px;
-        text-decoration: none;
-        color: #FFF;
-      }
-
-      .sticky-nav-menu {
-        display: none;
-      }
-
-      .sticky-nav-menu a {
-        display: block;
-        line-height: 32px;
-        font-size: 15px;
-        text-decoration: none;
-        color: #CCC;
-      }
-
-      .sticky-nav-menu a.iron-selected {
-        font-weight: bold;
-        color: #FFF;
-      }
-
-      :host([page=list]) .sticky-nav paper-icon-button[icon=mail],
-      :host([page=list]) .sticky-nav paper-icon-button[icon=share] {
-        display: none;
-      }
-
-      .drawer-list a.iron-selected {
-        background: #555;
-      }
-
-      .menu-list {
-        display: block;
-        text-align: center;
-        font-size: 13px;
-        border-top: 1px solid #CCC;
-        border-bottom: 1px solid #CCC;
-        padding: 8px 0;
-        margin: 32px 0;
-      }
-
-      .menu-list a {
-        color: inherit;
-        text-decoration: none;
-        margin: 0 10px;
-      }
-
-      .menu-list a.iron-selected {
-        font-weight: bold;
       }
 
       footer {
@@ -189,125 +57,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-decoration: underline;
       }
 
-      /* mobile */
-      @media (max-width: 767px) {
-        :host([page=article]) header .logo,
-        :host([page=article]) header .date-line {
-          visibility: hidden;
-        }
-
-        header {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-        }
-
-        header,
-        .logo a {
-          color: #FFF;
-        }
-
-        header .date-line {
-          padding: 6px 0;
-          border-top: 1px solid rgba(255,255,255,.5);
-          border-bottom: 1px solid rgba(255,255,255,.5);
-        }
-
-        .sticky-nav .logo,
-        :host([page=article]) .sticky-nav .date-line,
-        :host([page=article]) .sticky-nav paper-icon-button[icon=search],
-        :host([page=list]) .sticky-nav .article-headline {
-          display: none;
-        }
-
-        /* Can't use flex because we need a fixed width to clip text overflow. */
-        :host([page=article]) .sticky-nav-center {
-          width: calc(100% - 120px); /* 40px * 3 buttons */
-        }
-
-        /* Can't use flex because we need a fixed width to clip text overflow. */
-        :host([page=list]) .sticky-nav-center {
-          width: calc(100% - 80px); /* 40px * 2 buttons */
-        }
-      }
-
       /* desktop */
       @media (min-width: 768px) {
-        
         :host {
           margin: 0 40px;
-        }
-
-        .logo {
-          font-size: 39px;
-        }
-
-        .logo-toolbar {
-          padding: 40px 32px 0 32px;
-          height: 45px;
-        }
-
-        .sticky-nav-toolbar {
-          height: auto;
-        }
-
-        .sticky-nav {
-          height: auto;
-        }
-
-        .sticky-nav .logo a {
-          color: #FFF;
-        }
-
-        .sticky-nav .logo {
-          font-size: 23px;
-          padding-top: 16px;
-        }
-
-        .sticky-nav .date-line {
-          padding: 4px 0 14px;
-        }
-
-        .sticky-nav .article-headline {
-          display: none;
-        }
-
-        .sticky-nav-center {
-          flex: 1;
-        }
-
-        .sticky-nav-menu {
-          @apply(--layout-vertical);
-          @apply(--layout-center);
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: var(--app-sticky-nav-bg-color);
-          transition: transform 0.2s ease-in-out;
-          will-change: transform;
-          z-index: -1;
-          padding-top: 20px;
-          padding-bottom: 40px;
-        }
-
-        .grid-container {
-          column-count: 3;
-          column-gap: 82px;
-        }
-
-        .sticky-nav[threshold-triggered] > .sticky-nav-menu[shown] {
-          transform: translate3d(0, 100%, 0);
-        }
-
-        .toggle-drawer-btn {
-          visibility: hidden;
-          pointer-events: none;
-        }
-
-        :host([page=article]) .sticky-nav-center {
-          padding-left: 80px;
         }
       }
 
@@ -323,8 +76,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <iron-media-query query="max-width: 767px" query-matches="{{smallScreen}}"></iron-media-query>
-
     <!--
       news-category-data provides the list of categories and the articles for the category.
     -->
@@ -339,70 +90,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         offline="[[offline]]"
         failure="{{failure}}"></news-category-data>
 
-    <!--
-      Header at the scroll top of the page.
-    -->
-    <header>
-      <app-toolbar class="logo-toolbar">
-        <paper-icon-button arial-label="Main navigation"
-            class="toggle-drawer-btn" icon="menu" on-click="_toggleDrawer"></paper-icon-button>
-        <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
-        <paper-icon-button icon="search" aria-label="Search"></paper-icon-button>
-      </app-toolbar>
-      <div class="date-line" role="heading">
-        [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
-      </div>
-      <template is="dom-if" if="[[!smallScreen]]">
-        <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
-      </template>
-    </header>
-
-    <!--
-      Sticky nav reveals when scrolled down on the page.
-    -->
-    <app-box role="banner" class="sticky-nav" threshold="[[_getScrollThreshold(smallScreen)]]">
-      <app-toolbar class="sticky-nav-toolbar">
-        <paper-icon-button
-          arial-label="Main navigation"
-          icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
-        <div class="sticky-nav-center">
-          <div class="logo"><a href="/" aria-label="NEWS Home">NEWS</a></div>
-          <div class="date-line" role="heading">
-            [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
-          </div>
-          <div class="article-headline">[[articleHeadline]]</div>
-        </div>
-        <paper-icon-button icon="mail" aria-label="Send by mail"></paper-icon-button>
-        <paper-icon-button icon="share" aria-label="Share on social networks"></paper-icon-button>
-        <paper-icon-button icon="search" aria-label="Search"></paper-icon-button>
-      </app-toolbar>
-      <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
-        <iron-selector class="grid-container" role="navigation"
-            selected="[[categoryName]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
-      </div>
-    </app-box>
-
-    <!--
-      Lazy-create the drawer on small viewports.
-    -->
-    <template is="dom-if" if="[[_shouldRenderDrawer(smallScreen, loadComplete)]]">
-      <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
-        <paper-icon-button icon="close" on-click="_toggleDrawer"></paper-icon-button>
-        <iron-selector role="navigation" class="drawer-list" selected="[[categoryName]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
-      </app-drawer>
-    </template>
+    <news-nav
+        id="nav"
+        page="[[page]]"
+        categories="[[categories]]"
+        category="[[category]]"
+        load-complete="[[loadComplete]]">
+      [[article.headline]]
+    </news-nav>
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
       <!-- list view of articles in a category -->
@@ -443,16 +138,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
 
         page: {
-          observer: '_pageChanged',
-          reflectToAttribute: true
+          type: String,
+          observer: '_pageChanged'
         },
 
         categories: Array,
-
-        articleHeadline: {
-          type: String,
-          value: ''
-        },
 
         categoryName: String,
 
@@ -467,13 +157,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           readOnly: true
         },
 
-        failure: Boolean
+        failure: Boolean,
+
+        loadComplete: Boolean
+
       },
 
       observers: [
         '_routePageChanged(routeData.page)',
-        '_updateArticleHeadline(article.headline)',
-        '_updateDocumentTitle(page, category.title, articleHeadline)'
+        '_updateDocumentTitle(page, category.title, article.headline)'
       ],
 
       listeners: {
@@ -495,25 +187,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       },
 
-      _menuIcon: function(drawerOpened) {
-        if (drawerOpened)
-          return 'close';
-        return 'menu';
-      },
-
-      _currentTime: function() {
-        var monthNames = [
-          "January", "February", "March",
-          "April", "May", "June", "July",
-          "August", "September", "October",
-          "November", "December"
-        ];
-
-        var date = new Date();
-
-        return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
-      },
-
       _routePageChanged: function(page) {
         if (!page) {
           // set default route if route path is empty
@@ -526,7 +199,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
         Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });
         // Close the drawer - in case the *route* change came from a link in the drawer.
-        this.drawerOpened = false;
+        this.$.nav.closeDrawer();
       },
 
       _pageChanged: function(page, oldPage) {
@@ -575,26 +248,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-      _toggleDrawer: function() {
-        this.drawerOpened = !this.drawerOpened;
-      },
-
-      _updateArticleHeadline: function(articleHeadline) {
-        this.articleHeadline = articleHeadline;
-      },
-
       // Elements in the app can notify section changes.
       // Response by a11y announcing the section and syncronizing the category.
       _updateDocumentTitle: function(page, categoryTitle, articleHeadline) {
         document.title = (page === 'list' ? categoryTitle : articleHeadline) + ' - NEWS';
-      },
-
-      _shouldRenderDrawer: function(smallScreen, loadComplete) {
-        return smallScreen && loadComplete;
-      },
-
-      _getScrollThreshold: function(smallScreen) {
-        return smallScreen ? window.innerHeight - 64 : 162;
       },
 
       _refreshData: function() {

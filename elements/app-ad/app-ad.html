@@ -17,7 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     document.registerElement('app-ad', {
       prototype: {
 
-        __proto__: HTMLElement.prototype,
+        __proto__: Object.create(HTMLElement.prototype),
 
         createdCallback: function() {
           this.style.display = 'inline-block';
@@ -54,9 +54,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return;
           }
           this._iframe = document.createElement('iframe');
-          this._iframe.style.cssText = 'position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; border: 0;';
-          this._iframe.src = this._adUrl + '/' + this.type + '.html?' + JSON.stringify(this.config);
-          this.appendChild(this._iframe);
+          setTimeout(function() {
+            this._iframe.style.cssText = 'position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; border: 0;';
+            this._iframe.src = this._adUrl + '/' + this.type + '.html?' + JSON.stringify(this.config);
+            this.appendChild(this._iframe);
+          }.bind(this));
         }
 
       }

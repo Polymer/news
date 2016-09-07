@@ -5,5 +5,15 @@
     "src/news-list.html",
     "src/news-article.html",
     "src/lazy-resources.html"
+  ],
+  "sourceGlobs": [
+   "src/**/*",
+   "images/**/*",
+   "bower.json",
+   "app.yaml"
+  ],
+  "includeDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }

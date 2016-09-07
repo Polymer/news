@@ -14,7 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     'use strict';
 
-    document.registerElement('app-ad', {
+    document.registerElement('news-ad', {
       prototype: {
 
         __proto__: Object.create(HTMLElement.prototype),
@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.style.position = 'relative';
           this.style.overflow = 'hidden';
           //this._adUrl = (location.hostname === 'localhost' ? location.origin : 'https://polymer-ads.appspot.com') + '/elements/app-ad';
-          this._adUrl = location.origin + '/elements/app-ad';
+          this._adUrl = location.origin + '/src/news-ad';
         },
 
         attachedCallback: function() {

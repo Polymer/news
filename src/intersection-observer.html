@@ -23,18 +23,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _observeChildrenVisibility: function(options) {
       if (!this._observer && this._hasFeature()) {
         this._observeNode = this._observeNode.bind(this);
-        this._unobserveNode = this._unobserveNode.bind(this);
         this._observer = new IntersectionObserver(this._processChanges.bind(this), options);
-        this.addEventListener('io-observer', this._observeNode);
-        this.addEventListener('io-unobserve', this._unobserveNode);
+        this.addEventListener('io', this._observeNode);
       }
     },
 
     _unobserveChildrenVisibility: function() {
       if (this._observer) {
         this._observer = null;
-        this.removeEventListener('io-observer', this._observeNode);
-        this.removeEventListener('io-unobserve', this._unobserveNode);
+        this.removeEventListener('io', this._observeNode);
       }
     },
 
@@ -46,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       node.__didVisibilityChangeCb = cb;
 
-      Polymer.Base.fire('io-observer', null, {
+      Polymer.Base.fire('io', { action: 'observe' }, {
         node: node,
         bubbles: true,
         cancelable: true
@@ -54,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     unobserve: function(node) {
-      Polymer.Base.fire('io-unobserver', null, {
+      Polymer.Base.fire('io',  { action: 'unobserve' }, {
         node: node,
         bubbles: true,
         cancelable: true
@@ -68,16 +65,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _observeNode: function(e) {
-      this._observer.observe(e.path[0]);
-      e.stopPropagation();
-    },
-
-    _unobserveNode: function(e) {
-      if (!this._observer) {
-        return;
+      if (e.detail.action == 'observe') {
+        this._observer.observe(e.path[0]);
+      } else {
+        this._observer && this._observer.unobserve(e.path[0]);
       }
       e.stopPropagation();
-      this._observer.unobserve(e.path[0]);
     }
 
   };

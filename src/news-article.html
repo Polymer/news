@@ -14,7 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="intersection-observer.html">
 <link rel="import" href="news-side-list.html">
-<link rel="import" href="../elements/app-ad/app-ad.html">
+<link rel="import" href="news-ad/news-ad.html">
 
 <dom-module id="news-article">
 
@@ -128,6 +128,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 32px;
       }
 
+      news-ad {
+        width: 300px;
+        height: 250px;
+      }
+
       .share-link {
         display: inline-block;
         margin-right: 24px;
@@ -142,10 +147,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-right: 8px;
       }
 
-      app-ad {
-        width: 300px;
-        height: 250px;
-      }
 
       .ad-container {
         display: flex;
@@ -262,7 +263,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <aside>
         <div class="ad-container">
-          <app-ad id="ad" preload$="[[preloadAd]]" type="a9" aax_size="300x250" aax_pubname="abc123" aax_src="302"></app-ad>
+          <news-ad id="ad" preload$="[[preloadAd]]" type="a9" aax_size="300x250" aax_pubname="abc123" aax_src="302"></news-ad>
         </div>
         <a href="#" class="share-link" aria-label="Send by email">
           <iron-icon icon="mail"></iron-icon> Email

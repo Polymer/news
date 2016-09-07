@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="news-list-item.html">
 <link rel="import" href="news-side-list.html">
 <link rel="import" href="news-list-featured-item.html">
-<link rel="import" href="../elements/app-ad/app-ad.html">
+<link rel="import" href="news-ad/news-ad.html">
 
 <dom-module id="news-list">
 
@@ -68,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 32px;
       }
 
-      app-ad {
+      news-ad {
         width: 300px;
         height: 250px;
       }
@@ -176,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
       <aside>
         <div class="ad-container">
-          <app-ad id="ad" preload$="[[preloadAd]]" type="a9" aax_size="300x250" aax_pubname="abc123" aax_src="302"></app-ad>
+          <news-ad id="ad" preload$="[[preloadAd]]" type="a9" aax_size="300x250" aax_pubname="abc123" aax_src="302"></news-ad>
         </div>
         <news-side-list items="[[_slice(category.items, 0, 3)]]">
           Most Read

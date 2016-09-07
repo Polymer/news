@@ -15,6 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="news-list-item.html">
 <link rel="import" href="news-side-list.html">
 <link rel="import" href="news-list-featured-item.html">
+<link rel="import" href="../elements/app-ad/app-ad.html">
 
 <dom-module id="news-list">
 
@@ -65,6 +66,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       news-side-list {
         margin-bottom: 32px;
+      }
+
+      app-ad {
+        width: 300px;
+        height: 250px;
+      }
+
+      .ad-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 24px;
       }
 
       /* mobile */
@@ -163,6 +175,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </ul>
       </div>
       <aside>
+        <div class="ad-container">
+          <app-ad id="ad" preload$="[[preloadAd]]" type="a9" aax_size="300x250" aax_pubname="abc123" aax_src="302"></app-ad>
+        </div>
         <news-side-list items="[[_slice(category.items, 0, 3)]]">
           Most Read
         </news-side-list>
@@ -195,6 +210,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         failure: Boolean,
 
+        preloadAd: Boolean,
+
         categoryName: {
           type: Boolean,
           computed: '_return(_routeData.category)',
@@ -205,15 +222,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       },
 
-      created: function() {
-        this._resizeHandler = this._resizeHandler.bind(this);
-      },
-
       attached: function() {
+        this._resizeHandler = this._resizeHandler.bind(this);
         window.addEventListener('resize', this._resizeHandler);
+        Polymer.IntersectionObserver.observe(this.$.ad, this._didAdVisibilityChange.bind(this));
       },
 
       detached: function() {
+        Polymer.IntersectionObserver.unobserve(this.$.ad);
         window.removeEventListener('resize', this._resizeHandler);
       },
 
@@ -235,6 +251,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _return: function(value) {
         return value;
+      },
+
+      _didAdVisibilityChange: function(visible) {
+        this.preloadAd = visible;
       }
 
     });

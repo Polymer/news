@@ -1,0 +1,85 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<script>
+
+  Polymer.IntersectionObserver = {
+
+    _observer: null,
+
+    _hasFeature: function() {
+      return window.IntersectionObserver != null;
+    },
+
+    _observeChildrenVisibility: function(options) {
+      if (!this._observer && this._hasFeature()) {
+        this._observeNode = this._observeNode.bind(this);
+        this._unobserveNode = this._unobserveNode.bind(this);
+        this._observer = new IntersectionObserver(this._processChanges.bind(this), options);
+        this.addEventListener('io-observer', this._observeNode);
+        this.addEventListener('io-unobserve', this._unobserveNode);
+      }
+    },
+
+    _unobserveChildrenVisibility: function() {
+      if (this._observer) {
+        this._observer = null;
+        this.removeEventListener('io-observer', this._observeNode);
+        this.removeEventListener('io-unobserve', this._unobserveNode);
+      }
+    },
+
+    observe: function(node, cb) {
+      if (!this._hasFeature()) {
+        // Should this be polyfilled?
+        cb(true);
+        return;
+      }
+      node.__didVisibilityChangeCb = cb;
+
+      Polymer.Base.fire('io-observer', null, {
+        node: node,
+        bubbles: true,
+        cancelable: true
+      });
+    },
+
+    unobserve: function(node) {
+      Polymer.Base.fire('io-unobserver', null, {
+        node: node,
+        bubbles: true,
+        cancelable: true
+      });
+    },
+
+    _processChanges: function(changes) {
+      for (var i = 0; i < changes.length; i++) {
+        changes[i].target.__didVisibilityChangeCb(changes[i].intersectionRatio > 0);
+      }
+    },
+
+    _observeNode: function(e) {
+      this._observer.observe(e.path[0]);
+      e.stopPropagation();
+    },
+
+    _unobserveNode: function(e) {
+      if (!this._observer) {
+        return;
+      }
+      e.stopPropagation();
+      this._observer.unobserve(e.path[0]);
+    }
+
+  };
+
+</script>

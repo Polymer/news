@@ -17,15 +17,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   (function() {
 
     var categoryList = [
-      {name: 'mobile-homepage', title: 'Top Stories'},
-      {name: 'opinions', title: 'Opinions'},
-      {name: 'politics', title: 'Politics'},
-      {name: 'world', title: 'World'},
+      {name: 'u.s.', title: 'U.S.'},
       {name: 'business', title: 'Business'},
-      {name: 'business_technology', title: 'Technology'},
-      {name: 'lifestyle', title: 'Lifestyle'},
-      {name: 'entertainment', title: 'Entertainment'},
-      {name: 'sports', title: 'Sports'}
+      {name: 'opinion', title: 'Opinion'},
+      {name: 'technology', title: 'Technology'},
+      {name: 'world', title: 'World'},
+      {name: 'sports', title: 'Sports'},
+      {name: 'movies', title: 'Movies'},
+      {name: 'food', title: 'Food'}
     ];
 
     var textarea = document.createElement('textarea');
@@ -97,12 +96,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if ((offline && article.html) || !article || this.loading) {
           return;
         }
-        this._fetch('https://pwa.washingtonpost.com/api/content/?url=' + article.id,
-          function(response) {
-            this.set('article.readTime', Math.max(2, Math.round(response.html.length / 3000)) + ' min read');
-            this.set('article.html', response.html);
-          }.bind(this),
-          attempts || 1);
+
+        // NYT API doesn't provide the article content, so we construct the content here
+        var html = '<p class="byline">' + article.author + '</p><p>' + article.snippet +
+            '</p><a href="' + article.url + '">Read More...</a>';
+        this.set('article.readTime', Math.max(2, Math.round(html.length / 3000)) + ' min read');
+        this.set('article.html', html);
       },
 
       _computeCategory: function(categoryName) {
@@ -122,7 +121,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return;
         }
         var path = category.name.replace('_', '/');
-        this._fetch('https://pwa.washingtonpost.com/api/section/' + path + '/?outputType=jsonFront',
+        this._fetch('https://api.nytimes.com/svc/news/v3/content/all/' + path + '.json',
           function(response) {
             this.set('category.items', this._parseCategoryItems(response));
           }.bind(this),
@@ -132,17 +131,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _parseCategoryItems: function(response) {
         var items = [];
 
-        for (var i = 0; i < response.entries.length; ++i) {
-          var item = response.entries[i];
+        for (var i = 0; i < response.results.length; ++i) {
+          var item = response.results[i];
           items.push({
-            headline: this._unescapeText(item.web_headline),
+            headline: this._unescapeText(item.title),
             href: this._getItemHref(item),
-            id: item.canonical_url,
+            id: item.title,
             imageUrl: this._getItemImage(item),
-            category: item.kicker,
-            timeAgo: this._timeAgo(item.display_date_num),
+            category: item.section,
+            timeAgo: this._timeAgo(new Date(item.updated_date).getTime()),
             author: item.byline,
-            summary: this._trimRight(item.blurb, 100)
+            summary: this._trimRight(item.abstract, 100),
+            snippet: item.abstract,
+            url: item.url
           });
         }
 
@@ -157,19 +158,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getItemHref: function(item) {
         // By returning null when `canonical_url` is undefined, the href attribute won't be set and
         // the link will be disabled.
-        return item.canonical_url ? '/article/' + this.categoryName + '?id=' + encodeURIComponent(item.canonical_url) : null;
+        return item.title ? '/article/' + this.categoryName + '?id=' + encodeURIComponent(item.title) : null;
       },
 
       _getItemImage: function(item) {
-        return (item && item.thumbnail && item.thumbnail.featured &&
-          item.thumbnail.featured.url) || '';
+        return item.multimedia && item.multimedia[item.multimedia.length - 1].url;
       },
 
       _timeAgo: function(timestamp) {
         if (!timestamp)
           return ''
 
-        var minutes = (Date.now() - timestamp * 1000) / 1000 / 60;
+        var minutes = (Date.now() - timestamp) / 1000 / 60;
         if (minutes < 2)
           return '1 min ago';
         if (minutes < 60)

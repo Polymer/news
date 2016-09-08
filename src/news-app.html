@@ -97,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         categories="[[categories]]"
         category="[[category]]"
         load-complete="[[loadComplete]]">
-      [[article.headline]]
+      [[articleHeadline]]
     </news-nav>
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
@@ -156,6 +156,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         articleId: String,
 
         article: Object,
+  
+        articleHeadline: {
+          type: String,
+          value: ''
+        },
 
         offline: {
           type: Boolean,
@@ -170,7 +175,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       observers: [
         '_routePageChanged(routeData.page)',
-        '_updateDocumentTitle(page, category.title, article.headline)'
+        '_updateArticleHeadline(article.headline)',
+        '_updateDocumentTitle(page, category.title, articleHeadline)'
       ],
 
       listeners: {
@@ -257,6 +263,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               'You are offline' : 'You are online';
           this._networkSnackbar.open();
         }
+      },
+
+      _updateArticleHeadline: function(articleHeadline) {
+        this.articleHeadline = articleHeadline;
       },
 
       // Elements in the app can notify section changes.

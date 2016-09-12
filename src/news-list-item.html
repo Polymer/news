@@ -10,8 +10,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-
-<link rel="import" href="intersection-observer.html">
 <link rel="import" href="news-img.html">
 
 <dom-module id="news-list-item">
@@ -140,7 +138,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <a href$="[[item.href]]">
-      <news-img id="img" alt="[[item.headline]]"></news-img>
+      <news-img src="[[item.imageUrl]]" alt="[[item.headline]]"></news-img>
       <div class="headline">
         <div class="category" hidden$="[[!item.category]]">[[item.category]]</div>
         <h2>[[item.headline]]</h2>
@@ -161,8 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
 
         item: {
-          type: Object,
-          observer: '_itemChanged'
+          type: Object
         },
 
         horizontal: {
@@ -171,24 +168,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true
         }
 
-      },
-
-      attached: function() {
-        Polymer.IntersectionObserver.observe(this, this._didVisibilityChange.bind(this));
-      },
-
-      detached: function() {
-        Polymer.IntersectionObserver.unobserve(this);
-      },
-
-      _didVisibilityChange: function(visible) {
-        if (visible && this.$.img.src != this.item.imageUrl) {
-          this.$.img.src = this.item.imageUrl;
-        }
-      },
-
-      _itemChanged: function(item) {
-        Polymer.IntersectionObserver.notifyIfNeeded(this);
       }
 
     });

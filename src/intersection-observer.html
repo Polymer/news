@@ -36,18 +36,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     observe: function(node, cb) {
-      if (!this._hasFeature()) {
-        // Should this be polyfilled?
-        cb(true);
-        return;
-      }
       node.__didVisibilityChangeCb = cb;
 
-      Polymer.Base.fire('io', { action: 'observe' }, {
-        node: node,
-        bubbles: true,
-        cancelable: true
-      });
+      if (this._hasFeature()) {
+        node.__isVisible = false;
+        Polymer.Base.fire('io', { action: 'observe' }, {
+          node: node,
+          bubbles: true,
+          cancelable: true
+        });
+      } else {
+        // Should this be polyfilled?
+        node.__isVisible = true;
+        cb(true);
+      }
     },
 
     unobserve: function(node) {
@@ -56,6 +58,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         bubbles: true,
         cancelable: true
       });
+      delete node.__didVisibilityChangeCb;
+      delete node.__isVisible;
     },
 
     notifyIfNeeded: function(node) {

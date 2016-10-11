@@ -100,7 +100,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._fetch('https://pwa.washingtonpost.com/api/content/?url=' + article.id,
           function(response) {
             this.set('article.readTime', Math.max(2, Math.round(response.html.length / 3000)) + ' min read');
-            this.set('article.html', response.html);
+            this.set('article.html', this._formatHTML(response.html));
           }.bind(this),
           attempts || 1);
       },
@@ -189,6 +189,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _trimRight: function(text, maxLength) {
         var breakIdx = text.indexOf(' ', maxLength);
         return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
+      },
+
+      _formatHTML: function(html) {
+        var template = document.createElement('template');
+        template.innerHTML = html;
+
+        // Remove h1, .kicker, and .date from content. 
+        var h1 = template.content.querySelector('h1');
+        h1 && h1.remove();
+        var kicker = template.content.querySelector('.kicker');
+        kicker && kicker.remove();
+        var date = template.content.querySelector('.date');
+        date && date.remove();
+
+        // Remove the first image if it's the same as the item image.
+        var image = template.content.querySelector('img');
+        if (image && this._isSameImageSrc(image.src, this.article.imageUrl)) {
+          image.remove();
+        }
+
+        // Remove width/height attributes from all images.
+        var images = template.content.querySelectorAll('img');
+        for (var i = 0; i < images.length; ++i) {
+          var img = images[i];
+          img.removeAttribute('width');
+          img.removeAttribute('height');
+        }
+
+        return template.innerHTML;
+      },
+
+      _isSameImageSrc: function(a, b) {
+        var regex = /[^/]+\.(jpg|png|gif)/;
+        var aMatch = regex.exec(a);
+        var bMatch = regex.exec(b);
+        return aMatch && bMatch && aMatch[0] === bMatch[0];
       },
 
       _fetch: function(url, callback, attempts) {

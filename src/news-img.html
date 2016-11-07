@@ -10,7 +10,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="intersection-observer.html">
 
 <dom-module id="news-img">
 
@@ -64,24 +63,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-      attached: function() {
-        Polymer.IntersectionObserver.observe(this, this._didVisibilityChange.bind(this));
-      },
-
-      detached: function() {
-        Polymer.IntersectionObserver.unobserve(this);
-      },
-
       _srcChanged: function(src) {
         this.$.img.removeAttribute('src');
         this.$.img.style.transition = '';
         this.$.img.style.opacity = 0;
-        Polymer.IntersectionObserver.notifyIfNeeded(this);
-      },
-
-      _didVisibilityChange: function(visible) {
-        if (visible && this.src) {
-          this.$.img.src = this.src;
+        if (src) {
+          this.$.img.src = src;
         }
       },
 

@@ -14,7 +14,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 
-<link rel="import" href="intersection-observer.html">
 <link rel="import" href="news-category-data.html">
 <link rel="import" href="news-nav.html">
 
@@ -136,10 +135,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'news-app',
 
-      behaviors: [
-        Polymer.IntersectionObserver
-      ],
-
       properties: {
 
         page: {
@@ -156,7 +151,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         articleId: String,
 
         article: Object,
-  
+
         articleHeadline: {
           type: String,
           value: ''
@@ -191,7 +186,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       attached: function() {
-        this._observeChildrenVisibility();
         Polymer.RenderStatus.afterNextRender(this, function() {
           this.listen(window, 'online', '_notifyNetworkStatus');
           this.listen(window, 'offline', '_notifyNetworkStatus');
@@ -199,7 +193,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       detached: function() {
-        this._unobserveChildrenVisibility();
         this.unlisten(window, 'online', '_notifyNetworkStatus');
         this.unlisten(window, 'offline', '_notifyNetworkStatus');
       },

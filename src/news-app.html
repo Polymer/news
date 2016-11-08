@@ -25,8 +25,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       :host {
         display: block;
+        position: relative;
         min-height: 100vh;
-        font-family: Georgia;
+        padding-bottom: 64px;
         --paper-icon-button-ink-color: #FFF;
         --app-sub-section-headline: {
           border-top: 1px solid #ccc;
@@ -43,14 +44,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       footer {
-        margin: 40px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        padding-bottom: 24px;
         text-align: center;
       }
 
       footer a {
         text-decoration: none;
-        font-size: 11px;
-        color: #999;
+        font-size: 13px;
+        color: #757575;
       }
 
       footer a:hover {
@@ -231,10 +236,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!this.loadComplete) {
           Polymer.RenderStatus.afterNextRender(this, function() {
             this.importHref(this.resolveUrl('lazy-resources.html'), function() {
-              // Register service worker if supported.
-              if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/service-worker.js');
-              }
               this._notifyNetworkStatus();
               this.loadComplete = true;
             });

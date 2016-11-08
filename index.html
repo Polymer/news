@@ -26,11 +26,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     body {
       margin: 0;
-      background: #FAFAFA;
+      background-color: #FAFAFA;
       color: #383838;
-      font-family: 'Roboto', 'Noto', sans-serif;
+      font-family: Georgia;
       min-height: 100vh;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    news-app[unresolved] {
+      display: block;
+      height: 45px;
+      padding-top: 40px;
+      padding-left: 10px;
+      font-size: 39px;
+      font-weight: 600;
+      letter-spacing: 10px;
+      text-align: center;
+    }
+
+    /* mobile */
+    @media (max-width: 767px) {
+      body {
+        background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 15%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.7) 48%, rgba(0,0,0,1) 60%);
+        background-repeat: no-repeat;
+        background-size: 100% 100vh;
+      }
+
+      news-app[unresolved] {
+        height: 22px;
+        padding-top: 21px;
+        font-size: 20px;
+        color: #FFF;
+      }
     }
 
   </style>
@@ -38,7 +65,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 <body>
 
-  <news-app unresolved></news-app>
+  <news-app unresolved>NEWS</news-app>
 
   <script>
     Polymer = {lazyRegister: true, dom: 'shadow'};
@@ -53,6 +80,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var e = document.createElement('script');
         e.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
         document.body.appendChild(e);
+      }
+
+      // Load pre-caching Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/service-worker.js');
+        });
       }
     })();
   </script>

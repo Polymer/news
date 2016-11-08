@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="news-list-item.html">
 <link rel="import" href="news-side-list.html">
 <link rel="import" href="news-list-featured-item.html">
-<link rel="import" href="news-ad/news-ad.html">
+<link rel="import" href="news-iframe.html">
 
 <dom-module id="news-list">
 
@@ -68,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 32px;
       }
 
-      news-ad {
+      news-iframe {
         width: 300px;
         height: 250px;
       }
@@ -176,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
       <aside>
         <div class="ad-container">
-          <news-ad id="ad" preload$="[[preloadAd]]" type="a9" aax_size="300x250" aax_pubname="abc123" aax_src="302"></news-ad>
+          <news-iframe src="/src/ads/a9.html"></news-iframe>
         </div>
         <news-side-list items="[[_slice(category.items, 0, 3)]]">
           Most Read
@@ -225,11 +225,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       attached: function() {
         this._resizeHandler = this._resizeHandler.bind(this);
         window.addEventListener('resize', this._resizeHandler);
-        Polymer.IntersectionObserver.observe(this.$.ad, this._didAdVisibilityChange.bind(this));
       },
 
       detached: function() {
-        Polymer.IntersectionObserver.unobserve(this.$.ad);
         window.removeEventListener('resize', this._resizeHandler);
       },
 
@@ -251,10 +249,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _return: function(value) {
         return value;
-      },
-
-      _didAdVisibilityChange: function(visible) {
-        this.preloadAd = visible;
       }
 
     });

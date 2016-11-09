@@ -48,4 +48,4 @@ Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
 
 #### Deploy
 
-    appcfg.py -A <project> update build/bundled
+    gcloud app deploy build/bundled/app.yaml --project [YOUR_PROJECT_ID]

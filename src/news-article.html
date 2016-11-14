@@ -46,6 +46,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         flex: 1;
       }
 
+      #previousArticle,
+      #nextArticle {
+        display: none;
+      }
+
       .cover-text .category {
         padding: 6px 20px 7px;
         border: 1px solid #CCC;
@@ -157,6 +162,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           display: block;
         }
 
+        #previousArticle,
+        #nextArticle {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 1;
+        }
+
         .cover {
           background: #000;
         }
@@ -253,6 +267,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
         </div>
         <div id="content"></div>
+
+        <div id="previousArticle" class="cover">
+          <div class="cover-text">
+            <div class="flex"></div>
+            <div>
+              <div class="category">[[previousArticle.category]]</div>
+            </div>
+            <h1>[[previousArticle.headline]]</h1>
+            <div class="meta">
+              <span>[[previousArticle.timeAgo]]</span>
+              <iron-icon class="timer-icon" icon="timer"></iron-icon>
+              <span>[[previousArticle.readTime]]</span>
+            </div>
+          </div>
+
+          <div class="cover-img-container">
+            <news-img src="[[previousArticle.imageUrl]]" hidden$="[[!previousArticle.imageUrl]]"></news-img>
+            <div class="scrim"></div>
+          </div>
+        </div>
+
+        <div id="nextArticle" class="cover">
+          <div class="cover-text">
+            <div class="flex"></div>
+            <div>
+              <div class="category">[[nextArticle.category]]</div>
+            </div>
+            <h1>[[nextArticle.headline]]</h1>
+            <div class="meta">
+              <span>[[nextArticle.timeAgo]]</span>
+              <iron-icon class="timer-icon" icon="timer"></iron-icon>
+              <span>[[nextArticle.readTime]]</span>
+            </div>
+          </div>
+
+          <div class="cover-img-container">
+            <news-img src="[[nextArticle.imageUrl]]" hidden$="[[!nextArticle.imageUrl]]"></news-img>
+            <div class="scrim"></div>
+          </div>
+        </div>
       </article>
 
       <aside>
@@ -295,6 +349,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         article: Object,
 
+        previousArticle: {
+          type: Object,
+          computed: '_computePreviousArticle(category.items, article)'
+        },
+
+        nextArticle: {
+          type: Object,
+          computed: '_computeNextArticle(category.items, article)'
+        },
+
         loading: Boolean,
 
         offline: Boolean,
@@ -323,6 +387,113 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         '_loadArticle(article.html)'
       ],
 
+      attached: function() {
+        Polymer.RenderStatus.afterNextRender(this, this._installListeners);
+      },
+
+      _installListeners: function() {
+        this.addEventListener('touchstart', this._touchstart.bind(this));
+        this.addEventListener('touchmove', this._touchmove.bind(this));
+        this.addEventListener('touchend', this._touchend.bind(this));
+      },
+
+      _touchstart: function(event) {
+        if (window.innerWidth > 767) {
+          return;
+        }
+
+        // Save start coordinates
+        if (!this._touchDir) {
+          this._startX = event.changedTouches[0].clientX;
+          this._startY = event.changedTouches[0].clientY;
+        }
+      },
+
+      _touchmove: function(event) {
+        if (window.innerWidth > 767) {
+          return;
+        }
+
+        // Is touchmove mostly horizontal or vertical?
+        if (!this._touchDir) {
+          var absX = Math.abs(event.changedTouches[0].clientX - this._startX);
+          var absY = Math.abs(event.changedTouches[0].clientY - this._startY);
+          this._touchDir = absX > absY ? 'x' : 'y';
+        }
+
+        if (this._touchDir === 'x') {
+          // Prevent vertically scrolling when swiping
+          event.preventDefault();
+
+          var dx = Math.round(event.changedTouches[0].clientX - this._startX);
+
+          // Don't translate past the current image if there's no adjacent image in that direction
+          if ((!this.previousArticle && dx > 0) || (!this.nextArticle && dx < 0)) {
+            dx = 0;
+          }
+
+          if (this.previousArticle) {
+            this._translate(this.$.previousArticle, dx - this.offsetWidth, window.pageYOffset);
+          }
+          if (this.nextArticle) {
+            this._translate(this.$.nextArticle, dx + this.offsetWidth, window.pageYOffset);
+          }
+        }
+      },
+
+      _touchend: function(event) {
+        if (window.innerWidth > 767) {
+          return;
+        }
+
+        // Don't finish swiping if there are still active touches.
+        if (event.touches.length) {
+          return;
+        }
+
+        if (this._touchDir === 'x') {
+          var dx = Math.round(event.changedTouches[0].clientX - this._startX);
+
+          // Don't translate past the current image if there's no adjacent image in that direction
+          if ((!this.previousArticle && dx > 0) || (!this.nextArticle && dx < 0)) {
+            dx = 0;
+          }
+
+          if (dx > 0) {
+            if (dx > 100) {
+              this._resetElementStyles(this.$.previousArticle);
+              this.set('_queryParams.id', this.previousArticle.id);
+              Polymer.AppLayout.scroll({ top: 0 });
+            } else {
+              this._translate(this.$.previousArticle, -this.offsetWidth, window.pageYOffset, true);
+            }
+          } else if (dx < 0) {
+            if (dx < -100) {
+              this._resetElementStyles(this.$.nextArticle);
+              this.set('_queryParams.id', this.nextArticle.id);
+              Polymer.AppLayout.scroll({ top: 0 });
+            } else {
+              this._translate(this.$.nextArticle, this.offsetWidth, window.pageYOffset, true);
+            }
+          }
+        }
+
+        // Reset touch direction
+        this._touchDir = null;
+      },
+
+      _translate: function(elem, x, y, transition) {
+        elem.style.display = 'block';
+        elem.style.transition = transition ? 'transform 0.2s' : '';
+        elem.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+      },
+
+      _resetElementStyles: function(elem) {
+        elem.style.display = '';
+        elem.style.transition = '';
+        elem.style.transform = '';
+      },
+
       _loadArticle: function(html) {
         this.$.content.innerHTML = html;
         this.scopeSubtree(this.$.content);
@@ -338,6 +509,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _return: function(value) {
         return value;
+      },
+
+      _computePreviousArticle: function(categoryItems, article) {
+        var i = categoryItems.indexOf(article);
+        return i > 0 ? categoryItems[i-1] : null;
+      },
+
+      _computeNextArticle: function(categoryItems, article) {
+        var i = categoryItems.indexOf(article);
+        return i < categoryItems.length-1 ? categoryItems[i+1] : null;
       }
 
     });

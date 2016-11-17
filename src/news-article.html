@@ -258,13 +258,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _installListeners: function() {
+        this._desktopMediaQuery = window.matchMedia('(min-width: 768px)');
         this.addEventListener('touchstart', this._touchstart.bind(this));
         this.addEventListener('touchmove', this._touchmove.bind(this));
         this.addEventListener('touchend', this._touchend.bind(this));
       },
 
       _touchstart: function(event) {
-        if (window.innerWidth > 767) {
+        if (this._isDesktopWidth()) {
           return;
         }
 
@@ -283,7 +284,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _touchmove: function(event) {
-        if (window.innerWidth > 767) {
+        if (this._isDesktopWidth()) {
           return;
         }
 
@@ -315,7 +316,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _touchend: function(event) {
-        if (window.innerWidth > 767) {
+        if (this._isDesktopWidth()) {
           return;
         }
 
@@ -394,6 +395,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         newCover.parentElement.insertBefore(newCover, oldCover);
 
         return oldCover;
+      },
+
+      _isDesktopWidth: function() {
+        return this._desktopMediaQuery.matches;
       },
 
       _loadArticle: function(html) {

@@ -9,6 +9,7 @@
   "sourceGlobs": [
    "src/**/*",
    "images/**/*",
+   "data/**/*",
    "bower.json",
    "app.yaml"
   ],

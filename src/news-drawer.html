@@ -20,8 +20,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       app-drawer {
         --app-drawer-content-container: {
-          background: #222;
-          color: #FFF;
+          background: var(--app-nav-background-color);
+          color: var(--app-nav-text-color);
         };
         --app-drawer-width: 230px;
         z-index: 11;
@@ -40,11 +40,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 0 24px;
         line-height: 48px;
         text-decoration: none;
-        color: #FFF;
+        color: inherit;
       }
 
       .drawer-list a.iron-selected {
-        background: #555;
+        background: var(--app-nav-selected-background-color);
       }
 
     </style>

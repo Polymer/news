@@ -32,7 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .cover-text .category {
         padding: 6px 20px 7px;
-        border: 1px solid #CCC;
+        border: 1px solid var(--app-border-color);
         display: inline-block;
         font-family: Georgia;
         font-weight: bold;
@@ -49,7 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .cover-text .meta {
         font-size: 11px;
         font-weight: bold;
-        border-top: 1px solid #CCC;
+        border-top: 1px solid var(--app-border-color);
         padding: 24px 0;
       }
 
@@ -81,20 +81,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           flex-direction: column;
           height: 100vh;
           box-sizing: border-box;
-          color: #FFF;
+          color: var(--app-cover-text-color);
           padding: 0 24px;
           z-index: 1;
         }
 
         .cover-text .category {
-          color: #FFF;
-          border: 1px solid rgba(255, 255, 255, 0.5);
+          border: 1px solid var(--app-transparent-border-color);
         }
 
         .cover-text .meta {
           font-size: 11px;
           font-weight: bold;
-          border-top: 1px solid rgba(255, 255, 255, 0.5);
+          border-top: 1px solid var(--app-transparent-border-color);
         }
 
         .cover-img-container {

@@ -19,10 +19,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <style>
 
-      :host {
-        --app-sticky-nav-bg-color: #222;
-      }
-
       header,
       .sticky-nav {
         z-index: 10;
@@ -61,7 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         top: -1px;
         left: 0;
         right: 0;
-        color: #FFF;
+        color: var(--app-nav-text-color);
         visibility: hidden;
         pointer-events: none;
         transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
@@ -75,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .sticky-nav-toolbar {
-        background: var(--app-sticky-nav-bg-color);
+        background: var(--app-nav-background-color);
       }
 
       .sticky-nav-menu {
@@ -87,12 +83,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         line-height: 32px;
         font-size: 15px;
         text-decoration: none;
-        color: #CCC;
+        color: var(--app-nav-deselected-text-color);
       }
 
       .sticky-nav-menu a.iron-selected {
         font-weight: bold;
-        color: #FFF;
+        color: var(--app-nav-text-color);
       }
 
       :host([page=list]) .sticky-nav paper-icon-button[icon=mail],
@@ -104,8 +100,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         text-align: center;
         font-size: 13px;
-        border-top: 1px solid #CCC;
-        border-bottom: 1px solid #CCC;
+        border-top: 1px solid var(--app-border-color);
+        border-bottom: 1px solid var(--app-border-color);
         padding: 8px 0;
         margin: 32px 0;
       }
@@ -136,13 +132,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         header,
         .logo a {
-          color: #FFF;
+          color: var(--app-cover-text-color);
         }
 
         header .date-line {
           padding: 6px 0;
-          border-top: 1px solid rgba(255,255,255,.5);
-          border-bottom: 1px solid rgba(255,255,255,.5);
+          border-top: 1px solid var(--app-transparent-border-color);
+          border-bottom: 1px solid var(--app-transparent-border-color);
         }
 
         .sticky-nav .logo,
@@ -184,7 +180,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .sticky-nav .logo a {
-          color: #FFF;
+          color: inherit;
         }
 
         .sticky-nav .logo {
@@ -211,7 +207,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           left: 0;
           right: 0;
           bottom: 0;
-          background: var(--app-sticky-nav-bg-color);
+          background: var(--app-nav-background-color);
           transition: transform 0.2s ease-in-out;
           will-change: transform;
           z-index: -1;

@@ -28,10 +28,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         position: relative;
         min-height: 100vh;
         padding-bottom: 64px;
+
         --paper-icon-button-ink-color: #FFF;
+        --app-border-color: #CCC;
+        --app-transparent-border-color: rgba(255, 255, 255, 0.5);
+        --app-button-border-color: #222;
+        --app-cover-text-color: #FFF;
+        --app-nav-background-color: #222;
+        --app-nav-text-color: #FFF;
+        --app-nav-deselected-text-color: #CCC;
+        --app-nav-selected-background-color: #555;
+
         --app-sub-section-headline: {
-          border-top: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
+          border-top: 1px solid var(--app-border-color);
+          border-bottom: 1px solid var(--app-border-color);
           font-size: 13px;
           padding: 8px;
           text-align: center;

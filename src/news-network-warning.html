@@ -35,24 +35,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       button {
-        background: #FAFAFA;
-        border: 2px solid #222;
+        background: transparent;
+        border: 2px solid var(--app-button-border-color);
         padding: 10px 20px;
         font-weight: 600;
+        color: inherit;
       }
 
       @media (max-width: 767px) {
         :host {
           box-sizing: border-box;
           height: 100vh;
-          background: #222;
-          color: #FFF;
+          background: var(--app-nav-background-color);
+          color: var(--app-nav-text-color);
         }
 
         button {
-          background: #222;
-          border: 2px solid #FFF;
-          color: #FFF;
+          border: 2px solid var(--app-nav-text-color);
+          color: var(--app-nav-text-color);
         }
       }
 

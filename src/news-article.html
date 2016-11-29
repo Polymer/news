@@ -156,8 +156,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <app-route
         route="{{route}}"
-        pattern="/:category"
-        query-params="{{_queryParams}}"
+        pattern="/:category/:id"
         data="{{_routeData}}"></app-route>
 
     <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
@@ -234,7 +233,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         articleId: {
           type: Boolean,
-          computed: '_return(_queryParams.id)',
+          computed: '_return(_routeData.id)',
           notify: true
         },
 
@@ -337,7 +336,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             if (dx > 100) {
               this._translate(this._previousArticleCover, 0, window.pageYOffset, true);
               window.setTimeout(function() {
-                this.set('_queryParams.id', this.previousArticle.id);
+                this.set('_routeData.id', this.previousArticle.id);
                 Polymer.AppLayout.scroll({ top: 0 });
                 this._previousArticleCover = this._swapCurrentArticleCovers(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
@@ -353,7 +352,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             if (dx < -100) {
               this._translate(this._nextArticleCover, 0, window.pageYOffset, true);
               window.setTimeout(function() {
-                this.set('_queryParams.id', this.nextArticle.id);
+                this.set('_routeData.id', this.nextArticle.id);
                 Polymer.AppLayout.scroll({ top: 0 });
                 this._nextArticleCover = this._swapCurrentArticleCovers(this._nextArticleCover);
                 this._resetElementStyles(this._previousArticleCover);

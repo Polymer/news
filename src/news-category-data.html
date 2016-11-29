@@ -87,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return null;
       },
 
-      _fetchArticle: function(article, offline, attempts) {
+      _fetchArticle: function(article, offline) {
         // Don't fail if we become offline but already have a cached version, or if there's
         // nothing to fetch, or if something else is already fetching (since all instances of
         // news-category-data share the same data object).
@@ -98,7 +98,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           function(response) {
             this.set('article.html', this._formatHTML(response));
           }.bind(this),
-          attempts || 1, true);
+          1, true);
       },
 
       _computeCategory: function(categoryName) {
@@ -151,7 +151,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _getItemHref: function(item) {
-        return item.id ? '/article/' + this.categoryName + '?id=' + encodeURIComponent(item.id) : null;
+        return item.id ? '/article/' + this.categoryName + '/' + encodeURIComponent(item.id) : null;
       },
 
       _getItemImage: function(item) {

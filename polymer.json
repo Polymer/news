@@ -11,7 +11,8 @@
    "images/**/*",
    "data/**/*",
    "bower.json",
-   "app.yaml"
+   "app.yaml",
+   "main.py"
   ],
   "includeDependencies": [
     "manifest.json",

@@ -1,5 +1,5 @@
 {
-  "entrypoint": "index.html",
+  "entrypoint": "/",
   "shell": "src/news-app.html",
   "fragments": [
     "src/news-list.html",
@@ -10,8 +10,9 @@
    "src/**/*",
    "images/**/*",
    "data/**/*",
-   "bower.json",
    "app.yaml",
+   "bower.json",
+   "index.html",
    "main.py"
   ],
   "includeDependencies": [

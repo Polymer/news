@@ -62,7 +62,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // after a bit of a delay.
           setTimeout(function() {
             this._createIframe();
-          }, 100);
+          }.bind(this), 100);
         }
       },
 

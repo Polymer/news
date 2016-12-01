@@ -19,6 +19,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <style>
 
+      paper-icon-button {
+        --paper-icon-button-ink-color: var(--app-nav-text-color);
+      }
+
       header,
       .sticky-nav {
         z-index: 10;
@@ -171,6 +175,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           height: 45px;
         }
 
+        .mobile-toggle-drawer-btn {
+          visibility: hidden;
+          pointer-events: none;
+        }
+
+        .search-btn {
+          --paper-icon-button-ink-color: #000;
+        }
+
         .sticky-nav-toolbar {
           height: auto;
         }
@@ -224,11 +237,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           transform: translate3d(0, 100%, 0);
         }
 
-        .toggle-drawer-btn {
-          visibility: hidden;
-          pointer-events: none;
-        }
-
         :host([page=article]) .sticky-nav-center {
           padding-left: 80px;
         }
@@ -241,10 +249,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     -->
     <header>
       <app-toolbar class="logo-toolbar">
-        <paper-icon-button aria-label="Main navigation"
-            class="toggle-drawer-btn" icon="menu" on-click="_toggleDrawer"></paper-icon-button>
+        <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu"
+            on-click="_toggleDrawer" aria-label="Main navigation"></paper-icon-button>
         <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
-        <paper-icon-button icon="search" aria-label="Search"></paper-icon-button>
+        <paper-icon-button class="search-btn" icon="search"
+            aria-label="Search"></paper-icon-button>
       </app-toolbar>
       <div class="date-line" role="heading">
         [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]

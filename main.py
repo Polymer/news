@@ -7,7 +7,16 @@ class MainPage(webapp2.RequestHandler):
 
 class ArticlePage(webapp2.RequestHandler):
   def get(self, **kwargs):
-    if re.search('googlebot|facebookexternalhit|facebot|twitterbot|Google-Structured-Data-Testing-Tool', self.request.headers.get('User-Agent'), re.I):
+    bots = '|'.join([
+        'Googlebot',
+        'bingbot',
+        'msnbot',
+        'facebookexternalhit',
+        'Facebot',
+        'Twitterbot',
+        'Google-Structured-Data-Testing-Tool'
+      ])
+    if re.search(bots, self.request.headers.get('User-Agent'), re.I):
       self.response.out.write(open('data/articles/' + kwargs['article_id'] + '.html').read())
     else:
       self.response.out.write(open('index.html').read())

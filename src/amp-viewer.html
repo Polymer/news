@@ -17,7 +17,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         __proto__: HTMLElement.prototype,
 
         createdCallback: function() {
-          this._ampViewer = null;
+          this._amp = null;
           this._src = '';
           this._host = null;
           this._documentCache = [];
@@ -35,13 +35,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         set src(src) {
-          if (this._src == src) {
+          if (this._src === src) {
             return;
           }
+
+          this._src = src;
+          this._clear();
           if (!src) {
             this.removeAttribute('src');
           } else {
-            this._src = src;
             this.setAttribute('src', src);
             this._loadDocument(src);
           }
@@ -58,18 +60,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
-        _loadDocument: function(src) {
-          // Remove the current document's host
+        _clear: function() {
+          if (this._amp) {
+            this._amp.close();
+            this._amp = null;
+          }
           if (this._host) {
             this.removeChild(this._host);
             this._host = null;
           }
+        },
+
+        _loadDocument: function(src) {
           this._fetchDocument(src).then(function(doc) {
             this._ampReadyPromise.then(function(AMP) {
               this._host = win.document.createElement('div');
               this._host.classList.add('amp-doc-host');
               this.appendChild(this._host);
-              this._ampViewer = AMP.attachShadowDoc(this._host, doc, src).viewer;
+              this._amp = AMP.attachShadowDoc(this._host, doc, src);
             }.bind(this));
           }.bind(this));
         },

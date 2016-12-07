@@ -60,6 +60,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
 
+        setVisibilityState: function(state) {
+          if (this._amp) {
+            this._amp.setVisibilityState(state);
+          }
+        },
+
         _clear: function() {
           if (this._amp) {
             this._amp.close();

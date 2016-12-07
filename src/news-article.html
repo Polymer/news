@@ -120,7 +120,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
       <article class="flex">
-        <amp-viewer src="[[_getArticleSrc(article.id)]]"></amp-viewer>
+        <amp-viewer id="ampViewer" src="[[_getArticleSrc(article.id)]]"></amp-viewer>
       </article>
 
       <aside>
@@ -183,8 +183,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         },
 
+        active: {
+          type: Boolean,
+          observer: '_activeChanged'
+        },
+
         _routeData: Object
 
+      },
+
+      _activeChanged: function(active) {
+        this.$.ampViewer.setVisibilityState(active ? 'visible' : 'hidden');
       },
 
       _tryReconnect: function() {

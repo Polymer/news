@@ -12,9 +12,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
 
-<link rel="import" href="news-category-data.html">
 <link rel="import" href="news-list-item.html">
 <link rel="import" href="news-side-list.html">
+<link rel="import" href="news-list-featured-item.html">
+<link rel="import" href="news-iframe.html">
 
 <dom-module id="news-list">
 
@@ -24,57 +25,120 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       :host {
         display: block;
-        --paper-icon-button-ink-color: #FFF;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .fade-in {
+        opacity: 0;
+      }
+
+      .container[fade-in] .fade-in {
+        opacity: 1;
+        transition: opacity 500ms;
+      }
+
+      .content {
+        @apply(--layout-flex-auto);
+      }
+
+      .article-grid,
+      .opinions-grid {
+        margin: 0;
+        padding: 0;
+        list-style: none;
       }
 
       .article-grid {
-        margin: 0;
-        padding-top: 0;
-        list-style: none;
+        margin-top: 32px;
       }
 
       li {
         display: block;
       }
 
-      li:first-child {
-        @apply(--app-grid-expandible-item);
+      h3 {
+        @apply(--app-sub-section-headline);
+        margin: 24px 0;
       }
 
-      aside {
-        margin: 0 32px;
+      news-side-list {
+        margin-bottom: 32px;
       }
 
-      /* desktop 1 */
-      @media (min-width: 768px) {
-        :host {
-          --app-grid-columns: 4;
-          --app-grid-gutter: 32px;
-          --app-grid-expandible-item-columns: 4;
-        }
+      news-iframe {
+        width: 300px;
+        height: 250px;
       }
 
-      /* desktop 2 */
-      @media (min-width: 1310px) {
-        .container {
-          @apply(--layout-horizontal);
-        }
-
-        .container > main {
-          @apply(--layout-flex-auto);
-        }
-
-        .container > aside {
-          margin-left: 0;
-          width: 300px;
-          min-width: 300px;
-        }
+      .ad-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 24px;
       }
 
       /* mobile */
       @media (max-width: 767px) {
+
         aside {
           display: none;
+        }
+
+        .article-grid li,
+        .opinions-grid li{
+          border-bottom: 1px solid var(--app-border-color);
+          margin: 0px 24px 24px 24px;
+          padding-bottom: 24px;
+        }
+
+        .article-grid li:last-of-type,
+        .opinions-grid li:last-of-type {
+          border-bottom: none;
+        }
+
+      }
+
+      /* desktop 1 */
+      @media (min-width: 768px) {
+
+        :host {
+          --app-grid-columns: 4;
+          --app-grid-gutter: 32px;
+        }
+
+        .opinions-grid {
+          @apply(--layout-horizontal);
+          @apply(--layout-wrap);
+        }
+
+        .opinions-grid li {
+          width: calc(50% - 32px);
+          margin-right: 32px;
+        }
+
+        .article-grid,
+        .opinions-grid {
+          margin-right: -32px;
+        }
+
+      }
+
+      /* desktop 2 */
+      @media (min-width: 1310px) {
+
+        .container {
+          @apply(--layout-horizontal);
+        }
+
+        .content {
+          margin-right: 24px;
+        }
+
+        aside {
+          width: 300px;
+          min-width: 300px;
         }
       }
 
@@ -86,41 +150,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-route
         route="[[route]]"
         pattern="/:category"
-        data="{{routeData}}"></app-route>
+        data="{{_routeData}}"></app-route>
 
-    <!--
-      news-category-data provides the category data for a given category name.
-    -->
-    <news-category-data
-        id="categoryData"
-        category-name="[[routeData.category]]"
-        category="{{category}}"
-        failure="{{failure}}"></news-category-data>
+    <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
+      <div class="content">
 
-    <div class="container">
-      <main>
-        <ul class="app-grid article-grid">
-          <li>
-            <news-list-item
-                featured
-                item="[[featuredItem]]"
-                category-name="[[routeData.category]]"></news-list-item>
-          </li>
-          <template is="dom-repeat" items="[[_getListItems(category.items)]]">
+        <news-list-featured-item item="[[_getFeaturedItem(category.items)]]">
+        </news-list-featured-item>
+
+        <ul class="app-grid article-grid fade-in">
+          <template is="dom-repeat" items="[[_slice(category.items, 1, 5)]]">
             <li>
-              <news-list-item
-                  item="[[item]]"
-                  category-name="[[routeData.category]]"></news-list-item>
+              <news-list-item item="[[item]]"></news-list-item>
             </li>
           </template>
         </ul>
-      </main>
+        <h3>Opinions</h3>
+        <ul class="opinions-grid fade-in">
+          <template is="dom-repeat" items="[[_slice(category.items, 5)]]">
+            <li>
+              <news-list-item horizontal item="[[item]]"></news-list-item>
+            </li>
+          </template>
+        </ul>
+      </div>
       <aside>
-        <news-side-list
-            items="[[category.items]]"
-            category-name="[[routeData.category]]">Most Read</news-side-list>
+        <div class="ad-container">
+          <news-iframe src="/src/ads/a9.html"></news-iframe>
+        </div>
+        <news-side-list class="fade-in" items="[[_slice(category.items, 0, 3)]]">
+          Most Read
+        </news-side-list>
+        <news-side-list class="fade-in" featured items="[[_slice(category.items, 3, 9)]]">
+          More Top Stories
+        </news-side-list>
       </aside>
     </div>
+
+    <news-network-warning
+        hidden$="[[!failure]]"
+        offline="[[offline]]"
+        on-try-reconnect="_tryReconnect"></news-network-warning>
 
   </template>
 
@@ -132,30 +202,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
-        category: Object,
-
-        featuredItem: {
-          type: Object,
-          computed: '_computeFeaturedItem(category.items)'
-        },
-
         route: Object,
 
-        routeData: Object,
+        category: Object,
 
-        failure: Boolean
+        offline: Boolean,
 
-      },
+        failure: Boolean,
 
-      observers: [
-        '_categoryChanged(category)'
-      ],
+        preloadAd: Boolean,
 
-      created: function() {
-        this._resizeHandler = this._resizeHandler.bind(this);
+        categoryName: {
+          type: Boolean,
+          computed: '_return(_routeData.category)',
+          notify: true
+        },
+
+        _routeData: Object
+
       },
 
       attached: function() {
+        this._resizeHandler = this._resizeHandler.bind(this);
         window.addEventListener('resize', this._resizeHandler);
       },
 
@@ -163,36 +231,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         window.removeEventListener('resize', this._resizeHandler);
       },
 
-      _computeFeaturedItem: function(items) {
-        return items ? items[0] : {web_headline: '......', blurb: ''};
-      },
-
-      _getListItems: function(items) {
-        return items ? items.slice(1) : [];
-      },
-
-      _categoryChanged: function(category) {
-        this.debounce('change-section', function() {
-          // Notify the category and the page's title
-          this.fire('change-section', {
-            category: category.name,
-            title: category.title
-          });
-        });
+      _getFeaturedItem: function(items) {
+        return items ? items[0] : {};
       },
 
       _tryReconnect: function() {
-        this.$.categoryData.refresh();
-      },
-
-      _offlineChanged: function(offline) {
-        if (!offline) {
-          this._tryReconnect();
-        }
+        this.fire('refresh-data');
       },
 
       _resizeHandler: function() {
         this.debounce('_resize', this.updateStyles, 50);
+      },
+
+      _slice: function(list, begin, end) {
+        return list.slice(begin, end);
+      },
+
+      _return: function(value) {
+        return value;
       }
 
     });

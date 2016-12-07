@@ -1,8 +1,6 @@
-application: news
-version: 1
 runtime: python27
 api_version: 1
-threadsafe: yes
+threadsafe: true
 
 handlers:
 - url: /bower_components
@@ -12,6 +10,7 @@ handlers:
 - url: /data
   static_dir: data
   secure: always
+  application_readable: true
 
 - url: /images
   static_dir: images
@@ -32,6 +31,5 @@ handlers:
   secure: always
 
 - url: /.*
-  static_files: index.html
-  upload: index.html
+  script: main.app
   secure: always

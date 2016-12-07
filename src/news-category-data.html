@@ -17,16 +17,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   (function() {
 
     var categoryList = [
-      {name: 'mobile-homepage', title: 'Top Stories'},
-      {name: 'opinions', title: 'Opinions'},
-      {name: 'politics', title: 'Politics'},
-      {name: 'world', title: 'World'},
-      {name: 'business', title: 'Business'},
-      {name: 'business_technology', title: 'Technology'},
-      {name: 'lifestyle', title: 'Lifestyle'},
-      {name: 'entertainment', title: 'Entertainment'},
-      {name: 'sports', title: 'Sports'}
+      {name: 'top_stories', title: 'Top Stories'},
+      {name: 'doodles', title: 'Doodles'},
+      {name: 'chrome', title: 'Chrome'},
+      {name: 'search', title: 'Search'},
+      {name: 'shopping_payments', title: 'Shopping & Payments'},
+      {name: 'nonprofits', title: 'Nonprofits'}
     ];
+
+    var textarea = document.createElement('textarea');
 
     Polymer({
 
@@ -43,21 +42,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         categoryName: String,
 
+        articleId: String,
+
+        offline: Boolean,
+
+        loading: {
+          type: Boolean,
+          readOnly: true,
+          notify: true
+        },
+
         category: {
           type: Object,
           computed: '_computeCategory(categoryName)',
           notify: true
         },
 
+        article: {
+          type: Object,
+          computed: '_computeArticle(category.items, articleId)',
+          notify: true
+        },
+
         failure: {
           type: Boolean,
-          notify: true,
-          readOnly: true
+          readOnly: true,
+          notify: true
         }
 
       },
 
-      _getCategory: function(categoryName) {
+      observers: [
+        '_fetchCategory(category, offline)'
+      ],
+
+      _computeArticle: function(categoryItems, articleId) {
+        for (var i = 0; i < categoryItems.length; ++i) {
+          var article = categoryItems[i];
+          if (article.id === articleId) {
+            return article;
+          }
+        }
+        return null;
+      },
+
+      _computeCategory: function(categoryName) {
         for (var i = 0, c; c = this.categories[i]; ++i) {
           if (c.name === categoryName) {
             return c;
@@ -66,55 +95,146 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return null;
       },
 
-      _computeCategory: function(categoryName) {
-        // Fetch the items of the category. Note that the fetch is asynchronous,
-        // which means `category.items` may not be set initially (but that path
-        // will be notified when the fetch completes).
-        var category = this._getCategory(categoryName);
-        if (!category)
-          return;
-        this._fetchItems(category);
-        return category;
-      },
-
-      _fetchItems: function(category, force, attempts) {
-        this._setFailure(false);
-        // Only fetch the items of a category it has not been previously set or if `force` is true
-        if (!force && (!category || category.items)) {
+      _fetchCategory: function(category, offline, attempts) {
+        // Don't fail if we become offline but already have a cached version, or if there's
+        // nothing to fetch, or if something else is already fetching (since all instances of
+        // news-category-data share the same data object).
+        if ((offline && category.items) || !category || this.loading) {
           return;
         }
-        var path = category.name.replace('_', '/');
-        this._getResource({
-          url: 'https://pwa.washingtonpost.com/api/section/' + path + '/?outputType=jsonFront',
-          onLoad: function(e) {
-            this.set('category.items', JSON.parse(e.target.responseText).entries);
-          },
-          onError: function(e) {
-            this._setFailure(true);
-          }
-        }, attempts || 1);
+        this._fetch('/data/' + category.name + '.json',
+          function(response) {
+            this.set('category.items', this._parseCategoryItems(response));
+          }.bind(this),
+          attempts || 1);
       },
 
-      _getResource: function(rq, attempts) {
+      _parseCategoryItems: function(response) {
+        var items = [];
+
+        for (var i = 0, item; item = response[i]; ++i) {
+          items.push({
+            headline: this._unescapeText(item.title),
+            href: this._getItemHref(item),
+            id: item.id,
+            imageUrl: this._getItemImage(item),
+            placeholder: item.placeholder,
+            category: item.category,
+            timeAgo: this._timeAgo(new Date(item.time).getTime()),
+            author: item.author,
+            summary: this._trimRight(item.summary, 100),
+            readTime: Math.max(2, Math.round(item.contentLength / 3000)) + ' min read'
+          });
+        }
+
+        return items;
+      },
+
+      _unescapeText: function(text) {
+        textarea.innerHTML = text;
+        return textarea.textContent;
+      },
+
+      _getItemHref: function(item) {
+        return item.id ? '/article/' + this.categoryName + '/' + encodeURIComponent(item.id) : null;
+      },
+
+      _getItemImage: function(item) {
+        return item.imgSrc ? '/data/' + item.imgSrc : '';
+      },
+
+      _timeAgo: function(timestamp) {
+        if (!timestamp)
+          return ''
+
+        var minutes = (Date.now() - timestamp) / 1000 / 60;
+        if (minutes < 2)
+          return '1 min ago';
+        if (minutes < 60)
+          return Math.floor(minutes) + ' mins ago';
+        if (minutes < 120)
+          return '1 hour ago';
+
+        var hours = minutes / 60;
+        if (hours < 24)
+          return Math.floor(hours) + ' hours ago';
+        if (hours < 48)
+          return '1 day ago';
+
+        return Math.floor(hours / 24) + ' days ago';
+      },
+
+      _trimRight: function(text, maxLength) {
+        var breakIdx = text.indexOf(' ', maxLength);
+        return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
+      },
+
+      _formatHTML: function(html) {
+        var template = document.createElement('template');
+        template.innerHTML = html;
+
+        // Remove h1, .kicker, and .date from content.
+        var h1 = template.content.querySelector('h1');
+        h1 && h1.remove();
+        var kicker = template.content.querySelector('.kicker');
+        kicker && kicker.remove();
+        var date = template.content.querySelector('.date');
+        date && date.remove();
+
+        // Remove the first image if it's the same as the item image.
+        // var image = template.content.querySelector('img');
+        // if (image && this._isSameImageSrc(image.src, this.article.imageUrl)) {
+        //   image.remove();
+        // }
+
+        // Remove width/height attributes from all images.
+        var images = template.content.querySelectorAll('img');
+        for (var i = 0; i < images.length; ++i) {
+          var img = images[i];
+          img.removeAttribute('width');
+          img.removeAttribute('height');
+        }
+
+        return template.content.querySelector('.content').innerHTML;
+      },
+
+      _isSameImageSrc: function(a, b) {
+        var regex = /[^/]+\.(jpg|png|gif)/;
+        var aMatch = regex.exec(a);
+        var bMatch = regex.exec(b);
+        return aMatch && bMatch && aMatch[0] === bMatch[0];
+      },
+
+      _fetch: function(url, callback, attempts, isRaw) {
         var xhr = new XMLHttpRequest();
-        xhr.addEventListener('load', rq.onLoad.bind(this));
+        xhr.addEventListener('load', function(e) {
+          this._setLoading(false);
+          if (isRaw) {
+            callback(e.target.responseText);
+          } else {
+            callback(JSON.parse(e.target.responseText));
+          }
+        }.bind(this));
         xhr.addEventListener('error', function(e) {
           // Flaky connections might fail fetching resources
           if (attempts > 1) {
-            this.debounce('_getResource', this._getResource.bind(this, rq, attempts - 1), 200);
+            this.debounce('_fetch', this._fetch.bind(this, url, callback, attempts - 1), 200);
           } else {
-            rq.onError.call(this, e);
+            this._setLoading(false);
+            this._setFailure(true);
           }
         }.bind(this));
 
-        xhr.open('GET', rq.url);
+        this._setLoading(true);
+        this._setFailure(false);
+        xhr.open('GET', url);
         xhr.send();
       },
 
       refresh: function() {
         if (this.categoryName) {
           // Try at most 3 times to get the items.
-          this._fetchItems(this._getCategoryObject(this.categoryName), true, 3);
+          this._fetchCategory(this.category, this.offline, 3);
         }
       }
 

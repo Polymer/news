@@ -1,0 +1,163 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
+<link rel="import" href="news-img.html">
+
+<dom-module id="news-article-cover">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .flex {
+        flex: 1;
+      }
+
+      .cover-text .category {
+        padding: 6px 20px 7px;
+        border: 1px solid var(--app-border-color);
+        display: inline-block;
+        font-family: Georgia;
+        font-weight: bold;
+        font-size: 11px;
+      }
+
+      h1 {
+        font-weight: normal;
+        font-size: 37px;
+        line-height: 47px;
+        margin: 24px 0;
+      }
+
+      .cover-text .meta {
+        font-size: 11px;
+        font-weight: bold;
+        border-top: 1px solid var(--app-border-color);
+        padding: 24px 0;
+      }
+
+      .cover-img-container {
+        position: relative;
+        width: 100%;
+      }
+
+      .cover-img-container > news-img {
+        display: block;
+        width: 100%;
+        height: auto;
+        min-height: 60vh;
+        object-fit: cover;
+      }
+
+      .timer-icon {
+        margin-left: 30px;
+      }
+
+      @media (max-width: 767px) {
+        :host {
+          background: #000;
+        }
+
+        .cover-text {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+          box-sizing: border-box;
+          color: var(--app-cover-text-color);
+          padding: 0 24px;
+          z-index: 1;
+        }
+
+        .cover-text .category {
+          border: 1px solid var(--app-transparent-border-color);
+        }
+
+        .cover-text .meta {
+          font-size: 11px;
+          font-weight: bold;
+          border-top: 1px solid var(--app-transparent-border-color);
+        }
+
+        .cover-img-container {
+          position: absolute;
+          top: 0;
+        }
+
+        .cover-img-container .scrim {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+        }
+      }
+
+      @media (max-width: 1309px) {
+        h1 {
+          font-size: 6vh;
+          line-height: 7vh;
+          max-height: calc(7vh * 7);
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 7;
+          -webkit-box-orient: vertical;
+        }
+      }
+    </style>
+
+    <div class="cover-text">
+      <div class="flex"></div>
+      <div>
+        <div class="category">[[article.category]]</div>
+      </div>
+      <h1>[[article.headline]]</h1>
+      <div class="meta">
+        <span>[[article.timeAgo]]</span>
+        <iron-icon class="timer-icon" icon="timer"></iron-icon>
+        <span>[[article.readTime]]</span>
+      </div>
+    </div>
+
+    <div class="cover-img-container">
+      <news-img src="[[article.imageUrl]]" hidden$="[[!article.imageUrl]]"></news-img>
+      <div class="scrim"></div>
+    </div>
+   
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'news-article-cover',
+
+      properties: {
+
+        article: Object
+
+      }
+
+    });
+
+  </script>
+
+</dom-module>

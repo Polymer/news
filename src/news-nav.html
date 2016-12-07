@@ -1,0 +1,78 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+
+<link rel="import" href="news-header.html">
+
+<dom-module id="news-nav">
+
+  <template>
+
+    <iron-media-query query="max-width: 767px" query-matches="{{_smallScreen}}"></iron-media-query>
+
+    <news-header
+        page="[[page]]"
+        categories="[[categories]]"
+        category="[[category]]"
+        small-screen="[[_smallScreen]]"
+        drawer-opened="{{_drawerOpened}}">
+      <content></content>
+    </news-header>
+
+    <!--
+      Lazy-create the drawer on small viewports.
+    -->
+    <template is="dom-if" if="[[_shouldRenderDrawer(_smallScreen, loadComplete)]]">
+      <news-drawer
+          categories="[[categories]]"
+          category="[[category]]"
+          drawer-opened="{{_drawerOpened}}">
+      </news-drawer>
+    </template>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'news-nav',
+
+      properties: {
+
+        page: String,
+
+        categories: Array,
+
+        category: Object,
+
+        loadComplete: Boolean,
+
+        _smallScreen: Boolean,
+
+        _drawerOpened: Boolean
+
+      },
+
+      closeDrawer: function() {
+        this._drawerOpened = false;
+      },
+
+      _shouldRenderDrawer: function(smallScreen, loadComplete) {
+        return smallScreen && loadComplete;
+      }
+
+    });
+
+  </script>
+
+</dom-module>

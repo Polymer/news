@@ -12,8 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
-<link rel="import" href="news-article-item-behavior.html">
-<link rel="import" href="news-side-list.html">
+<link rel="import" href="news-iframe.html">
 <link rel="import" href="news-side-list.html">
 <link rel="import" href="amp-viewer.html">
 
@@ -23,33 +22,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <style>
       :host {
-        opacity: 1;
-        transition: opacity 500ms;
         display: block;
-        padding: 0 32px;
       }
 
-      :host([loading]) {
-        opacity: 0;
-        transition: none;
+      [hidden] {
+        display: none !important;
       }
 
       .container {
         display: flex;
       }
 
-      .flex {
-        flex: 1;
+      .fade-in {
+        opacity: 0;
       }
 
-      amp-viewer {
-        display: block;
-        min-height: 100vh;
+      .container[fade-in] .fade-in {
+        opacity: 1;
+        transition: opacity 500ms;
+      }
+
+      .flex {
+        flex: 1;
       }
 
       aside {
         margin-left: 24px;
         width: 300px;
+      }
+
+      news-side-list {
+        margin-bottom: 32px;
+      }
+
+      news-iframe {
+        width: 300px;
+        height: 250px;
       }
 
       .share-link {
@@ -66,23 +74,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-right: 8px;
       }
 
+      .ad-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+
       @media (max-width: 767px) {
         :host {
           padding: 0;
         }
 
-        amp-viewer {
-          border-top: 64px solid #222;
-        }
-
         .container {
-          flex-direction: column;
+          display: block;
         }
 
         aside {
           margin-left: auto;
           width: auto;
           padding: 0 24px;
+        }
+
+        .share-link {
+          display: none;
         }
       }
 
@@ -99,32 +113,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <news-category-data category-name="[[_routeData.category]]" category="{{_category}}"></news-category-data>
-
     <app-route
-        route="[[route]]"
-        pattern="/:category"
-        query-params="{{_queryParams}}"
+        route="{{route}}"
+        pattern="/:category/:id"
         data="{{_routeData}}"></app-route>
 
-    <div class="container">
-      <main class="flex">
-        <amp-viewer src="[[_queryParams.page]]"></amp-viewer>
-      </main>
+    <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
+      <article class="flex">
+        <amp-viewer src="[[_getArticleSrc(article.id)]]"></amp-viewer>
+      </article>
+
       <aside>
-        <a href="#" class="share-link">
-          <iron-icon icon="mail"></iron-icon>
-          Email
+        <div class="ad-container">
+          <news-iframe src="/src/ads/a9.html"></news-iframe>
+        </div>
+        <a href="#" class="share-link" aria-label="Send by email">
+          <iron-icon icon="mail"></iron-icon> Email
         </a>
-        <a href="#" class="share-link">
-          <iron-icon icon="share"></iron-icon>
-          Share
+        <a href="#" class="share-link" aria-label="Share on social networks">
+          <iron-icon icon="share"></iron-icon> Share
         </a>
-        <news-side-list
-            items="[[_category.items]]"
-            category-name="[[_routeData.category]]">Most Read</news-side-list>
+        <news-side-list class="fade-in" items="[[_slice(category.items, 0, 3)]]">
+          Most Read
+        </news-side-list>
+        <news-side-list class="fade-in" featured items="[[_slice(category.items, 3, 9)]]">
+          Top Stories
+        </news-side-list>
       </aside>
     </div>
+
+    <news-network-warning
+        hidden$="[[!failure]]"
+        offline="[[offline]]"
+        on-try-reconnect="_tryReconnect"></news-network-warning>
 
   </template>
 
@@ -134,22 +155,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'news-article',
 
-      behaviors: [
-        NewsArticleItemBehavior
-      ],
-
       properties: {
 
         route: Object,
 
-        _routeData: Object,
+        category: Object,
 
-        _category: Object
+        article: Object,
+
+        loading: Boolean,
+
+        offline: Boolean,
+
+        failure: Boolean,
+
+        preloadAd: Boolean,
+
+        categoryName: {
+          type: Boolean,
+          computed: '_return(_routeData.category)',
+          notify: true
+        },
+
+        articleId: {
+          type: Boolean,
+          computed: '_return(_routeData.id)',
+          notify: true
+        },
+
+        _routeData: Object
 
       },
 
-      _getReadTime: function(html) {
-        return Math.max(2, Math.round(html.length / 3000));
+      _tryReconnect: function() {
+        this.fire('refresh-data');
+      },
+
+      _slice: function(list, begin, end) {
+        return list.slice(begin, end);
+      },
+
+      _return: function(value) {
+        return value;
+      },
+
+      _getArticleSrc: function(id) {
+        return '/data/articles/' + id + '.html'
       }
 
     });

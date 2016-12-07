@@ -59,19 +59,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _loadDocument: function(src) {
-          var ampSrc = src.replace('.com/', '.com/amphtml/');
-          var proxiedSrc = '//polymer-ampproxy2.appspot.com/?url=' + ampSrc;
           // Remove the current document's host
           if (this._host) {
             this.removeChild(this._host);
             this._host = null;
           }
-          this._fetchDocument(proxiedSrc).then(function(doc) {
+          this._fetchDocument(src).then(function(doc) {
             this._ampReadyPromise.then(function(AMP) {
               this._host = win.document.createElement('div');
               this._host.classList.add('amp-doc-host');
               this.appendChild(this._host);
-              this._ampViewer = AMP.attachShadowDoc(this._host, doc, ampSrc).viewer;
+              this._ampViewer = AMP.attachShadowDoc(this._host, doc, src).viewer;
             }.bind(this));
           }.bind(this));
         },

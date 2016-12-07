@@ -1,30 +1,52 @@
 module.exports = {
   staticFileGlobs: [
-    '/index.html',
     '/manifest.json',
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
     '/images/*'
   ],
-  navigateFallback: '/index.html',
+  dynamicUrlToDependencies: {
+    '/': ['index.html']
+  },
+  navigateFallback: '/',
   navigateFallbackWhitelist: [/^(?!.*\.html$|\/data\/).*/],
   runtimeCaching: [
     {
-      urlPattern: /^https:\/\/img\.washingtonpost\.com|https:\/\/www\.washingtonpost\.com\/pb\/resources\/img/,
+      urlPattern: /(https?:\/\/.*\.(?:png|jpg|gif|svg))/i,
       handler: 'fastest',
       options: {
         cache: {
           maxEntries: 200,
-          name: 'images-cache'
+          name: 'ext-images-cache'
         }
       }
     },
     {
-      urlPattern: /^https:\/\/pwa\.washingtonpost\.com\/api|(http|https):\/\/polymer-ampproxy2\.appspot\.com/,
-      handler: 'networkFirst',
+      urlPattern: /\/data\/images\/.*/,
+      handler: 'fastest',
       options: {
         cache: {
           maxEntries: 100,
-          name: 'data-cache'
+          name: 'data-images-cache'
+        }
+      }
+    },
+    {
+      urlPattern: /\/data\/articles\/.*/,
+      handler: 'fastest',
+      options: {
+        cache: {
+          maxEntries: 100,
+          name: 'data-articles-cache'
+        }
+      }
+    },
+    {
+      urlPattern: /\/data\/.*json/,
+      handler: 'fastest',
+      options: {
+        cache: {
+          maxEntries: 10,
+          name: 'data-json-cache'
         }
       }
     }

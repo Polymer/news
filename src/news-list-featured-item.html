@@ -10,9 +10,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
 <link rel="import" href="news-img.html">
 
-<dom-module id="news-list-item">
+<dom-module id="news-list-featured-item">
 
   <template>
 
@@ -31,8 +32,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         overflow: hidden;
       }
 
-      news-img {
-        height: 100%;
+      .img-container {
+        position: relative;
       }
 
       .headline {
@@ -49,7 +50,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .category {
-        padding: 6px 20px 7px;
+        padding: 6px 20px 7px 20px;
         border: 1px solid var(--app-border-color);
         display: inline-block;
         font-family: Georgia;
@@ -81,9 +82,83 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         white-space: nowrap;
       }
 
+      p {
+        margin: 0;
+        line-height: 26px;
+        font-size: 16px;
+      }
+
+      /* mobile */
+      @media (max-width: 767px) {
+
+        a {
+          margin: 0 24px;
+          padding: 24px 0;
+          border-bottom: 1px solid var(--app-border-color);
+          margin: 0;
+          padding: 0;
+        }
+
+      }
+
       /* mobile and desktop small */
       @media (max-width: 1309px) {
-        .img-container {
+
+        a {
+          height: 100vh;
+          border-bottom: 0;
+          background: #000;
+          color: var(--app-cover-text-color);
+        }
+
+        news-img {
+          min-height: 60vh;
+        }
+
+        .headline {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
+
+        h2 {
+          font-size: 6vh;
+          line-height: 7vh;
+          max-height: calc(7vh * 7);
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 7;
+          -webkit-box-orient: vertical;
+        }
+
+        .category {
+          border-color: var(--app-transparent-border-color);
+        }
+
+        .details {
+          height: 19px;
+          border-top: 1px solid var(--app-transparent-border-color);
+          padding-top: 29px;
+        }
+
+        h2 {
+          margin: 24px 0;
+        }
+
+        .scrim {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+        }
+
+        .headline {
+          padding: 24px;
+        }
+
+        p {
           display: none;
         }
 
@@ -92,16 +167,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop small */
       @media (min-width: 768px) and (max-width: 1309px) {
 
-        news-img {
-          height: 150px;
-        }
-
-        .category {
-          margin-top: 20px;
-        }
-
-        :host([horizontal]) {
-          margin-bottom: 24px;
+        a {
+          height: 50vmax;
         }
 
       }
@@ -109,36 +176,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop large */
       @media (min-width: 1310px) {
 
-        news-img {
-          height: 150px;
-        }
-
-        .category {
-          margin-top: 20px;
-        }
-
-        :host([horizontal]) a {
+        a {
           @apply(--layout-horizontal);
         }
 
-        :host([horizontal]) news-img {
-          min-width: 150px;
+        h2 {
+          font-size: 38px;
+          line-height: 48px;
+        }
+
+        news-img {
+          @apply(--layout-fit);
+        }
+
+        .img-container {
+          width: 472px;
+          min-width: 472px;
+          min-height: 340px;
           margin-right: 24px;
         }
 
-        :host([horizontal]) .category {
-          display: none;
+        .details {
+          padding: 24px 0;
+          border-top: 1px solid var(--app-border-color);
         }
 
-        :host([horizontal]) {
-          margin-bottom: 24px;
-        }
       }
 
     </style>
 
     <a href$="[[item.href]]">
-      <news-img src="[[item.imageUrl]]" alt="[[item.headline]]"></news-img>
+      <div class="img-container">
+        <news-img alt="[[item.headline]]" src="[[item.imageUrl]]" placeholder-src="[[item.placeholder]]"></news-img>
+        <div class="scrim"></div>
+      </div>
       <div class="headline">
         <div class="category" hidden$="[[!item.category]]">[[item.category]]</div>
         <h2>[[item.headline]]</h2>
@@ -146,6 +217,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="time-ago">[[item.timeAgo]]</div>
           <div class="author">[[item.author]]</div>
         </div>
+        <p>[[item.summary]]</p>
       </div>
     </a>
   </template>
@@ -154,19 +226,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'news-list-item',
+      is: 'news-list-featured-item',
 
       properties: {
 
-        item: {
-          type: Object
-        },
-
-        horizontal: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
-        }
+        item: Object
 
       }
 

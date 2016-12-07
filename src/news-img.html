@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         overflow: hidden;
         background-size: cover;
         background-position: center;
-        background-color: #FAFAFA;
+        background-color: #ddd;
       }
 
       img {
@@ -45,7 +45,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
 
     Polymer({
+
       is: 'news-img',
+
       properties: {
 
         alt: String,
@@ -84,6 +86,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _placeholderSrcChanged: function(placeholder) {
         this.style.backgroundImage = placeholder !== '' ? 'url(\'' + placeholder + '\')' : '';
       }
+
     });
 
   </script>

@@ -9,17 +9,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-layout/helpers/helpers.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
 <link rel="import" href="news-category-data.html">
-<link rel="import" href="news-sticky-header.html">
+<link rel="import" href="news-nav.html">
 
 <dom-module id="news-app">
 
@@ -29,51 +25,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       :host {
         display: block;
+        position: relative;
         min-height: 100vh;
-        font-family: Georgia;
-      }
+        padding-bottom: 64px;
 
-      .vertical-layout {
-        @apply(--layout-vertical);
-        flex: 1;
-      }
+        --app-border-color: #CCC;
+        --app-transparent-border-color: rgba(255, 255, 255, 0.5);
+        --app-button-border-color: #222;
+        --app-cover-text-color: #FFF;
+        --app-nav-background-color: #222;
+        --app-nav-text-color: #FFF;
+        --app-nav-deselected-text-color: #CCC;
+        --app-nav-selected-background-color: #555;
 
-      .horizontal-layout {
-        @apply(--layout-horizontal);
-        align-self: stretch;
-        align-items: center;
-        flex: 1;
-      }
-
-      header,
-      news-sticky-header {
-        z-index: 10;
-      }
-
-      .logo {
-        text-align: center;
-      }
-
-      .date-line,
-      .article-headline {
-        text-align: center;
-        font-size: 11px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        margin: 0 16px;
-      }
-
-      .logo a {
-        font-weight: 600;
-        letter-spacing: 10px;
-        /* To offset letter-spacing for the last character. */
-        margin-right: -10px;
-        text-decoration: none;
-        /* required for IE 11, so this <a> can receive pointer events */
-        display: inline-block;
-        pointer-events: auto;
-        color: inherit;
+        --app-sub-section-headline: {
+          border-top: 1px solid var(--app-border-color);
+          border-bottom: 1px solid var(--app-border-color);
+          font-size: 13px;
+          padding: 8px;
+          text-align: center;
+        };
       }
 
       iron-pages {
@@ -81,206 +52,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 0 auto;
       }
 
-      app-drawer {
-        --app-drawer-content-container: {
-          background: #222;
-          color: #FFF;
-        };
-        --app-drawer-width: 230px;
-        z-index: 11;
-      }
-
-      app-drawer paper-icon-button {
-        --paper-icon-button-ink-color: #FFF;
-        margin: 10px;
-      }
-
-      .drawer-list {
-        margin: 0 20px;
-      }
-
-      .drawer-list a {
-        display: block;
-        padding: 0 24px;
-        line-height: 48px;
-        text-decoration: none;
-        color: #FFF;
-      }
-
-      .expanded-header {
-        display: none;
-      }
-
-      .expanded-header a {
-        display: block;
-        line-height: 32px;
-        font-size: 15px;
-        text-decoration: none;
-        color: #CCC;
-      }
-
-      .expanded-header a.iron-selected {
-        font-weight: bold;
-        color: #FFF;
-      }
-
-      .compressed-header {
-        padding: 0 16px;
-        background: #222;
-      }
-
-      :host([page=list]) news-sticky-header paper-icon-button[icon=mail],
-      :host([page=list]) news-sticky-header paper-icon-button[icon=share] {
-        display: none;
-      }
-
-      .drawer-list a.iron-selected {
-        background: #555;
-      }
-
-      .menu-list {
-        display: block;
-        text-align: center;
-        font-size: 13px;
-        border-top: 1px solid #CCC;
-        border-bottom: 1px solid #CCC;
-        padding: 8px 0;
-        margin: 32px;
-      }
-
-      .menu-list a {
-        color: inherit;
-        text-decoration: none;
-        margin: 0 10px;
-      }
-
-      .menu-list a.iron-selected {
-        font-weight: bold;
-      }
-
       footer {
-        margin: 40px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        padding-bottom: 24px;
         text-align: center;
       }
 
       footer a {
         text-decoration: none;
-        font-size: 11px;
-        color: #999;
+        font-size: 13px;
+        color: #757575;
       }
 
       footer a:hover {
         text-decoration: underline;
       }
 
-      /* mobile */
-      @media (max-width: 767px) {
-        :host([page=article]) header .logo,
-        :host([page=article]) header .date-line {
-          visibility: hidden;
-        }
-
-        header {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-        }
-
-        header,
-        .logo a {
-          color: #FFF;
-        }
-
-        header .date-line {
-          padding: 6px 0;
-          border-top: 1px solid rgba(255,255,255,.5);
-          border-bottom: 1px solid rgba(255,255,255,.5);
-        }
-
-        news-sticky-header .logo,
-        :host([page=article]) news-sticky-header .date-line,
-        :host([page=article]) news-sticky-header paper-icon-button[icon=search],
-        :host([page=list]) news-sticky-header .article-headline {
-          display: none;
-        }
-
-        /* Can't use flex because we need a fixed width to clip text overflow. */
-        :host([page=article]) .sticky-header-center {
-          width: calc(100% - 120px); /* 40px * 3 buttons */
-        }
-
-        /* Can't use flex because we need a fixed width to clip text overflow. */
-        :host([page=list]) .sticky-header-center {
-          width: calc(100% - 80px); /* 40px * 2 buttons */
-        }
-      }
-
       /* desktop */
       @media (min-width: 768px) {
-
-        .logo {
-          font-size: 39px;
-        }
-
-        .logo-toolbar {
-          padding: 40px 32px 0 32px;
-          height: 45px;
-        }
-
-        news-sticky-header {
-          height: auto;
-        }
-
-        .sticky-header-center {
-          flex: 1;
-        }
-
-        news-sticky-header .logo a {
-          color: #FFF;
-        }
-
-        news-sticky-header .logo {
-          font-size: 23px;
-          padding-top: 16px;
-        }
-
-        news-sticky-header .date-line {
-          padding: 4px 0 14px;
-        }
-
-        news-sticky-header .article-headline {
-          display: none;
-        }
-
-        .expanded-header {
-          display: block;
-          @apply(--layout-vertical);
-          align-items: center;
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: #222;
-          transition: transform 0.2s ease-in-out;
-          will-change: transform;
-          z-index: -1;
-          padding-top: 20px;
-          padding-bottom: 40px;
-        }
-
-        .expanded-header .grid-container {
-          column-count: 3;
-          column-gap: 82px;
-        }
-
-        news-sticky-header[shown] .expanded-header[shown] {
-          transform: translate3d(0, 100%, 0);
-        }
-
-        .toggle-drawer-btn {
-          visibility: hidden;
-          pointer-events: none;
+        :host {
+          margin: 0 40px;
         }
       }
 
@@ -296,82 +90,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <iron-media-query query="max-width: 767px" query-matches="{{smallScreen}}"></iron-media-query>
-
     <!--
       news-category-data provides the list of categories and the articles for the category.
     -->
-    <news-category-data categories="{{categories}}"></news-category-data>
+    <news-category-data
+        id="data"
+        categories="{{categories}}"
+        category-name="[[categoryName]]"
+        category="{{category}}"
+        article-id="[[articleId]]"
+        article="{{article}}"
+        loading="{{loading}}"
+        offline="[[offline]]"
+        failure="{{failure}}"></news-category-data>
 
-    <!--
-      Header at the scroll top of the page.
-    -->
-    <header id="header" role="navigation">
-      <app-toolbar class="logo-toolbar">
-        <paper-icon-button class="toggle-drawer-btn" icon="menu" on-click="_toggleDrawer"></paper-icon-button>
-        <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
-        <paper-icon-button icon="search"></paper-icon-button>
-      </app-toolbar>
-      <div class="date-line">
-        [[categoryTitle]] &nbsp; &middot; &nbsp; [[_currentTime()]]
-      </div>
-      <template is="dom-if" if="[[!smallScreen]]">
-        <iron-selector role="navigation" class="menu-list" selected="[[categoryName]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
-      </template>
-    </header>
-
-    <!--
-      Sticky header reveals when scrolled down on the page.
-    -->
-    <news-sticky-header class="vertical-layout">
-      <div class="horizontal-layout compressed-header">
-        <paper-icon-button icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
-        <div class="sticky-header-center">
-          <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
-          <div class="date-line">
-            [[categoryTitle]] &nbsp; &middot; &nbsp; [[_currentTime()]]
-          </div>
-          <div class="article-headline">
-            [[articleHeadline]]
-          </div>
-        </div>
-        <paper-icon-button icon="mail"></paper-icon-button>
-        <paper-icon-button icon="share"></paper-icon-button>
-        <paper-icon-button icon="search"></paper-icon-button>
-      </div>
-      <div class="expanded-header" shown$="[[drawerOpened]]">
-        <iron-selector class="grid-container" role="navigation"
-            selected="[[categoryName]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
-      </div>
-    </news-sticky-header>
-
-    <!--
-      Lazy-create the drawer on small viewports.
-    -->
-    <template is="dom-if" if="[[_shouldRenderDrawer(smallScreen, loadComplete)]]">
-      <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
-        <paper-icon-button icon="close" on-click="_toggleDrawer"></paper-icon-button>
-        <iron-selector role="navigation" class="drawer-list" selected="[[categoryName]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
-      </app-drawer>
-    </template>
+    <news-nav
+        id="nav"
+        page="[[page]]"
+        categories="[[categories]]"
+        category="[[category]]"
+        load-complete="[[loadComplete]]">
+      [[articleHeadline]]
+    </news-nav>
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" route="[[subroute]]"></news-list>
+      <news-list
+          id="list"
+          name="list"
+          route="[[subroute]]"
+          category-name="{{categoryName}}"
+          category="[[category]]"
+          loading="[[loading]]"
+          offline="[[offline]]"
+          failure="[[failure]]"></news-list>
       <!-- article view -->
-      <news-article name="article" route="[[subroute]]" headline="{{articleHeadline}}"></news-article>
+      <news-article
+          name="article"
+          route="{{subroute}}"
+          category-name="{{categoryName}}"
+          category="[[category]]"
+          article-id="{{articleId}}"
+          article="[[article]]"
+          loading="[[loading]]"
+          offline="[[offline]]"
+          failure="[[failure]]"></news-article>
     </iron-pages>
 
     <footer>
@@ -389,58 +152,69 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
 
         page: {
-          observer: '_pageChanged',
-          reflectToAttribute: true
+          type: String,
+          observer: '_pageChanged'
         },
 
         categories: Array,
 
-        articleHeadline: String,
-
         categoryName: String,
 
-        categoryTitle: {
+        category: Object,
+
+        articleId: String,
+
+        article: Object,
+
+        articleHeadline: {
           type: String,
-          value: 'Top Stories'
-        }
+          value: ''
+        },
+
+        offline: {
+          type: Boolean,
+          readOnly: true
+        },
+
+        failure: Boolean,
+
+        loadComplete: Boolean
+
       },
 
       observers: [
-        '_routePageChanged(routeData.page)'
+        '_routePageChanged(routeData.page)',
+        '_updateArticleHeadline(article.headline)',
+        '_updateDocumentTitle(page, category.title, articleHeadline)'
       ],
 
       listeners: {
-        'change-section': '_onChangeSection'
+        'refresh-data': '_refreshData'
       },
+
+      _networkSnackbar: null,
 
       created: function() {
         // Custom elements polyfill safe way to indicate an element has been upgraded.
         this.removeAttribute('unresolved');
       },
 
-      _menuIcon: function(drawerOpened) {
-        if (drawerOpened)
-          return 'close';
-        return 'menu';
+      attached: function() {
+        Polymer.RenderStatus.afterNextRender(this, function() {
+          this.listen(window, 'online', '_notifyNetworkStatus');
+          this.listen(window, 'offline', '_notifyNetworkStatus');
+        });
       },
 
-      _currentTime: function() {
-        var monthNames = [
-          "January", "February", "March",
-          "April", "May", "June", "July",
-          "August", "September", "October",
-          "November", "December"
-        ];
-
-        var date = new Date();
-
-        return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+      detached: function() {
+        this.unlisten(window, 'online', '_notifyNetworkStatus');
+        this.unlisten(window, 'offline', '_notifyNetworkStatus');
       },
 
       _routePageChanged: function(page) {
         if (!page) {
           // set default route if route path is empty
-          this.set('route.path', 'list/mobile-homepage');
+          this.set('route.path', 'list/top_stories');
           return;
         }
 
@@ -449,7 +223,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
         Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });
         // Close the drawer - in case the *route* change came from a link in the drawer.
-        this.drawerOpened = false;
+        this.$.nav.closeDrawer();
       },
 
       _pageChanged: function(page, oldPage) {
@@ -471,34 +245,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!this.loadComplete) {
           Polymer.RenderStatus.afterNextRender(this, function() {
             this.importHref(this.resolveUrl('lazy-resources.html'), function() {
-              // Register service worker if supported.
-              if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/service-worker.js');
-              }
+              this._notifyNetworkStatus();
               this.loadComplete = true;
             });
           });
         }
       },
 
-      _toggleDrawer: function() {
-        this.drawerOpened = !this.drawerOpened;
+      _notifyNetworkStatus: function() {
+        var oldOffline = this.offline;
+        this._setOffline(!navigator.onLine);
+        // Show the snackbar if the user is offline when starting a new session
+        // or if the network status changed.
+        if (this.offline || (!this.offline && oldOffline === true)) {
+          if (!this._networkSnackbar) {
+            this._networkSnackbar = document.createElement('news-snackbar');
+            Polymer.dom(this.root).appendChild(this._networkSnackbar);
+          }
+          Polymer.dom(this._networkSnackbar).textContent = this.offline ?
+              'You are offline' : 'You are online';
+          this._networkSnackbar.open();
+        }
+      },
+
+      _updateArticleHeadline: function(articleHeadline) {
+        this.articleHeadline = articleHeadline;
       },
 
       // Elements in the app can notify section changes.
       // Response by a11y announcing the section and syncronizing the category.
-      _onChangeSection: function(event) {
-        var detail = event.detail;
-        this.categoryName = detail.category || '';
-        this.categoryTitle = detail.title || '';
-        // Announce the page's title
-        if (detail.title) {
-          document.title = detail.title + ' - NEWS';
-        }
+      _updateDocumentTitle: function(page, categoryTitle, articleHeadline) {
+        document.title = (page === 'list' ? categoryTitle : articleHeadline) + ' - NEWS';
       },
 
-      _shouldRenderDrawer: function(smallScreen, loadComplete) {
-        return smallScreen && loadComplete;
+      _refreshData: function() {
+        this.$.data.refresh();
       }
 
     });

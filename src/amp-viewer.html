@@ -20,11 +20,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._amp = null;
           this._src = '';
           this._host = null;
-          this._documentCache = [];
           this._CACHE_SIZE = 10;
 
           win.AMP_SHADOW = true;
-          this._installScript('//cdn.ampproject.org/shadow-v0.js');
+          this._installScript('https://cdn.ampproject.org/shadow-v0.js');
           this._ampReadyPromise = new Promise(function(resolve) {
             (win.AMP = win.AMP || []).push(resolve);
           });
@@ -96,16 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         _fetchDocument: function(src) {
-          var documentCache = this._documentCache;
           return new Promise(function(resolve, reject) {
-            var doc = documentCache.reduce(function(p, c) {
-              return c.src === src ? c.document : p;
-            }, null);
-
-            if (doc) {
-              resolve(doc);
-              return;
-            }
             var xhr = new XMLHttpRequest();
             xhr.open('GET', src, true);
             xhr.responseType = 'document';
@@ -121,10 +111,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
               if (xhr.readyState == /* COMPvarE */ 4) {
                 if (xhr.responseXML) {
-                  if (documentCache.length >= self._CACHE_SIZE) {
-                    documentCache.shift();
-                  }
-                  documentCache.push({ src: src, document: xhr.responseXML });
                   resolve(xhr.responseXML);
                 } else {
                   reject(new Error('No xhr.responseXML'));

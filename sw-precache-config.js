@@ -11,21 +11,21 @@ module.exports = {
   navigateFallbackWhitelist: [/^(?!.*\.html$|\/data\/).*/],
   runtimeCaching: [
     {
-      urlPattern: /(https?:\/\/.*\.(?:png|jpg|gif|svg))/i,
-      handler: 'fastest',
-      options: {
-        cache: {
-          maxEntries: 200,
-          name: 'ext-images-cache'
-        }
-      }
-    },
-    {
-      urlPattern: /\/data\/images\/.*/,
+      urlPattern: /https:\/\/cdn.ampproject.org\/.*\.js/,
       handler: 'fastest',
       options: {
         cache: {
           maxEntries: 100,
+          name: 'amp-scripts-cache'
+        }
+      }
+    },
+    {
+      urlPattern: /.*\.(png|jpg|gif|svg)/i,
+      handler: 'fastest',
+      options: {
+        cache: {
+          maxEntries: 200,
           name: 'data-images-cache'
         }
       }

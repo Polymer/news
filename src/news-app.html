@@ -14,7 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 
-<link rel="import" href="news-category-data.html">
+<link rel="import" href="news-data.html">
 <link rel="import" href="news-nav.html">
 
 <dom-module id="news-app">
@@ -91,9 +91,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tail="{{subroute}}"></app-route>
 
     <!--
-      news-category-data provides the list of categories and the articles for the category.
+      news-data provides the list of categories and the articles for the category.
     -->
-    <news-category-data
+    <news-data
         id="data"
         categories="{{categories}}"
         category-name="[[categoryName]]"
@@ -102,7 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         article="{{article}}"
         loading="{{loading}}"
         offline="[[offline]]"
-        failure="{{failure}}"></news-category-data>
+        failure="{{failure}}"></news-data>
 
     <news-nav
         id="nav"

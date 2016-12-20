@@ -104,8 +104,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         text-align: center;
         font-size: 13px;
-        border-top: 1px solid var(--app-border-color);
-        border-bottom: 1px solid var(--app-border-color);
+        border-top: var(--app-border-style);
+        border-bottom: var(--app-border-style);
         padding: 8px 0;
         margin: 32px 0;
       }
@@ -141,8 +141,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         header .date-line {
           padding: 6px 0;
-          border-top: 1px solid var(--app-transparent-border-color);
-          border-bottom: 1px solid var(--app-transparent-border-color);
+          border-top: var(--app-transparent-border-style);
+          border-bottom: var(--app-transparent-border-style);
         }
 
         .sticky-nav .logo,
@@ -251,7 +251,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-toolbar class="logo-toolbar">
         <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu"
             on-click="_toggleDrawer" aria-label="Main navigation"></paper-icon-button>
-        <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
+        <div class="logo" main-title>
+          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+        </div>
         <paper-icon-button class="search-btn" icon="search"
             aria-label="Search"></paper-icon-button>
       </app-toolbar>
@@ -276,7 +278,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           arial-label="Main navigation"
           icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
         <div class="sticky-nav-center">
-          <div class="logo"><a href="/" aria-label="NEWS Home">NEWS</a></div>
+          <div class="logo">
+            <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+          </div>
           <div class="date-line" role="heading">
             [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
           </div>
@@ -307,6 +311,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'news-header',
 
       properties: {
+
+        appTitle: String,
 
         page: {
           type: String,
@@ -349,6 +355,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _getScrollThreshold: function(smallScreen) {
         return smallScreen ? window.innerHeight - 64 : 162;
+      },
+
+      _computeAppHomeLabel: function(appTitle) {
+        return appTitle + ' Home';
       }
 
     });

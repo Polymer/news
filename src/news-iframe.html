@@ -45,7 +45,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
-        src: String
+        src: String,
+
+        _iframeCreated: Boolean
 
       },
 
@@ -54,15 +56,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       attached: function() {
-        if (window.IntersectionObserver != null) {
+        if ('IntersectionObserver' in window) {
           this._io = new IntersectionObserver(this._createIframe.bind(this));
           this._io.observe(this);
         } else {
           // Intersection Observer is not available, so just create the iframe
           // after a bit of a delay.
-          setTimeout(function() {
-            this._createIframe();
-          }.bind(this), 100);
+          window.setTimeout(this._createIframe.bind(this), 100);
         }
       },
 

@@ -11,21 +11,11 @@ module.exports = {
   navigateFallbackWhitelist: [/^(?!.*\.html$|\/data\/).*/],
   runtimeCaching: [
     {
-      urlPattern: /(https?:\/\/.*\.(?:png|jpg|gif|svg))/i,
+      urlPattern: /.*\.(png|jpg|gif|svg)/i,
       handler: 'fastest',
       options: {
         cache: {
           maxEntries: 200,
-          name: 'ext-images-cache'
-        }
-      }
-    },
-    {
-      urlPattern: /\/data\/images\/.*/,
-      handler: 'fastest',
-      options: {
-        cache: {
-          maxEntries: 100,
           name: 'data-images-cache'
         }
       }

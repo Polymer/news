@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
 <link rel="import" href="news-img.html">
 
 <dom-module id="news-list-item">
@@ -25,20 +26,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       a {
         display: block;
         position: relative;
-        box-sizing: border-box;
         text-decoration: none;
         color: inherit;
         overflow: hidden;
       }
 
       news-img {
-        height: 100%;
-      }
-
-      .headline {
-        box-sizing: border-box;
-        width: 100%;
-        padding-top: 0px;
+        height: 150px;
       }
 
       h2 {
@@ -52,7 +46,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 6px 20px 7px;
         border: var(--app-border-style);
         display: inline-block;
-        font-family: Georgia;
         font-weight: bold;
         font-size: 11px;
       }
@@ -81,42 +74,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         white-space: nowrap;
       }
 
-      /* mobile and desktop small */
-      @media (max-width: 1309px) {
-        .img-container {
+      /* mobile */
+      @media (max-width: 767px) {
+        news-img {
           display: none;
         }
-
       }
 
-      /* desktop small */
-      @media (min-width: 768px) and (max-width: 1309px) {
-
-        news-img {
-          height: 150px;
-        }
-
-        .category {
-          margin-top: 20px;
-        }
-
+      /* desktop */
+      @media (min-width: 768px) {
         :host([horizontal]) {
           margin-bottom: 24px;
         }
 
+        .category {
+          margin-top: 20px;
+        }
       }
 
       /* desktop large */
       @media (min-width: 1310px) {
-
-        news-img {
-          height: 150px;
-        }
-
-        .category {
-          margin-top: 20px;
-        }
-
         :host([horizontal]) a {
           @apply(--layout-horizontal);
         }
@@ -128,10 +105,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         :host([horizontal]) .category {
           display: none;
-        }
-
-        :host([horizontal]) {
-          margin-bottom: 24px;
         }
       }
 
@@ -160,12 +133,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         item: {
           type: Object
-        },
-
-        horizontal: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true
         }
 
       }

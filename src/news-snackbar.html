@@ -22,10 +22,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         left: calc(50% - 160px);
         right: calc(50% - 160px);
         bottom: 0;
+        width: 320px;
         background-color: var(--app-nav-background-color);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         color: var(--app-nav-text-color);
-        width: 320px;
         padding: 12px;
         visibility: hidden;
         text-align: center;
@@ -43,15 +43,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         transform: translate3d(0, 0, 0);
       }
 
+      /* mobile */
       @media (max-width: 767px) {
         :host {
-          top: auto;
-          bottom: 0;
           left: 0;
           right: 0;
           width: auto;
-          -webkit-transform: translate3d(0, 100%, 0);
-          transform: translate3d(0, 100%, 0);
         }
       }
 
@@ -64,6 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
 
     Polymer({
+
       is: 'news-snackbar',
 
       hostAttributes: {
@@ -82,6 +80,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.setAttribute('aria-hidden', 'true');
         this.classList.remove('opened');
       }
+
     });
 
   </script>

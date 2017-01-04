@@ -29,11 +29,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       img {
         @apply(--layout-fit);
         margin: 0 auto;
-        opacity: 0;
-        transition: 0.1s opacity;
         object-fit: cover;
         width: 100%;
         height: 100%;
+        transition: opacity 0.1s;
+        opacity: 0;
       }
 
     </style>
@@ -65,16 +65,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _srcChanged: function(src) {
         this.$.img.removeAttribute('src');
-        this.$.img.style.transition = '';
-        this.$.img.style.opacity = 0;
+        this.$.img.style.opacity = '';
         if (src) {
           this.$.img.src = src;
         }
       },
 
       _onImgLoad: function() {
-        this.$.img.style.transition = '0.1s opacity';
-        this.$.img.style.opacity = 1;
+        this.$.img.style.opacity = '1';
       },
 
       _onImgError: function() {
@@ -84,7 +82,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _placeholderSrcChanged: function(placeholder) {
-        this.style.backgroundImage = placeholder !== '' ? 'url(\'' + placeholder + '\')' : '';
+        this.style.backgroundImage = placeholder ? 'url(\'' + placeholder + '\')' : '';
       }
 
     });

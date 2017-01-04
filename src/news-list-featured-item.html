@@ -26,7 +26,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       a {
         display: block;
         position: relative;
-        box-sizing: border-box;
         text-decoration: none;
         color: inherit;
         overflow: hidden;
@@ -34,12 +33,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .img-container {
         position: relative;
-      }
-
-      .headline {
-        box-sizing: border-box;
-        width: 100%;
-        padding-top: 0px;
       }
 
       h2 {
@@ -53,16 +46,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 6px 20px 7px 20px;
         border: var(--app-border-style);
         display: inline-block;
-        font-family: Georgia;
         font-weight: bold;
         font-size: 11px;
       }
 
       .category[hidden] {
-        visibility: hidden;
-        height: 0px;
-        margin-top: 0px;
-        padding: 0px;
+        display: none;
       }
 
       .details {
@@ -88,25 +77,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 16px;
       }
 
-      /* mobile */
-      @media (max-width: 767px) {
-
-        a {
-          margin: 0 24px;
-          padding: 24px 0;
-          border-bottom: var(--app-border-style);
-          margin: 0;
-          padding: 0;
-        }
-
-      }
-
       /* mobile and desktop small */
       @media (max-width: 1309px) {
-
         a {
           height: 100vh;
-          border-bottom: 0;
           background: #000;
           color: var(--app-cover-text-color);
         }
@@ -115,13 +89,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           min-height: 60vh;
         }
 
+        .scrim {
+          @apply(--layout-fit);
+          background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
+        }
+
         .headline {
           position: absolute;
           bottom: 0;
           left: 0;
+          right: 0;
+          padding: 24px;
         }
 
         h2 {
+          margin: 24px 0;
           font-size: 6vh;
           line-height: 7vh;
           max-height: calc(7vh * 7);
@@ -141,41 +123,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding-top: 29px;
         }
 
-        h2 {
-          margin: 24px 0;
-        }
-
-        .scrim {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
-        }
-
-        .headline {
-          padding: 24px;
-        }
-
         p {
           display: none;
         }
-
       }
 
       /* desktop small */
       @media (min-width: 768px) and (max-width: 1309px) {
-
         a {
           height: 50vmax;
         }
-
       }
 
       /* desktop large */
       @media (min-width: 1310px) {
-
         a {
           @apply(--layout-horizontal);
         }
@@ -200,7 +161,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 24px 0;
           border-top: var(--app-border-style);
         }
-
       }
 
     </style>

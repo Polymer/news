@@ -167,7 +167,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* desktop */
       @media (min-width: 768px) {
-
         .logo {
           font-size: 39px;
         }
@@ -235,7 +234,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           column-gap: 82px;
         }
 
-        .sticky-nav[threshold-triggered] > .sticky-nav-menu[shown] {
+        .sticky-nav[threshold-triggered] .sticky-nav-menu[shown] {
           transform: translate3d(0, 100%, 0);
         }
 
@@ -263,7 +262,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
       </div>
       <template is="dom-if" if="[[!smallScreen]]">
-        <iron-selector role="navigation" class="menu-list" selected="[[category.name]]" attr-for-selected="name">
+        <iron-selector role="navigation" class="menu-list" selected="[[category.name]]"
+            attr-for-selected="name">
           <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
           </template>
@@ -340,10 +340,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _currentTime: function() {
         var monthNames = [
-          "January", "February", "March",
-          "April", "May", "June", "July",
-          "August", "September", "October",
-          "November", "December"
+          'January', 'February', 'March',
+          'April', 'May', 'June', 'July',
+          'August', 'September', 'October',
+          'November', 'December'
         ];
 
         var date = new Date();

@@ -90,7 +90,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _fetchArticle: function(article, offline) {
         // Don't fail if we become offline but already have a cached version, or if there's
         // nothing to fetch, or if already loading.
-        if ((offline && article.html) || !article || this.loading) {
+        if ((offline && article && article.html) || !article || this.loading) {
           this._setFailure(false);
           return;
         }
@@ -113,7 +113,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _fetchCategory: function(category, offline, attempts) {
         // Don't fail if we become offline but already have a cached version, or if there's
         // nothing to fetch, or if already loading.
-        if ((offline && category.items) || !category || this.loading) {
+        if ((offline && category && category.items) || !category || this.loading) {
           this._setFailure(false);
           return;
         }

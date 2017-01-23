@@ -35,6 +35,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         transition: opacity 0.1s;
         opacity: 0;
       }
+      
+      /* Support object-fit in IE 11 */
+      _:-ms-lang(x), img {
+        top: -10000px;
+        right: -10000px;
+        bottom: -10000px;
+        left: -10000px;
+        margin: auto;
+        width: 100%;
+        height: auto;
+      }
+
+      /* Support object-fit in Edge */
+      _:-ms-lang(x), _:-webkit-full-screen, img {
+        width: auto;
+        zoom: 0.1;
+        min-width: 100%;
+        min-height: 100%;
+      }
 
     </style>
 

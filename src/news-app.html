@@ -16,7 +16,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="news-data.html">
 <link rel="import" href="news-nav.html">
-<link rel="import" href="news-path-warning.html">
+
+<link rel="import" href="news-list.html">
 
 
 <dom-module id="news-app">
@@ -116,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       [[articleHeadline]]
     </news-nav>
 
-    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="invalid-path">
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="path-warning">
       <!-- list view of articles in a category -->
       <news-list
           id="list"
@@ -139,7 +140,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           offline="[[offline]]"
           failure="[[failure]]"></news-article>
       <!-- invalid top level paths -->
-      <news-path-warning name="invalid-path"></news-path-warning>
+      <news-path-warning name="path-warning"></news-path-warning>
 
     </iron-pages>
 
@@ -234,13 +235,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pageChanged: function(page, oldPage) {
-        if (page != null && page !== 'invalid-path') {
-          this.importHref(
-            this.resolveUrl('news-' + page + '.html'),
-            function() {
-              this._pageLoaded(Boolean(oldPage));
-            }, null, true);
+        var href;
+
+        switch(page) {
+          case 'list':
+            href = 'news-list.html';
+          break;
+          case 'article':
+            href = 'news-article.html';
+          break;
+          default:
+            href = 'news-path-warning.html';
+          break;
         }
+        this.importHref(
+            this.resolveUrl(href),
+            this._pageLoaded.bind(this, Boolean(oldPage)),
+            null,
+            true);
       },
 
       _pageLoaded: function(shouldResetLayout) {

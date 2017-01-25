@@ -114,7 +114,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       [[articleHeadline]]
     </news-nav>
 
-    <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="path-warning">
       <!-- list view of articles in a category -->
       <news-list
           id="list"
@@ -136,6 +136,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           loading="[[loading]]"
           offline="[[offline]]"
           failure="[[failure]]"></news-article>
+      <!-- invalid top level paths -->
+      <news-path-warning name="path-warning"></news-path-warning>
+
     </iron-pages>
 
     <footer>
@@ -220,7 +223,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.set('route.path', 'list/top_stories');
           return;
         }
-
         this.page = page;
         // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
@@ -230,13 +232,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pageChanged: function(page, oldPage) {
-        if (page != null) {
-          this.importHref(
-            this.resolveUrl('news-' + page + '.html'),
-            function() {
-              this._pageLoaded(Boolean(oldPage));
-            }, null, true);
+        var href;
+
+        switch(page) {
+          case 'list':
+            href = 'news-list.html';
+          break;
+          case 'article':
+            href = 'news-article.html';
+          break;
+          default:
+            href = 'news-path-warning.html';
+          break;
         }
+        this.importHref(
+            this.resolveUrl(href),
+            this._pageLoaded.bind(this, Boolean(oldPage)),
+            null,
+            true);
       },
 
       _pageLoaded: function(shouldResetLayout) {
@@ -257,7 +270,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _notifyNetworkStatus: function() {
         var oldOffline = this.offline;
-        this._setOffline(!navigator.onLine);
+        this._setOffline(!window.navigator.onLine);
         // Show the snackbar if the user is offline when starting a new session
         // or if the network status changed.
         if (this.offline || (!this.offline && oldOffline === true)) {

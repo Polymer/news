@@ -12,9 +12,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
+<link rel="import" href="amp-viewer.html">
 <link rel="import" href="news-iframe.html">
 <link rel="import" href="news-side-list.html">
-<link rel="import" href="amp-viewer.html">
 
 <dom-module id="news-article">
 
@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: flex;
       }
 
-      .fade-in {
+      .container .fade-in {
         opacity: 0;
       }
 
@@ -84,6 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 24px;
       }
 
+      /* mobile */
       @media (max-width: 767px) {
         :host {
           padding: 0;
@@ -108,6 +109,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
 
+      /* mobile and desktop small */
       @media (max-width: 1309px) {
         h1 {
           font-size: 6vh;
@@ -176,8 +178,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         offline: Boolean,
 
         failure: Boolean,
-
-        preloadAd: Boolean,
 
         categoryName: {
           type: Boolean,

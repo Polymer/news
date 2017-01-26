@@ -4,6 +4,7 @@
   "fragments": [
     "src/news-list.html",
     "src/news-article.html",
+    "src/news-path-warning.html",
     "src/lazy-resources.html"
   ],
   "sourceGlobs": [

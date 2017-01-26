@@ -12,10 +12,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
 
+<link rel="import" href="news-iframe.html">
+<link rel="import" href="news-list-featured-item.html">
 <link rel="import" href="news-list-item.html">
 <link rel="import" href="news-side-list.html">
-<link rel="import" href="news-list-featured-item.html">
-<link rel="import" href="news-iframe.html">
 
 <dom-module id="news-list">
 
@@ -31,7 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: none !important;
       }
 
-      .fade-in {
+      .container .fade-in {
         opacity: 0;
       }
 
@@ -41,7 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .content {
-        @apply(--layout-flex-auto);
+        @apply(--layout-flex);
       }
 
       .article-grid,
@@ -81,14 +81,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* mobile */
       @media (max-width: 767px) {
-
         aside {
           display: none;
         }
 
         .article-grid li,
         .opinions-grid li{
-          border-bottom: 1px solid var(--app-border-color);
+          border-bottom: var(--app-border-style);
           margin: 0px 24px 24px 24px;
           padding-bottom: 24px;
         }
@@ -97,12 +96,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         .opinions-grid li:last-of-type {
           border-bottom: none;
         }
-
       }
 
-      /* desktop 1 */
+      /* desktop */
       @media (min-width: 768px) {
-
         :host {
           --app-grid-columns: 4;
           --app-grid-gutter: 32px;
@@ -122,12 +119,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         .opinions-grid {
           margin-right: -32px;
         }
-
       }
 
-      /* desktop 2 */
+      /* desktop large */
       @media (min-width: 1310px) {
-
         .container {
           @apply(--layout-horizontal);
         }
@@ -154,7 +149,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
       <div class="content">
-
         <news-list-featured-item item="[[_getFeaturedItem(category.items)]]">
         </news-list-featured-item>
 
@@ -165,6 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </li>
           </template>
         </ul>
+
         <h3>Opinions</h3>
         <ul class="opinions-grid fade-in">
           <template is="dom-repeat" items="[[_slice(category.items, 5)]]">
@@ -174,6 +169,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
         </ul>
       </div>
+
       <aside>
         <div class="ad-container">
           <news-iframe src="/src/ads/a9.html"></news-iframe>
@@ -210,8 +206,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         failure: Boolean,
 
-        preloadAd: Boolean,
-
         categoryName: {
           type: Boolean,
           computed: '_return(_routeData.category)',
@@ -222,13 +216,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       },
 
+      _boundResizeHandler: null,
+
       attached: function() {
-        this._resizeHandler = this._resizeHandler.bind(this);
-        window.addEventListener('resize', this._resizeHandler);
+        this._boundResizeHandler = this._resizeHandler.bind(this);
+        window.addEventListener('resize', this._boundResizeHandler);
       },
 
       detached: function() {
-        window.removeEventListener('resize', this._resizeHandler);
+        window.removeEventListener('resize', this._boundResizeHandler);
       },
 
       _getFeaturedItem: function(items) {

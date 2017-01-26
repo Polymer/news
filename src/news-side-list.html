@@ -31,53 +31,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 20px 0;
       }
 
+      .category {
+        display: none;
+      }
+
       .time-ago {
         font-size: 12px;
         font-weight: bold;
         white-space: nowrap;
       }
 
-      .category {
-        padding: 6px 20px 7px 20px;
-        border: 1px solid var(--app-border-color);
-        font-family: Georgia;
-        font-weight: bold;
-        font-size: 11px;
-        display: none;
-      }
-
-      .author {
-        padding-left: 35px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        display: none;
-      }
-
       :host([featured]) > a {
         padding-bottom: 24px;
-        border-bottom: 1px solid var(--app-border-color);
+        border-bottom: var(--app-border-style);
       }
 
       :host([featured]) > a:last-of-type {
         border-bottom: none;
       }
 
-      :host([featured]) .author {
-        display: block;
-      }
-
       :host([featured]) .category {
         display: inline-block;
-      }
-
-      :host([featured]) .time-ago {
-        display: block;
+        padding: 6px 20px 7px 20px;
+        border: var(--app-border-style);
+        font-weight: bold;
+        font-size: 11px;
       }
 
       :host([featured]) .headline {
         display: block;
         margin: 20px 0;
+      }
+
+      :host([featured]) .time-ago {
+        display: block;
       }
 
     </style>

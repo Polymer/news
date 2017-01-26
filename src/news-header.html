@@ -104,8 +104,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         text-align: center;
         font-size: 13px;
-        border-top: 1px solid var(--app-border-color);
-        border-bottom: 1px solid var(--app-border-color);
+        border-top: var(--app-border-style);
+        border-bottom: var(--app-border-style);
         padding: 8px 0;
         margin: 32px 0;
       }
@@ -114,9 +114,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: inherit;
         text-decoration: none;
         margin: 0 10px;
+        letter-spacing: 0.08em;
       }
 
       .menu-list a.iron-selected {
+        letter-spacing: 0em;
         font-weight: bold;
       }
 
@@ -141,8 +143,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         header .date-line {
           padding: 6px 0;
-          border-top: 1px solid var(--app-transparent-border-color);
-          border-bottom: 1px solid var(--app-transparent-border-color);
+          border-top: var(--app-transparent-border-style);
+          border-bottom: var(--app-transparent-border-style);
         }
 
         .sticky-nav .logo,
@@ -165,7 +167,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* desktop */
       @media (min-width: 768px) {
-
         .logo {
           font-size: 39px;
         }
@@ -229,11 +230,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .grid-container {
+          -moz-column-count: 3;
+          -moz-column-gap: 82px;
           column-count: 3;
           column-gap: 82px;
         }
 
-        .sticky-nav[threshold-triggered] > .sticky-nav-menu[shown] {
+        .sticky-nav[threshold-triggered] .sticky-nav-menu[shown] {
           transform: translate3d(0, 100%, 0);
         }
 
@@ -251,7 +254,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-toolbar class="logo-toolbar">
         <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu"
             on-click="_toggleDrawer" aria-label="Main navigation"></paper-icon-button>
-        <div class="logo" main-title><a href="/" aria-label="NEWS Home">NEWS</a></div>
+        <div class="logo" main-title>
+          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+        </div>
         <paper-icon-button class="search-btn" icon="search"
             aria-label="Search"></paper-icon-button>
       </app-toolbar>
@@ -259,7 +264,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
       </div>
       <template is="dom-if" if="[[!smallScreen]]">
-        <iron-selector role="navigation" class="menu-list" selected="[[category.name]]" attr-for-selected="name">
+        <iron-selector role="navigation" class="menu-list" selected="[[category.name]]"
+            attr-for-selected="name">
           <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
           </template>
@@ -276,7 +282,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           arial-label="Main navigation"
           icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
         <div class="sticky-nav-center">
-          <div class="logo"><a href="/" aria-label="NEWS Home">NEWS</a></div>
+          <div class="logo">
+            <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+          </div>
           <div class="date-line" role="heading">
             [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
           </div>
@@ -308,6 +316,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
+        appTitle: String,
+
         page: {
           type: String,
           reflectToAttribute: true
@@ -332,10 +342,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _currentTime: function() {
         var monthNames = [
-          "January", "February", "March",
-          "April", "May", "June", "July",
-          "August", "September", "October",
-          "November", "December"
+          'January', 'February', 'March',
+          'April', 'May', 'June', 'July',
+          'August', 'September', 'October',
+          'November', 'December'
         ];
 
         var date = new Date();
@@ -349,6 +359,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _getScrollThreshold: function(smallScreen) {
         return smallScreen ? window.innerHeight - 64 : 162;
+      },
+
+      _computeAppHomeLabel: function(appTitle) {
+        return appTitle + ' Home';
       }
 
     });

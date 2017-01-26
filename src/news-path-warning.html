@@ -11,40 +11,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
-<link rel="import" href="news-icons.html">
-
-<dom-module id="news-network-warning">
-
+<dom-module id="news-path-warning">
   <template>
-
     <style>
-
       :host {
         display: block;
-        padding: 120px 20px;
         text-align: center;
+        padding: 120px 20px;
+        color: var(--app-secondary-color);
       }
-
-      [hidden] {
-        display: none !important;
-      }
-
       iron-icon {
         display: inline-block;
-        width: 30px;
-        height: 30px;
+        width: 60px;
+        height: 60px;
       }
-
       h1 {
+        margin: 50px 0 50px 0;
         font-weight: 300;
       }
-
-      button {
-        background: transparent;
-        border: var(--app-button-border-style);
-        padding: 10px 20px;
-        font-weight: 600;
-        color: inherit;
+      a {
+        font-weight: bold;
+        color: black;
+        text-decoration: none;
       }
 
       /* mobile */
@@ -56,43 +44,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           color: var(--app-nav-text-color);
         }
 
-        button {
-          border: 2px solid var(--app-nav-text-color);
+        a {
           color: var(--app-nav-text-color);
         }
       }
-
     </style>
 
-    <iron-icon icon="cloud-off"></iron-icon>
-    <div hidden$="[[offline]]">
-      <h1>Couldn't reach the server</h1>
+    <div>
+      <iron-icon icon="error"></iron-icon>
+      <h1>Sorry, we couldn't find that page.</h1>
     </div>
-    <div hidden$="[[!offline]]">
-      <h1>No internet connection</h1>
-      <p>Check if your device is connected to a mobile network or WiFi.</p>
-    </div>
-
-    <button on-tap="_tryReconnect">Try Again</button>
+   
+    <a href="/">Go to the home page</a>
 
   </template>
-
   <script>
-
     Polymer({
-
-      is: 'news-network-warning',
-
-      properties: {
-        offline: Boolean
-      },
-
-      _tryReconnect: function() {
-        this.fire('try-reconnect', null, { bubbles: false });
-      }
-
+      is: 'news-path-warning'
     });
-
   </script>
-
 </dom-module>

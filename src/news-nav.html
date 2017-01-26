@@ -20,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-media-query query="max-width: 767px" query-matches="{{_smallScreen}}"></iron-media-query>
 
     <news-header
+        app-title="[[appTitle]]"
         page="[[page]]"
         categories="[[categories]]"
         category="[[category]]"
@@ -48,6 +49,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'news-nav',
 
       properties: {
+
+        appTitle: String,
 
         page: String,
 

@@ -97,16 +97,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _fetchCategory: function(category, offline, attempts) {
         // Don't fail if we become offline but already have a cached version, or if there's
-        // nothing to fetch, or if something else is already fetching (since all instances of
-        // news-data share the same data object).
-        if ((offline && category.items) || !category || this.loading) {
+        // nothing to fetch, or if already loading.
+        if ((offline && category && category.items) || !category || this.loading) {
+          this._setFailure(false);
           return;
         }
         this._fetch('/data/' + category.name + '.json',
           function(response) {
             this.set('category.items', this._parseCategoryItems(response));
           }.bind(this),
-          attempts || 1);
+          attempts || 1 /* attempts */);
       },
 
       _parseCategoryItems: function(response) {
@@ -174,12 +174,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         template.innerHTML = html;
 
         // Remove h1, .kicker, and .date from content.
-        var h1 = template.content.querySelector('h1');
-        h1 && h1.remove();
-        var kicker = template.content.querySelector('.kicker');
-        kicker && kicker.remove();
-        var date = template.content.querySelector('.date');
-        date && date.remove();
+        // var h1 = template.content.querySelector('h1');
+        // h1 && h1.remove();
+        // var kicker = template.content.querySelector('.kicker');
+        // kicker && kicker.remove();
+        // var date = template.content.querySelector('.date');
+        // date && date.remove();
 
         // Remove the first image if it's the same as the item image.
         // var image = template.content.querySelector('img');
@@ -198,12 +198,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return template.content.querySelector('.content').innerHTML;
       },
 
-      _isSameImageSrc: function(a, b) {
-        var regex = /[^/]+\.(jpg|png|gif)/;
-        var aMatch = regex.exec(a);
-        var bMatch = regex.exec(b);
-        return aMatch && bMatch && aMatch[0] === bMatch[0];
-      },
+      // _isSameImageSrc: function(a, b) {
+      //   var regex = /[^/]+\.(jpg|png|gif)/;
+      //   var aMatch = regex.exec(a);
+      //   var bMatch = regex.exec(b);
+      //   return aMatch && bMatch && aMatch[0] === bMatch[0];
+      // },
 
       _fetch: function(url, callback, attempts, isRaw) {
         var xhr = new XMLHttpRequest();

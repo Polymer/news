@@ -29,11 +29,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       img {
         @apply(--layout-fit);
         margin: 0 auto;
-        opacity: 0;
-        transition: 0.1s opacity;
         object-fit: cover;
         width: 100%;
         height: 100%;
+        transition: opacity 0.1s;
+        opacity: 0;
+      }
+      
+      /* Support object-fit in IE 11 */
+      _:-ms-lang(x), img {
+        top: -10000px;
+        right: -10000px;
+        bottom: -10000px;
+        left: -10000px;
+        margin: auto;
+        width: 100%;
+        height: auto;
+      }
+
+      /* Support object-fit in Edge */
+      _:-ms-lang(x), _:-webkit-full-screen, img {
+        width: auto;
+        zoom: 0.1;
+        min-width: 100%;
+        min-height: 100%;
       }
 
     </style>
@@ -65,16 +84,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _srcChanged: function(src) {
         this.$.img.removeAttribute('src');
-        this.$.img.style.transition = '';
-        this.$.img.style.opacity = 0;
+        this.$.img.style.opacity = '';
         if (src) {
           this.$.img.src = src;
         }
       },
 
       _onImgLoad: function() {
-        this.$.img.style.transition = '0.1s opacity';
-        this.$.img.style.opacity = 1;
+        this.$.img.style.opacity = '1';
       },
 
       _onImgError: function() {
@@ -84,7 +101,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _placeholderSrcChanged: function(placeholder) {
-        this.style.backgroundImage = placeholder !== '' ? 'url(\'' + placeholder + '\')' : '';
+        this.style.backgroundImage = placeholder ? 'url(\'' + placeholder + '\')' : '';
       }
 
     });

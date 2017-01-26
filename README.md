@@ -1,51 +1,42 @@
 # NEWS
 
-### Setup
+## Prerequisites
 
-##### Prerequisites
+### Polymer CLI
 
 Install [polymer-cli](https://github.com/Polymer/polymer-cli):
 (Need at least npm v0.3.0)
 
     npm install -g polymer-cli
 
+### Google App Engine SDK
 
-##### Setup
+Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
+
+## Setup
 
     git clone https://github.com/polymerlabs/news.git
     cd news
     bower install
 
-### Start the development server
+## Start the development server
 
-    polymer serve
+    dev_appserver.py .
 
-### Run web-component-tester tests
-
-    polymer test
-
-### Build
+## Build
 
     polymer build
 
-### Test the build
+## Test the build
 
 This command serves the minified version of the app in an unbundled state, as it would be served by a push-compatible server:
 
-    polymer serve build/unbundled
+    dev_appserver.py build/unbundled
 
 This command serves the minified version of the app generated using fragment bundling:
 
-    polymer serve build/bundled
-
-### Deploy to Google App Engine
-
-Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
-
-#### Test locally
-
     dev_appserver.py build/bundled
 
-#### Deploy
+## Deploy to Google App Engine
 
     gcloud app deploy build/bundled/app.yaml --project [YOUR_PROJECT_ID]

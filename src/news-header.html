@@ -21,6 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       paper-icon-button {
         --paper-icon-button-ink-color: var(--app-nav-text-color);
+        width: 40px;
       }
 
       header,
@@ -54,52 +55,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: inherit;
       }
 
-      .sticky-nav {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        position: fixed;
-        top: -1px;
-        left: 0;
-        right: 0;
-        color: var(--app-nav-text-color);
-        visibility: hidden;
-        pointer-events: none;
-        transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        transform: translate3d(0, -100%, 0);
-      }
-
-      .sticky-nav[threshold-triggered] {
-        visibility: visible;
-        pointer-events: auto;
-        transform: translate3d(0, 0, 0);
-      }
-
-      .sticky-nav-toolbar {
-        background: var(--app-nav-background-color);
-      }
-
-      .sticky-nav-menu {
-        display: none;
-      }
-
-      .sticky-nav-menu a {
-        display: block;
-        line-height: 32px;
-        font-size: 15px;
-        text-decoration: none;
-        color: var(--app-nav-deselected-text-color);
-      }
-
-      .sticky-nav-menu a.iron-selected {
-        font-weight: bold;
-        color: var(--app-nav-text-color);
-      }
-
-      :host([page=list]) .sticky-nav paper-icon-button[icon=mail],
-      :host([page=list]) .sticky-nav paper-icon-button[icon=share] {
-        display: none;
-      }
-
       .menu-list {
         display: block;
         text-align: center;
@@ -122,23 +77,66 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
       }
 
+      .sticky-nav {
+        position: fixed;
+        top: -1px;
+        left: 0;
+        right: 0;
+        color: var(--app-nav-text-color);
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        transform: translate3d(0, -100%, 0);
+      }
+
+      .sticky-nav[threshold-triggered] {
+        visibility: visible;
+        pointer-events: auto;
+        transform: translate3d(0, 0, 0);
+      }
+
+      .sticky-nav .sticky-nav-toolbar {
+        background: var(--app-nav-background-color);
+      }
+
+      :host([page=list]) .sticky-nav .sticky-nav-center {
+        margin-right: 40px;
+      }
+
+      :host([page=list]) .sticky-nav paper-icon-button[icon=mail],
+      :host([page=list]) .sticky-nav paper-icon-button[icon=share] {
+        display: none;
+      }
+
+      .sticky-nav-menu {
+        display: none;
+      }
+
+      .sticky-nav-menu a {
+        display: block;
+        line-height: 32px;
+        font-size: 15px;
+        text-decoration: none;
+        color: var(--app-nav-deselected-text-color);
+      }
+
+      .sticky-nav-menu a.iron-selected {
+        font-weight: bold;
+        color: var(--app-nav-text-color);
+      }
+
       /* mobile */
       @media (max-width: 767px) {
-        :host([page=article]) header .logo,
-        :host([page=article]) header .date-line {
-          visibility: hidden;
-        }
-
         header {
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
+          color: var(--app-cover-text-color);
         }
 
-        header,
-        .logo a {
-          color: var(--app-cover-text-color);
+        header .logo {
+          margin-right: 40px;
         }
 
         header .date-line {
@@ -147,9 +145,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           border-bottom: var(--app-transparent-border-style);
         }
 
+        :host([page=article]) header .logo,
+        :host([page=article]) header .date-line {
+          visibility: hidden;
+        }
+
         .sticky-nav .logo,
         :host([page=article]) .sticky-nav .date-line,
-        :host([page=article]) .sticky-nav paper-icon-button[icon=search],
         :host([page=list]) .sticky-nav .article-headline {
           display: none;
         }
@@ -172,17 +174,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .logo-toolbar {
-          padding: 40px 32px 0 32px;
+          margin-top: 40px;
           height: 45px;
         }
 
         .mobile-toggle-drawer-btn {
-          visibility: hidden;
-          pointer-events: none;
-        }
-
-        .search-btn {
-          --paper-icon-button-ink-color: #000;
+          display: none;
         }
 
         .sticky-nav-toolbar {
@@ -191,6 +188,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         .sticky-nav {
           height: auto;
+        }
+
+        :host([page=article]) .sticky-nav .sticky-nav-center {
+          margin-left: 40px;
         }
 
         .sticky-nav .logo a {
@@ -239,10 +240,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         .sticky-nav[threshold-triggered] .sticky-nav-menu[shown] {
           transform: translate3d(0, 100%, 0);
         }
-
-        :host([page=article]) .sticky-nav-center {
-          padding-left: 80px;
-        }
       }
 
     </style>
@@ -257,8 +254,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="logo" main-title>
           <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
         </div>
-        <paper-icon-button class="search-btn" icon="search"
-            aria-label="Search"></paper-icon-button>
       </app-toolbar>
       <div class="date-line" role="heading">
         [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
@@ -294,7 +289,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
         <paper-icon-button icon="mail" aria-label="Send by mail"></paper-icon-button>
         <paper-icon-button icon="share" aria-label="Share on social networks"></paper-icon-button>
-        <paper-icon-button icon="search" aria-label="Search"></paper-icon-button>
       </app-toolbar>
       <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
         <iron-selector class="grid-container" role="navigation"

@@ -266,6 +266,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.importHref(this.resolveUrl('lazy-resources.html'), function() {
               this._notifyNetworkStatus();
               this.loadComplete = true;
+
+              // Load pre-caching Service Worker
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js');
+              }
             });
           });
         }

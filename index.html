@@ -82,13 +82,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         e.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
         document.body.appendChild(e);
       }
-
-      // Load pre-caching Service Worker
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/service-worker.js');
-        });
-      }
     })();
   </script>
 

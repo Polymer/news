@@ -15,7 +15,7 @@ Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
 
 ## Setup
 
-    git clone https://github.com/polymerlabs/news.git
+    git clone https://github.com/polymer/news.git
     cd news
     bower install
 

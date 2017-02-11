@@ -80,6 +80,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
+    <news-analytics key="UA-39334307-18"></news-analytics>
+
     <!--
       app-location and app-route elements provide the state of the URL for the app.
     -->
@@ -179,6 +181,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         offline: {
           type: Boolean,
+          value: false,
           readOnly: true
         },
 
@@ -263,6 +266,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.importHref(this.resolveUrl('lazy-resources.html'), function() {
               this._notifyNetworkStatus();
               this.loadComplete = true;
+
+              // Load pre-caching Service Worker
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js');
+              }
             });
           });
         }

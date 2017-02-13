@@ -45,6 +45,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 8px;
           text-align: center;
         };
+
+        /* use this value for the viewport height instead of "vh" unit */
+        --viewport-height: 600px;
       }
 
       iron-pages {
@@ -206,6 +209,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       created: function() {
         // Custom elements polyfill safe way to indicate an element has been upgraded.
         this.removeAttribute('unresolved');
+
+        // Chrome on iOS recomputes "vh" unit when URL bar goes off screen. Since we use "vh" unit
+        // to size the cover image and the title, those items will resize in response to the URL
+        // bar being shown or hidden. FWIW, this is not an issue in Chrome 56 on Android or iOS
+        // Safari. To workaround this on Chrome on iOS, we will use a
+        // fixed viewport height in places where normally relying on "vh" unit and replace them with
+        // custom property "--viewport-height".
+        var ua = navigator.userAgent;
+        var cMatch = navigator.userAgent.match(/Android.*Chrome[\/\s](\d+\.\d+)/);
+        if (ua.match('CriOS') || (cMatch && cMatch[0] && cMatch[1] < 56)) {
+          document.body.classList.add('fixed-viewport-height');
+        }
       },
 
       attached: function() {

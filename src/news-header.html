@@ -319,7 +319,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         categories: Array,
 
-        category: Object,
+        category: {
+          type: Object,
+          observer: '_categoryChanged'
+        },
 
         smallScreen: Boolean,
 
@@ -328,6 +331,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         }
 
+      },
+
+      _categoryChanged: function(value) {
+        this.fire('iron-announce', { text: value.title + ' page loaded' }, { bubbles: true });
       },
 
       _menuIcon: function(drawerOpened) {

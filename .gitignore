@@ -1,5 +1,4 @@
 bower_components/
 build/
-lib/
 *.pyc
 client_secrets.json

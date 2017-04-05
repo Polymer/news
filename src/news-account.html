@@ -1,0 +1,310 @@
+<!--
+@license
+Copyright (c) 2017 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
+<link rel="import" href="news-input.html">
+
+<dom-module id="news-account">
+
+  <template>
+    <style include="news-input">
+
+      :host {
+        display: block;
+        min-height: 100vh;
+        background-color: #FAFAFA;
+      }
+
+      .main-frame {
+        padding-top: 80px;
+      }
+
+      :host([waiting]) .main-frame {
+        opacity: 0.1;
+      }
+
+      .subsection:not([visible]) {
+        display: none;
+      }
+
+      .welcome-section {
+        text-align: center;
+      }
+
+      .logout-section {
+        padding-top: 32px;
+      }
+
+      .separator {
+        border-top: var(--app-border-style);
+        text-align: center;
+      }
+
+      .separator > div {
+        width: 50px;
+        margin: -10px auto 20px;
+        background-color: #FFF;
+      }
+
+      .login-section {
+        width: 320px;
+        margin: auto;
+        padding: 24px 16px;
+        background-color: #FFF;
+        transition: opacity 0.5s;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                  0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                  0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      }
+
+      news-input {
+        width: 100%;
+      }
+
+      news-input input {
+        font-size: 16px;
+        background: inherit;
+      }
+
+      news-button {
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+      }
+
+      .google-signin, .facebook-signin {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        cursor: pointer;
+        padding-bottom: 20px;
+      }
+
+      .facebook-signin {
+        margin-bottom: 20px;
+      }
+
+      .google-signin img {
+        width: 198px;
+        height: 48px;
+      }
+
+      .facebook-signin img {
+        width: 191px;
+        height: 46px;
+      }
+
+      paper-spinner-lite {
+        position: fixed;
+        top: calc(50% - 14px);
+        left: calc(50% - 14px);
+      }
+
+      /* mobile */
+      @media (max-width: 767px) {
+        .login-section {
+          max-width: 480px;
+          width: auto;
+          margin: 0 auto;
+          padding: 0 16px 0;
+          background-color: inherit;
+          box-shadow: none;
+        }
+
+        .login-form {
+          width: 100%;
+        }
+
+        .separator > div {
+          background-color: #FAFAFA;
+        }
+      }
+
+    </style>
+
+    <div class="main-frame">
+
+      <div class="subsection welcome-section" visible$="[[_hasAccount]]">
+        <span>Welcome to Polymer News, {{profile.email::change}}!</span>
+
+        <div class="logout-section">
+          <news-button>
+            <input type="button" on-click="_logout" value="Logout">
+          </news-button>
+        </div>
+      </div>
+
+      <div class="subsection login-section" visible$="[[!_hasAccount]]">
+
+        <div class="google-signin" on-click="_googleSignIn">
+          <img src="/images/google_signin.png">
+        </div>
+        <div class="facebook-signin" on-click="_facebookSignIn">
+          <img src="/images/facebook_signin.png" />
+        </div>
+
+        <div class="separator">
+          <div>OR</div>
+        </div>
+
+        <form action="#" id="loginForm"
+            is="iron-form"
+            method="post">
+
+          <news-input>
+            <input type="email" id="accountEmail" name="email"
+                placeholder="Email" required
+                aria-labelledby="accountEmailLabel"
+                autocomplete="username" value$="[[prefilledEmail]]"
+                autofocus$="[[!_computeFocusOnPW(route, prefilledEmail)]]">
+            <news-md-decorator error-message="Invalid Email" aria-hidden="true">
+              <label id="accountEmailLabel">Email</label>
+              <news-underline></news-underline>
+            </news-md-decorator>
+          </news-input>
+
+          <news-input>
+            <input type="password" id="accountPassword" name="password"
+                placeholder="Password" required
+                aria-labelledby="accountPasswordLabel"
+                autocomplete="current-password"
+                autofocus$="[[_computeFocusOnPW(route, prefilledEmail)]]">
+            <news-md-decorator error-message="Invalid Password" aria-hidden="true">
+              <label id="accountPasswordLabel">Password</label>
+              <news-underline></news-underline>
+            </news-md-decorator>
+          </news-input>
+
+          <news-button id="loginButton">
+            <input type="button" on-click="_signUp" value="Sign Up">
+            <input type="button" on-click="_signIn" value="Log In">
+          </news-button>
+
+        </form>
+      </div>
+    </div>
+
+    <!-- Show spinner when waiting for the server to repond -->
+    <paper-spinner-lite active="[[waiting]]"></paper-spinner-lite>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'news-account',
+
+      properties: {
+
+        /**
+         * The route for the state. e.g. `success` and `error` are mounted in the
+         * `checkout/` route.
+         */
+        route: {
+          type: Object,
+          notify: true
+        },
+
+        /**
+         * Object containing profile data.
+         */
+        profile: Object,
+
+        /**
+         * User's email address used to prefill
+         */
+        prefilledEmail: String,
+
+        /**
+         * If true, news-account is currently visible on the screen.
+         */
+        visible: {
+          type: Boolean,
+          observer: '_visibleChanged'
+        },
+
+        /**
+         * True when waiting for the server to repond.
+         */
+        waiting: {
+          type: Boolean,
+          notify: true,
+          reflectToAttribute: true
+        },
+
+        _hasAccount: {
+          type: Boolean,
+          computed: '_computeHasAccount(profile.id)'
+        }
+
+      },
+
+      _computeHasAccount: function(id) {
+        return id !== undefined && id != '';
+      },
+
+      _computeSigningUp: function(route) {
+        return route.path === '/signup';
+      },
+
+      _computeFocusOnPW: function(route, prefilledEmail) {
+        return route.path === '/signup' && prefilledEmail.length > 0;
+      },
+
+      _googleSignIn: function() {
+        this.fire('signin', {type: 'google'});
+      },
+
+      _facebookSignIn: function(event) {
+        this.fire('signin', {type: 'facebook'});
+      },
+
+      _signUp: function(event) {
+        this.waiting = true;
+        var form = new FormData(this.$.loginForm);
+        this.fire('signup', form);
+      },
+
+      _signIn: function(event) {
+        this.waiting = true;
+        var form = new FormData(this.$.loginForm);
+        this.fire('signin', {type: 'password', cred: form});
+      },
+
+      _logout: function(event) {
+        this._reset();
+        this.fire('signout');
+      },
+
+      _visibleChanged: function(visible) {
+        if (visible) {
+          this._reset();
+        }
+      },
+
+      /**
+       * Sets the initial state.
+       */
+      _reset: function() {
+        var form = this.$.loginForm;
+        this.waiting = false;
+        form.reset();
+        // Remove the `aria-invalid` attribute from the form inputs.
+        for (var el, i = 0; el = form.elements[i], i < form.elements.length; i++) {
+          el.removeAttribute('aria-invalid');
+        }
+      }
+    });
+
+  </script>
+
+</dom-module>

@@ -1,9 +1,10 @@
 {
-  "entrypoint": "/",
+  "entrypoint": "templates/index.html",
   "shell": "src/news-app.html",
   "fragments": [
     "src/news-list.html",
     "src/news-article.html",
+    "src/news-account.html",
     "src/news-path-warning.html",
     "src/lazy-resources.html"
   ],
@@ -11,10 +12,12 @@
    "src/**/*",
    "images/**/*",
    "data/**/*",
+   "lib/**/*",
+   "templates/**/*",
    "app.yaml",
    "bower.json",
-   "index.html",
-   "main.py"
+   "main.py",
+   "client_secrets.json"
   ],
   "includeDependencies": [
     "manifest.json",

@@ -5,7 +5,7 @@ module.exports = {
     '/images/*'
   ],
   dynamicUrlToDependencies: {
-    '/': ['index.html']
+    '/': ['templates/index.html']
   },
   navigateFallback: '/',
   navigateFallbackWhitelist: [/^(?!.*\.html$|\/data\/).*/],

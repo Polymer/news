@@ -2,6 +2,13 @@ runtime: python27
 api_version: 1
 threadsafe: true
 
+env_variables:
+  FACEBOOK_APPID: 913703798770447
+
+libraries:
+- name: ssl
+  version: latest
+
 handlers:
 - url: /bower_components
   static_dir: bower_components

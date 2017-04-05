@@ -20,6 +20,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta name="theme-color" content="#000">
   <link rel="manifest" href="/manifest.json">
 
+  <meta name="google-signin-client_id" content="{{client_id}}">
+
   <link rel="import" href="/src/news-app.html" async>
 
   <style>
@@ -29,7 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       background-color: #FAFAFA;
       color: #383838;
       font-family: Georgia;
-      min-height: 100vh;
+      min-height: 101vh;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 
@@ -72,7 +74,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <news-app unresolved app-title="NEWS">NEWS</news-app>
 
+  <input id="csrf_token" type="hidden" name="csrf_token" value="{{csrf_token}}">
+
   <script>
+    var FB_APPID = '{{FACEBOOK_APPID}}';
+    var user_profile = '{{user_profile}}';
     Polymer = {lazyRegister: true, dom: 'shadow'};
 
     (function() {

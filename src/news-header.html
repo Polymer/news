@@ -43,6 +43,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 0 16px;
       }
 
+      :host([page=account]) .date-line,
+      :host([page=account]) .menu-list {
+        display: none;
+      }
+
       .logo a {
         font-weight: 600;
         letter-spacing: 10px;
@@ -52,6 +57,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         /* required for IE 11, so this <a> can receive pointer events */
         display: inline-block;
         pointer-events: auto;
+        color: inherit;
+      }
+
+      .account-btn-container {
+        width: 40px;
+      }
+
+      .account-btn-container paper-icon-button {
+        padding: 4px;
+      }
+
+      .account-btn-container paper-icon-button {
+        --iron-icon: {
+          border-radius: 50%;
+          overflow: hidden;
+        }
+      }
+
+      .account-btn-container > a {
+        text-decoration: none;
         color: inherit;
       }
 
@@ -135,8 +160,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           color: var(--app-cover-text-color);
         }
 
-        header .logo {
-          margin-right: 40px;
+        :host([page=account]) header {
+          background: var(--app-nav-background-color);
         }
 
         header .date-line {
@@ -178,8 +203,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           height: 45px;
         }
 
+        .account-btn-container paper-icon-button {
+          --paper-icon-button-ink-color: initial;
+        }
+
         .mobile-toggle-drawer-btn {
-          display: none;
+          visibility: hidden;
         }
 
         .sticky-nav-toolbar {
@@ -253,6 +282,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             on-click="_toggleDrawer" aria-label="Main navigation"></paper-icon-button>
         <div class="logo" main-title>
           <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+        </div>
+        <div class="account-btn-container">
+          <a href="/account" tabindex="-1">
+            <paper-icon-button
+              src="[[profile.iconURL]]"
+              icon="[[_computeProfileIcon(profile)]]"
+              aria-label="Account"
+              on-click="_login"></paper-icon-button>
+          </a>
         </div>
       </app-toolbar>
       <div class="date-line" role="heading">
@@ -357,6 +395,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _computeAppHomeLabel: function(appTitle) {
         return appTitle + ' Home';
+      },
+
+      _computeProfileIcon: function(profile) {
+        if (profile && profile.id) {
+          return profile.iconURL ? '' : 'face';
+        } else {
+          return 'account-circle';
+        }
+      },
+
+      _login: function(event) {
+        this.fire('account-signin');
       }
 
     });

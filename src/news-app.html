@@ -109,17 +109,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         offline="[[offline]]"
         failure="{{failure}}"></news-data>
 
+    <!--
+      news-credentials is used to retrieve/store user's credentials via Credential Management API.
+    -->
+    <news-credentials id="credentials" profile="{{profile}}"></news-credentials>
+
     <news-nav
         id="nav"
         app-title="[[appTitle]]"
         page="[[page]]"
         categories="[[categories]]"
         category="[[category]]"
+        profile="[[profile]]"
         load-complete="[[loadComplete]]">
       [[articleHeadline]]
     </news-nav>
 
-    <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="path-warning">
+    <iron-pages role="main" selected="[[page]]" attr-for-selected="name"
+      selected-attribute="visible" fallback-selection="path-warning">
       <!-- list view of articles in a category -->
       <news-list
           id="list"
@@ -141,6 +148,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           loading="[[loading]]"
           offline="[[offline]]"
           failure="[[failure]]"></news-article>
+      <!-- account view -->
+      <news-account
+          name="account"
+          profile="[[profile]]"
+          route="[[subroute]]"
+          waiting="{{accountWaiting}}"></news-account>
       <!-- invalid top level paths -->
       <news-path-warning name="path-warning"></news-path-warning>
 
@@ -190,7 +203,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         failure: Boolean,
 
-        loadComplete: Boolean
+        loadComplete: Boolean,
+
+        accountWaiting: Boolean
 
       },
 
@@ -201,10 +216,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       listeners: {
-        'refresh-data': '_refreshData'
+        'refresh-data': '_refreshData',
+        'credentials-ready': '_autoSignIn',
+        'account-signin': '_accountSignIn',
+        'signin': '_signIn',
+        'signup': '_signUp',
+        'signout': '_signOut'
       },
-
-      _networkSnackbar: null,
 
       created: function() {
         // Custom elements polyfill safe way to indicate an element has been upgraded.
@@ -259,6 +277,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           case 'article':
             href = 'news-article.html';
           break;
+          case 'account':
+            href = 'news-account.html';
+          break;
           default:
             href = 'news-path-warning.html';
           break;
@@ -297,13 +318,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Show the snackbar if the user is offline when starting a new session
         // or if the network status changed.
         if (this.offline || (!this.offline && oldOffline === true)) {
-          if (!this._networkSnackbar) {
-            this._networkSnackbar = document.createElement('news-snackbar');
-            Polymer.dom(this.root).appendChild(this._networkSnackbar);
-          }
-          Polymer.dom(this._networkSnackbar).textContent = this.offline ?
-              'You are offline' : 'You are online';
-          this._networkSnackbar.open();
+          this._showSnackbar(this.offline ? 'You are offline' : 'You are online')
         }
       },
 
@@ -314,11 +329,87 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Elements in the app can notify section changes.
       // Response by a11y announcing the section and syncronizing the category.
       _updateDocumentTitle: function(page, categoryTitle, articleHeadline, appTitle) {
-        document.title = (page === 'list' ? categoryTitle : articleHeadline) + ' - ' + appTitle;
+        if (page === 'account') {
+          document.title = 'Account - ' + appTitle;
+        } else {
+          document.title = (page === 'list' ? categoryTitle : articleHeadline) + ' - ' + appTitle;
+        }
       },
 
       _refreshData: function() {
         this.$.data.refresh();
+      },
+
+      _showSnackbar: function(text) {
+        if (!this._snackbar) {
+          this._snackbar = document.createElement('news-snackbar');
+          Polymer.dom(this.root).appendChild(this._snackbar);
+        }
+        Polymer.dom(this._snackbar).textContent = text;
+        this._snackbar.open();
+      },
+
+      _autoSignIn: function() {
+        // If already signed in, no need to auto sign-in.
+        if (this.$.credentials.isSignedIn()) {
+          return;
+        }
+        var that = this;
+        this.$.credentials.autoSignIn(true).then(function(profile) {
+          if (profile) {
+            that._showSnackbar('You are signed in');
+          } else {
+            that.$.credentials.resetProfile();
+          }
+        });
+      },
+
+      _accountSignIn: function() {
+        var that = this;
+        if (this.$.credentials.isSignedIn()) {
+          that.set('route.path', '/account');
+          return;
+        }
+        this.$.credentials.autoSignIn(false).then(function(profile) {
+          if (profile) {
+            that._showSnackbar('You are signed in');
+          } else {
+            that.set('route.path', '/account');
+          }
+        }, function(err) {
+          that.accountWaiting = false;
+          that._showSnackbar('Sign-In failed');
+          that.set('route.path', '/account');
+        });
+      },
+
+      _signIn: function(event) {
+        var type = event.detail.type;
+        var cred = event.detail.cred;
+        var that = this;
+        this.$.credentials.signIn(type, cred).then(function(profile) {
+          that._showSnackbar('You are signed in');
+          that.set('route.path', '/');
+        }, function(err) {
+          that.accountWaiting = false;
+          that._showSnackbar('Sign-In failed');
+        });
+      },
+
+      _signUp: function(event) {
+        var that = this;
+        this.$.credentials.passwordSignUp(event.detail).then(function(profile) {
+          that._showSnackbar('Thanks for signing up');
+          that.set('route.path', '/');
+        }).catch(function(err) {
+          that.accountWaiting = false;
+          that._showSnackbar('Sign-Up failed');
+        });
+      },
+
+      _signOut: function() {
+        this.$.credentials.signOut();
+        this._showSnackbar('You are signed out');
       }
 
     });

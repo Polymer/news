@@ -4,10 +4,7 @@ module.exports = {
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
     '/images/*'
   ],
-  dynamicUrlToDependencies: {
-    '/': ['index.html']
-  },
-  navigateFallback: '/',
+  navigateFallback: '/index.html',
   navigateFallbackWhitelist: [/^(?!.*\.html$|\/data\/).*/],
   runtimeCaching: [
     {

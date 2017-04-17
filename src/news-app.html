@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-layout/helpers/helpers.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
@@ -154,11 +154,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 
-    Polymer({
+    class NewsApp extends Polymer.Element {
 
-      is: 'news-app',
+      static get is() { return 'news-app'; }
 
-      properties: {
+      static get properties() { return {
 
         appTitle: String,
 
@@ -166,6 +166,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           observer: '_pageChanged'
         },
+
+        routeData: Object,
 
         categories: Array,
 
@@ -192,21 +194,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         loadComplete: Boolean
 
-      },
+      }}
 
-      observers: [
-        '_routePageChanged(routeData.page)',
+      static get observers() { return [
+        '_routePageChanged(routeData.page, isAttached)',
         '_updateArticleHeadline(article.headline)',
         '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)'
-      ],
+      ]}
 
-      listeners: {
-        'refresh-data': '_refreshData'
-      },
-
-      _networkSnackbar: null,
-
-      created: function() {
+      ready() {
+        super.ready();
         // Custom elements polyfill safe way to indicate an element has been upgraded.
         this.removeAttribute('unresolved');
 
@@ -216,26 +213,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Safari. To workaround this on Chrome on iOS, we will use a
         // fixed viewport height in places where normally relying on "vh" unit and replace them with
         // custom property "--viewport-height".
-        var ua = navigator.userAgent;
-        var cMatch = navigator.userAgent.match(/Android.*Chrome[\/\s](\d+\.\d+)/);
+        let ua = navigator.userAgent;
+        let cMatch = navigator.userAgent.match(/Android.*Chrome[\/\s](\d+\.\d+)/);
         if (ua.match('CriOS') || (cMatch && cMatch[0] && cMatch[1] < 56)) {
           document.body.classList.add('fixed-viewport-height');
         }
-      },
 
-      attached: function() {
-        Polymer.RenderStatus.afterNextRender(this, function() {
-          this.listen(window, 'online', '_notifyNetworkStatus');
-          this.listen(window, 'offline', '_notifyNetworkStatus');
+        Polymer.RenderStatus.afterNextRender(this, () => {
+          window.addEventListener('online', (e)=>this._notifyNetworkStatus(e));
+          window.addEventListener('offline', (e)=>this._notifyNetworkStatus(e));
+          this.addEventListener('refresh-data', (e)=>this._refreshData(e));
         });
-      },
+      }
 
-      detached: function() {
-        this.unlisten(window, 'online', '_notifyNetworkStatus');
-        this.unlisten(window, 'offline', '_notifyNetworkStatus');
-      },
+      connectedCallback() {
+        super.connectedCallback();
+        this.isAttached = true;
+      }
 
-      _routePageChanged: function(page) {
+      _routePageChanged(page, isAttached) {
+        if (!isAttached) {
+          return;
+        }
         if (!page) {
           // set default route if route path is empty
           this.set('route.path', 'list/top_stories');
@@ -247,10 +246,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });
         // Close the drawer - in case the *route* change came from a link in the drawer.
         this.$.nav.closeDrawer();
-      },
+      }
 
-      _pageChanged: function(page, oldPage) {
-        var href;
+      _pageChanged(page, oldPage) {
+        let href;
 
         switch(page) {
           case 'list':
@@ -263,22 +262,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             href = 'news-path-warning.html';
           break;
         }
-        this.importHref(
+        let cb = this._pageLoaded.bind(this, Boolean(oldPage));
+        Polymer.importHref(
             this.resolveUrl(href),
-            this._pageLoaded.bind(this, Boolean(oldPage)),
-            null,
+            cb,
+            cb,
             true);
-      },
+      }
 
-      _pageLoaded: function(shouldResetLayout) {
+      _pageLoaded(shouldResetLayout) {
         this._ensureLazyLoaded();
-      },
+      }
 
-      _ensureLazyLoaded: function() {
+      _ensureLazyLoaded() {
         // load lazy resources after render and set `loadComplete` when done.
         if (!this.loadComplete) {
-          Polymer.RenderStatus.afterNextRender(this, function() {
-            this.importHref(this.resolveUrl('lazy-resources.html'), function() {
+          Polymer.RenderStatus.afterNextRender(this, () => {
+            Polymer.importHref(this.resolveUrl('lazy-resources.html'), () => {
               this._notifyNetworkStatus();
               this.loadComplete = true;
 
@@ -289,39 +289,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             });
           });
         }
-      },
+      }
 
-      _notifyNetworkStatus: function() {
-        var oldOffline = this.offline;
+      _notifyNetworkStatus() {
+        let oldOffline = this.offline;
         this._setOffline(!window.navigator.onLine);
         // Show the snackbar if the user is offline when starting a new session
         // or if the network status changed.
         if (this.offline || (!this.offline && oldOffline === true)) {
           if (!this._networkSnackbar) {
             this._networkSnackbar = document.createElement('news-snackbar');
-            Polymer.dom(this.root).appendChild(this._networkSnackbar);
+            this.root.appendChild(this._networkSnackbar);
           }
-          Polymer.dom(this._networkSnackbar).textContent = this.offline ?
+          this._networkSnackbar.textContent = this.offline ?
               'You are offline' : 'You are online';
           this._networkSnackbar.open();
         }
-      },
+      }
 
-      _updateArticleHeadline: function(articleHeadline) {
+      _updateArticleHeadline(articleHeadline) {
         this.articleHeadline = articleHeadline;
-      },
+      }
 
       // Elements in the app can notify section changes.
       // Response by a11y announcing the section and syncronizing the category.
-      _updateDocumentTitle: function(page, categoryTitle, articleHeadline, appTitle) {
+      _updateDocumentTitle(page, categoryTitle, articleHeadline, appTitle) {
         document.title = (page === 'list' ? categoryTitle : articleHeadline) + ' - ' + appTitle;
-      },
+      }
 
-      _refreshData: function() {
+      _refreshData() {
         this.$.data.refresh();
       }
 
-    });
+    }
+
+    customElements.define(NewsApp.is, NewsApp);
 
   </script>
 

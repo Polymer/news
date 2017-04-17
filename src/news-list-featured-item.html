@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" href="news-img.html">
@@ -55,7 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .details {
-        @apply(--layout-horizontal);
+        @apply --layout-horizontal;
         font-size: 11px;
         font-weight: bold;
       }
@@ -98,7 +98,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .scrim {
-          @apply(--layout-fit);
+          @apply --layout-fit;
           background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
         }
 
@@ -152,7 +152,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop large */
       @media (min-width: 1310px) {
         a {
-          @apply(--layout-horizontal);
+          @apply --layout-horizontal;
         }
 
         h2 {
@@ -161,7 +161,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         news-img {
-          @apply(--layout-fit);
+          @apply --layout-fit;
         }
 
         .img-container {
@@ -198,17 +198,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 
-    Polymer({
+    class NewsListFeaturedItem extends Polymer.Element {
 
-      is: 'news-list-featured-item',
+      static get is() { return 'news-list-featured-item'; }
 
-      properties: {
+      static get properties() { return {
 
         item: Object
 
-      }
+      }}
 
-    });
+    }
+
+    customElements.define(NewsListFeaturedItem.is, NewsListFeaturedItem);
 
   </script>
 

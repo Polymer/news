@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
 <link rel="import" href="news-icons.html">
@@ -73,25 +73,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <p>Check if your device is connected to a mobile network or WiFi.</p>
     </div>
 
-    <button on-tap="_tryReconnect">Try Again</button>
+    <button on-click="_tryReconnect">Try Again</button>
 
   </template>
 
   <script>
 
-    Polymer({
+    class NewsNetworkWarning extends Polymer.Element {
 
-      is: 'news-network-warning',
+      static get is() { return 'news-network-warning'; }
 
-      properties: {
+      static get properties() { return {
+
         offline: Boolean
-      },
 
-      _tryReconnect: function() {
-        this.fire('try-reconnect', null, { bubbles: false });
+      }}
+
+      _tryReconnect() {
+        this.dispatchEvent(new CustomEvent('try-reconnect', {composed: true}));
       }
 
-    });
+    }
+
+    customElements.define(NewsNetworkWarning.is, NewsNetworkWarning);
 
   </script>
 

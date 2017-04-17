@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
@@ -199,11 +199,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 
-    Polymer({
+    class NewsArticle extends Polymer.Element {
 
-      is: 'news-article',
+      static get is() { return 'news-article'; }
 
-      properties: {
+      static get properties() { return {
 
         route: Object,
 
@@ -241,14 +241,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _routeData: Object
 
-      },
+      }}
 
-      observers: [
+      static get observers() { return [
         '_loadArticle(article.html)',
         '_articleChanged(article)'
-      ],
+      ]}
 
-      attached: function() {
+      connectedCallback() {
+        super.connectedCallback();
         this._currentArticleCover = this.$.cover0;
         this._previousArticleCover = this.$.cover1;
         this._nextArticleCover = this.$.cover2;
@@ -256,16 +257,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._currentArticleCover.article = this.article;
 
         Polymer.RenderStatus.afterNextRender(this, this._installListeners);
-      },
+      }
 
-      _installListeners: function() {
+      _installListeners() {
         this._desktopMediaQuery = window.matchMedia('(min-width: 768px)');
         this.addEventListener('touchstart', this._touchstart.bind(this));
         this.addEventListener('touchmove', this._touchmove.bind(this));
         this.addEventListener('touchend', this._touchend.bind(this));
-      },
+      }
 
-      _touchstart: function(event) {
+      _touchstart(event) {
         if (this._isDesktopWidth()) {
           return;
         }
@@ -282,17 +283,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (this.nextArticle) {
           this._nextArticleCover.article = this.nextArticle;
         }
-      },
+      }
 
-      _touchmove: function(event) {
+      _touchmove(event) {
         if (this._isDesktopWidth()) {
           return;
         }
 
         // Is touchmove mostly horizontal or vertical?
         if (!this._touchDir) {
-          var absX = Math.abs(event.changedTouches[0].clientX - this._startX);
-          var absY = Math.abs(event.changedTouches[0].clientY - this._startY);
+          let absX = Math.abs(event.changedTouches[0].clientX - this._startX);
+          let absY = Math.abs(event.changedTouches[0].clientY - this._startY);
           this._touchDir = absX > absY ? 'x' : 'y';
         }
 
@@ -300,7 +301,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // Prevent vertically scrolling when swiping
           event.preventDefault();
 
-          var dx = Math.round(event.changedTouches[0].clientX - this._startX);
+          let dx = Math.round(event.changedTouches[0].clientX - this._startX);
 
           // Don't translate past the current image if there's no adjacent image in that direction
           if ((!this.previousArticle && dx > 0) || (!this.nextArticle && dx < 0)) {
@@ -314,9 +315,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this._translate(this._nextArticleCover, dx + this.offsetWidth, window.pageYOffset);
           }
         }
-      },
+      }
 
-      _touchend: function(event) {
+      _touchend(event) {
         if (this._isDesktopWidth()) {
           return;
         }
@@ -327,7 +328,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         if (this._touchDir === 'x') {
-          var dx = Math.round(event.changedTouches[0].clientX - this._startX);
+          let dx = Math.round(event.changedTouches[0].clientX - this._startX);
 
           // Don't translate past the current image if there's no adjacent image in that direction
           if ((!this.previousArticle && dx > 0) || (!this.nextArticle && dx < 0)) {
@@ -337,56 +338,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (dx > 0) {
             if (dx > 100) {
               this._translate(this._previousArticleCover, 0, window.pageYOffset, true /* transition */);
-              window.setTimeout(function() {
+              window.setTimeout(() => {
                 this.set('_routeData.id', this.previousArticle.id);
                 Polymer.AppLayout.scroll({ top: 0 });
                 this._previousArticleCover = this._swapCurrentArticleCovers(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
-              }.bind(this), 200);
+              }, 200);
             } else {
               this._translate(this._previousArticleCover, -this.offsetWidth, window.pageYOffset, true /* transition */);
-              window.setTimeout(function() {
+              window.setTimeout(() => {
                 this._resetElementStyles(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
-              }.bind(this), 200);
+              }, 200);
             }
           } else if (dx < 0) {
             if (dx < -100) {
               this._translate(this._nextArticleCover, 0, window.pageYOffset, true /* transition */);
-              window.setTimeout(function() {
+              window.setTimeout(() => {
                 this.set('_routeData.id', this.nextArticle.id);
                 Polymer.AppLayout.scroll({ top: 0 });
                 this._nextArticleCover = this._swapCurrentArticleCovers(this._nextArticleCover);
                 this._resetElementStyles(this._previousArticleCover);
-              }.bind(this), 200);
+              }, 200);
             } else {
               this._translate(this._nextArticleCover, this.offsetWidth, window.pageYOffset, true /* transition */);
-              window.setTimeout(function() {
+              window.setTimeout(() => {
                 this._resetElementStyles(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
-              }.bind(this), 200);
+              }, 200);
             }
           }
         }
 
         // Reset touch direction
         this._touchDir = null;
-      },
+      }
 
-      _translate: function(elem, x, y, transition) {
+      _translate(elem, x, y, transition) {
         elem.style.display = 'block';
         elem.style.transition = transition ? 'transform 0.2s' : '';
         elem.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
-      },
+      }
 
-      _resetElementStyles: function(elem) {
+      _resetElementStyles(elem) {
         elem.style.display = '';
         elem.style.transition = '';
         elem.style.transform = '';
-      },
+      }
 
-      _swapCurrentArticleCovers: function(newCover) {
-        var oldCover = this._currentArticleCover;
+      _swapCurrentArticleCovers(newCover) {
+        let oldCover = this._currentArticleCover;
         oldCover.classList.remove('fade-in');
         oldCover.classList.add('preview-cover');
 
@@ -396,53 +397,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         newCover.parentElement.insertBefore(newCover, oldCover);
 
         return oldCover;
-      },
+      }
 
-      _isDesktopWidth: function() {
+      _isDesktopWidth() {
         return this._desktopMediaQuery.matches;
-      },
+      }
 
-      _loadArticle: function(html) {
+      _loadArticle(html) {
         // If this._currentArticleCover isn't defined here, then it hasn't been stamped yet, and
         // the template already has the `fade-in` class.
         if (this._currentArticleCover) {
           this._currentArticleCover.classList.add('fade-in');
         }
         this.$.content.innerHTML = html;
-        this.scopeSubtree(this.$.content);
-      },
+        //ShadyCSS.styleSubtree(this.$.content);
+      }
 
-      _articleChanged: function(article) {
+      _articleChanged(article) {
         // If this._currentArticleCover isn't defined here, then `attached()` (which hasn't been
         // run yet) will set the article.
         if (this._currentArticleCover) {
           this._currentArticleCover.article = article;
         }
-      },
-
-      _tryReconnect: function() {
-        this.fire('refresh-data');
-      },
-
-      _slice: function(list, begin, end) {
-        return list.slice(begin, end);
-      },
-
-      _return: function(value) {
-        return value;
-      },
-
-      _computePreviousArticle: function(categoryItems, article) {
-        var i = categoryItems.indexOf(article);
-        return i > 0 ? categoryItems[i-1] : null;
-      },
-
-      _computeNextArticle: function(categoryItems, article) {
-        var i = categoryItems.indexOf(article);
-        return (i > -1 && i < categoryItems.length-1) ? categoryItems[i+1] : null;
       }
 
-    });
+      _tryReconnect() {
+        this.dispatchEvent(new CustomEvent('refresh-data', {bubbles: true, composed: true}));
+      }
+
+      _slice(list, begin, end) {
+        if (list) {
+          return list.slice(begin, end);
+        }
+      }
+
+      _return(value) {
+        return value;
+      }
+
+      _computePreviousArticle(categoryItems, article) {
+        if (categoryItems) {
+          let i = categoryItems.indexOf(article);
+          return i > 0 ? categoryItems[i-1] : null;
+        }
+      }
+
+      _computeNextArticle(categoryItems, article) {
+        if (categoryItems) {
+          let i = categoryItems.indexOf(article);
+          return (i > -1 && i < categoryItems.length-1) ? categoryItems[i+1] : null;
+        }
+      }
+
+    }
+
+    customElements.define(NewsArticle.is, NewsArticle);
 
   </script>
 

@@ -24,11 +24,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         @apply(--app-sub-section-headline);
       }
 
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      li {
+        margin: 20px 0;
+      }
+
       a {
         text-decoration: none;
         color: inherit;
         display: block;
-        margin: 20px 0;
       }
 
       .category {
@@ -41,12 +50,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         white-space: nowrap;
       }
 
-      :host([featured]) > a {
+      :host([featured]) li {
         padding-bottom: 24px;
         border-bottom: var(--app-border-style);
       }
 
-      :host([featured]) > a:last-of-type {
+      :host([featured]) li:last-of-type {
         border-bottom: none;
       }
 
@@ -72,13 +81,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <h3>
       <content></content>
     </h3>
+    <ul>
     <template is="dom-repeat" items="[[items]]">
-      <a href$="[[item.href]]">
+      <li><a href$="[[item.href]]">
         <div class="category">[[item.category]]</div>
         <span class="headline">[[item.headline]]</span>
         <span class="time-ago">[[item.timeAgo]]</span>
-      </a>
+      </a></li>
     </template>
+    </ul>
   </template>
 
   <script>

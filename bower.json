@@ -9,6 +9,7 @@
     "polymer": "polymer/polymer#^1.4.0",
     "app-layout": "polymerelements/app-layout#master",
     "app-route": "polymerelements/app-route#^0.9.1",
+    "iron-a11y-announcer": "PolymerElements/iron-a11y-announcer#^1.0.5",
     "iron-flex-layout": "polymerelements/iron-flex-layout#^1.0.0",
     "iron-icon": "polymerelements/iron-icon#^1.0.0",
     "iron-iconset-svg": "polymerelements/iron-iconset-svg#^1.0.0",

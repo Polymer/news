@@ -13,6 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-a11y-announcer/iron-a11y-announcer.html">
 
 <link rel="import" href="news-data.html">
 <link rel="import" href="news-nav.html">
@@ -224,6 +225,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       attached: function() {
+
+        Polymer.IronA11yAnnouncer.requestAvailability();
+
         Polymer.RenderStatus.afterNextRender(this, function() {
           this.listen(window, 'online', '_notifyNetworkStatus');
           this.listen(window, 'offline', '_notifyNetworkStatus');

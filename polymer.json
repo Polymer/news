@@ -8,19 +8,29 @@
     "src/lazy-resources.html"
   ],
   "sources": [
-   "src/**/*",
-   "images/**/*",
-   "data/**/*",
-   "app.yaml",
-   "bower.json",
-   "index.html",
-   "main.py"
+    "src/**/*",
+    "images/**/*",
+    "data/**/*",
+    "bower.json"
   ],
   "extraDependencies": [
+    "app.yaml",
+    "main.py",
     "manifest.json",
     "bower_components/webcomponentsjs/*"
   ],
-  "lint": {
-    "rules": ["polymer-2-hybrid"]
-  }
+  "builds": [{
+    "name": "bundled",
+    "bundle": true,
+    "js": {"minify": true},
+    "css": {"minify": true},
+    "html": {"minify": true},
+    "addServiceWorker": true
+  },{
+    "name": "unbundled",
+    "js": {"minify": true},
+    "css": {"minify": true},
+    "html": {"minify": true},
+    "addServiceWorker": true
+  }]
 }

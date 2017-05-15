@@ -17,11 +17,7 @@
     "app.yaml",
     "main.py",
     "manifest.json",
-<<<<<<< HEAD
     "bower_components/webcomponentsjs/*"
-=======
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
->>>>>>> master
   ],
   "builds": [{
     "name": "bundled",

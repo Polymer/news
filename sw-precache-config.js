@@ -4,8 +4,6 @@ module.exports = {
     '/bower_components/webcomponentsjs/*.js',
     '/images/*'
   ],
-  navigateFallback: '/index.html',
-  navigateFallbackWhitelist: [/^(?!.*\.html$|\/data\/).*/],
   runtimeCaching: [
     {
       urlPattern: /.*\.(png|jpg|gif|svg)/i,

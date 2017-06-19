@@ -5,7 +5,6 @@
 ### Polymer CLI
 
 Install [polymer-cli](https://github.com/Polymer/polymer-cli):
-(Need at least npm v0.3.0)
 
     npm install -g polymer-cli
 
@@ -29,14 +28,14 @@ Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
 
 ## Test the build
 
-This command serves the minified version of the app in an unbundled state, as it would be served by a push-compatible server:
+This command serves the `es5-bundled` build version of the app:
 
-    dev_appserver.py build/unbundled
+    dev_appserver.py build/es5-bundled
 
-This command serves the minified version of the app generated using fragment bundling:
+This command serves the `es6-unbundled` build version of the app:
 
-    dev_appserver.py build/bundled
+    dev_appserver.py build/es6-unbundled
 
 ## Deploy to Google App Engine
 
-    gcloud app deploy build/bundled/app.yaml --project [YOUR_PROJECT_ID]
+    gcloud app deploy build/es6-unbundled/app.yaml --project [YOUR_PROJECT_ID]

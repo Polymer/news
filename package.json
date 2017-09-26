@@ -1,0 +1,13 @@
+{
+  "name": "news",
+  "private": true,
+  "scripts": {
+    "start": "prpl-server --root build/"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "dependencies": {
+    "prpl-server": "^0.10.1"
+  }
+ }

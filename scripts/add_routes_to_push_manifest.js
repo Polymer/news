@@ -9,7 +9,7 @@ const pushManifest = require(`../${pushManifestPath}`);
 const newManifest = {};
 
 const navigateRequestPreloads = {
-  "bower_components/webcomponentsjs/webcomponents-loader.js": {
+  "bower_components/webcomponentsjs/webcomponents-lite.min.js": {
     "type": "script",
     "weight": 1
   }

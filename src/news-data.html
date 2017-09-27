@@ -94,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._setFailure(false);
           return;
         }
-        this._fetch('/data/articles/' + article.id + '.html',
+        this._fetch('data/articles/' + article.id + '.html',
           function(response) {
             this.set('article.html', this._formatHTML(response));
           }.bind(this),
@@ -117,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._setFailure(false);
           return;
         }
-        this._fetch('/data/' + category.name + '.json',
+        this._fetch('data/' + category.name + '.json',
           function(response) {
             this.set('category.items', this._parseCategoryItems(response));
           }.bind(this),
@@ -155,7 +155,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _getItemImage: function(item) {
-        return item.imgSrc ? '/data/' + item.imgSrc : '';
+        return item.imgSrc ? 'data/' + item.imgSrc : '';
       },
 
       _timeAgo: function(timestamp) {

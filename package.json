@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "prpl-server --root build/ --host 0.0.0.0 --https-redirect",
-    "deploy": "polymer build && gcloud app deploy --project polymer-news"
+    "deploy": "polymer build && node scripts/add_routes_to_push_manifest.js && gcloud app deploy --project polymer-news"
   },
   "engines": {
     "node": ">=6.0.0"

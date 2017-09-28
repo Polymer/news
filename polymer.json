@@ -24,7 +24,7 @@
   },
   "builds": [
     {
-      "preset": "es5-unbundled",
+      "preset": "es5-bundled",
       "basePath": true
     },
     {

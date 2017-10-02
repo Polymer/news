@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 
 <link rel="import" href="news-header.html">
@@ -26,29 +26,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         category="[[category]]"
         small-screen="[[_smallScreen]]"
         drawer-opened="{{_drawerOpened}}">
-      <content></content>
+      <slot></slot>
     </news-header>
 
     <!--
       Lazy-create the drawer on small viewports.
     -->
-    <template is="dom-if" if="[[_shouldRenderDrawer(_smallScreen, loadComplete)]]">
-      <news-drawer
-          categories="[[categories]]"
-          category="[[category]]"
-          drawer-opened="{{_drawerOpened}}">
-      </news-drawer>
-    </template>
+    <dom-if if="[[_shouldRenderDrawer(_smallScreen, loadComplete)]]">
+      <template>
+        <news-drawer
+            categories="[[categories]]"
+            category="[[category]]"
+            drawer-opened="{{_drawerOpened}}">
+        </news-drawer>
+      </template>
+    </dom-if>
+
 
   </template>
 
   <script>
 
-    Polymer({
+    class NewsNav extends Polymer.Element {
 
-      is: 'news-nav',
+      static get is() { return 'news-nav'; }
 
-      properties: {
+      static get properties() { return {
 
         appTitle: String,
 
@@ -64,17 +67,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _drawerOpened: Boolean
 
-      },
+      }}
 
-      closeDrawer: function() {
+      closeDrawer() {
         this._drawerOpened = false;
-      },
+      }
 
-      _shouldRenderDrawer: function(smallScreen, loadComplete) {
+      _shouldRenderDrawer(smallScreen, loadComplete) {
         return smallScreen && loadComplete;
       }
 
-    });
+    }
+
+    customElements.define(NewsNav.is, NewsNav);
 
   </script>
 

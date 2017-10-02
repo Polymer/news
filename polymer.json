@@ -10,27 +10,24 @@
   "sources": [
     "src/**/*",
     "images/**/*",
-    "data/**/*",
-    "bower.json"
+    "data/**/*"
   ],
   "extraDependencies": [
-    "app.yaml",
-    "main.py",
     "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+    "bower_components/webcomponentsjs/*"
   ],
-  "builds": [{
-    "name": "bundled",
-    "bundle": true,
-    "js": {"minify": true},
-    "css": {"minify": true},
-    "html": {"minify": true},
-    "addServiceWorker": true
-  },{
-    "name": "unbundled",
-    "js": {"minify": true},
-    "css": {"minify": true},
-    "html": {"minify": true},
-    "addServiceWorker": true
-  }]
+  "lint": {
+    "rules": ["polymer-2-hybrid"]
+  },
+  "builds": [
+    {
+      "preset": "es5-bundled"
+    },
+    {
+      "preset": "es6-unbundled"
+    },
+    {
+      "preset": "es6-bundled"
+    }
+  ]
 }

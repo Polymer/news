@@ -10,12 +10,9 @@
   "sources": [
     "src/**/*",
     "images/**/*",
-    "data/**/*",
-    "bower.json"
+    "data/**/*"
   ],
   "extraDependencies": [
-    "app.yaml",
-    "main.py",
     "manifest.json",
     "bower_components/webcomponentsjs/*"
   ],
@@ -28,11 +25,11 @@
       "basePath": true
     },
     {
-      "preset": "es6-bundled",
+      "preset": "es6-unbundled",
       "basePath": true
     },
     {
-      "preset": "es6-unbundled",
+      "preset": "es6-bundled",
       "basePath": true
     }
   ]

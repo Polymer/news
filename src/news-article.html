@@ -292,8 +292,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         // Is touchmove mostly horizontal or vertical?
         if (!this._touchDir) {
-          let absX = Math.abs(event.changedTouches[0].clientX - this._startX);
-          let absY = Math.abs(event.changedTouches[0].clientY - this._startY);
+          const absX = Math.abs(event.changedTouches[0].clientX - this._startX);
+          const absY = Math.abs(event.changedTouches[0].clientY - this._startY);
           this._touchDir = absX > absY ? 'x' : 'y';
         }
 
@@ -387,7 +387,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _swapCurrentArticleCovers(newCover) {
-        let oldCover = this._currentArticleCover;
+        const oldCover = this._currentArticleCover;
         oldCover.classList.remove('fade-in');
         oldCover.classList.add('preview-cover');
 
@@ -437,14 +437,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _computePreviousArticle(categoryItems, article) {
         if (categoryItems) {
-          let i = categoryItems.indexOf(article);
+          const i = categoryItems.indexOf(article);
           return i > 0 ? categoryItems[i-1] : null;
         }
       }
 
       _computeNextArticle(categoryItems, article) {
         if (categoryItems) {
-          let i = categoryItems.indexOf(article);
+          const i = categoryItems.indexOf(article);
           return (i > -1 && i < categoryItems.length-1) ? categoryItems[i+1] : null;
         }
       }

@@ -97,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._setFailure(false);
           return;
         }
-        this._fetch('/data/articles/' + article.id + '.html',
+        this._fetch('data/articles/' + article.id + '.html',
           (response) => { this.set('article.html', this._formatHTML(response)); },
           1 /* attempts */, true /* isRaw */);
       }

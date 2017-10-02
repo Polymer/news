@@ -8,11 +8,7 @@ Install [polymer-cli](https://github.com/Polymer/polymer-cli):
 
     npm install -g polymer-cli
 
-### Google App Engine SDK
-
-Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
-
-## Setup
+### Setup
 
     git clone https://github.com/polymer/news.git
     cd news
@@ -20,7 +16,7 @@ Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
 
 ## Start the development server
 
-    dev_appserver.py .
+    polymer serve
 
 ## Build
 
@@ -28,14 +24,6 @@ Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
 
 ## Test the build
 
-This command serves the `es5-bundled` build version of the app:
+Use `polymer serve` to serve a specific build preset of the app. For example:
 
-    dev_appserver.py build/es5-bundled
-
-This command serves the `es6-unbundled` build version of the app:
-
-    dev_appserver.py build/es6-unbundled
-
-## Deploy to Google App Engine
-
-    gcloud app deploy build/es6-unbundled/app.yaml --project [YOUR_PROJECT_ID]
+    polymer serve build/es5-bundled

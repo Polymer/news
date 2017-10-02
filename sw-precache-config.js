@@ -1,10 +1,19 @@
 module.exports = {
   staticFileGlobs: [
-    '/manifest.json',
-    '/bower_components/webcomponentsjs/*.js',
-    '/images/*'
+    'manifest.json',
+    'bower_components/webcomponentsjs/webcomponents-loader.js',
+    'images/*'
   ],
   runtimeCaching: [
+    {
+      urlPattern: /\/bower_components\/webcomponentsjs\/.*.js/,
+      handler: 'fastest',
+      options: {
+        cache: {
+          name: 'webcomponentsjs-polyfills-cache'
+        }
+      }
+    },
     {
       urlPattern: /.*\.(png|jpg|gif|svg)/i,
       handler: 'fastest',

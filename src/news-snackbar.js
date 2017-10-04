@@ -1,7 +1,7 @@
-import { Element } from '../../../@polymer/polymer/polymer-element.js';
-import { flush } from '../../../@polymer/polymer/lib/legacy/polymer.dom.js';
-import { Debouncer } from '../../../@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '../../../@polymer/polymer/lib/utils/async.js';
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import { flush } from '../node_modules/@polymer/polymer/lib/legacy/polymer.dom.js';
+import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
 
 class NewsSnackbar extends Element {
   static get template() {

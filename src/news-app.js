@@ -1,12 +1,12 @@
-import { Element } from '../../../@polymer/polymer/polymer-element.js';
-import { scroll } from '../../../@polymer/app-layout/helpers/helpers.js';
-import '../../../@polymer/app-route/app-location.js';
-import '../../../@polymer/app-route/app-route.js';
-import '../../../@polymer/iron-pages/iron-pages.js';
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import { scroll } from '../node_modules/@polymer/app-layout/helpers/helpers.js';
+import '../node_modules/@polymer/app-route/app-location.js';
+import '../node_modules/@polymer/app-route/app-route.js';
+import '../node_modules/@polymer/iron-pages/iron-pages.js';
 import './news-data.js';
 import './news-nav.js';
-import { afterNextRender } from '../../../@polymer/polymer/lib/utils/render-status.js';
-import { importHref } from '../../../@polymer/polymer/lib/utils/import-href.js';
+import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
+import { importHref } from '../node_modules/@polymer/polymer/lib/utils/import-href.js';
 
 class NewsApp extends Element {
   static get template() {

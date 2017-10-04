@@ -1,6 +1,6 @@
-import { Element } from '../../../@polymer/polymer/polymer-element.js';
-import { Debouncer } from '../../../@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '../../../@polymer/polymer/lib/utils/async.js';
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
 
 let categoryList = [
   {name: 'top_stories', title: 'Top Stories'},

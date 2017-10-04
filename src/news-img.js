@@ -1,5 +1,5 @@
-import { Element } from '../../../@polymer/polymer/polymer-element.js';
-import '../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import '../node_modules/@polymer/iron-flex-layout/iron-flex-layout.js';
 
 class NewsImg extends Element {
   static get template() {

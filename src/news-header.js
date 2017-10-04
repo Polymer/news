@@ -1,7 +1,7 @@
-import { Element } from '../../../@polymer/polymer/polymer-element.js';
-import '../../../@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../@polymer/iron-selector/iron-selector.js';
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import '../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../node_modules/@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../node_modules/@polymer/iron-selector/iron-selector.js';
 
 class NewsHeader extends Element {
   static get template() {

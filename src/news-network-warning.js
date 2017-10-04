@@ -1,5 +1,5 @@
-import { Element } from '../../../@polymer/polymer/polymer-element.js';
-import '../../../@polymer/iron-icon/iron-icon.js';
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import '../node_modules/@polymer/iron-icon/iron-icon.js';
 import './news-icons.js';
 
 class NewsNetworkWarning extends Element {

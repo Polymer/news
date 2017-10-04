@@ -1,5 +1,5 @@
-import { Element } from '../../../@polymer/polymer/polymer-element.js';
-import '../../../@polymer/iron-media-query/iron-media-query.js';
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import '../node_modules/@polymer/iron-media-query/iron-media-query.js';
 import './news-header.js';
 
 class NewsNav extends Element {

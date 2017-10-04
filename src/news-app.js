@@ -203,21 +203,17 @@ class NewsApp extends Element {
 
     switch(page) {
       case 'list':
-        href = 'news-list.html';
+        href = 'news-list.js';
       break;
       case 'article':
-        href = 'news-article.html';
+        href = 'news-article.js';
       break;
       default:
-        href = 'news-path-warning.html';
+        href = 'news-path-warning.js';
       break;
     }
     let cb = this._pageLoaded.bind(this, Boolean(oldPage));
-    importHref(
-        this.resolveUrl(href),
-        cb,
-        cb,
-        true);
+    import('./' + href).then(cb);
   }
 
   _pageLoaded(shouldResetLayout) {

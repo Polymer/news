@@ -1,26 +1,16 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import '../node_modules/@polymer/app-route/app-route.js';
+import '../node_modules/@polymer/app-layout/app-grid/app-grid-style.js';
+import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
+import './news-iframe.js';
+import './news-list-featured-item.js';
+import './news-list-item.js';
+import './news-side-list.js';
 
-<script type="module" src="../node_modules/@polymer/polymer/polymer-element.js"></script>
-<script type="module" src="../node_modules/@polymer/app-route/app-route.js"></script>
-<script type="module" src="../node_modules/@polymer/app-layout/app-grid/app-grid-style.js"></script>
-
-<script type="module" src="./news-iframe.js"></script>
-<script type="module" src="./news-list-featured-item.js"></script>
-<script type="module" src="./news-list-item.js"></script>
-<script type="module" src="./news-side-list.js"></script>
-
-<dom-module id="news-list">
-
-  <template>
-
+class NewsList extends Element {
+  static get template() {
+    return `
     <style include="app-grid-style">
 
       :host {
@@ -191,21 +181,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         hidden$="[[!failure]]"
         offline="[[offline]]"
         on-try-reconnect="_tryReconnect"></news-network-warning>
-
-  </template>
-
-  <script type="module">
-import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import '../node_modules/@polymer/app-route/app-route.js';
-import '../node_modules/@polymer/app-layout/app-grid/app-grid-style.js';
-import './news-iframe.js';
-import './news-list-featured-item.js';
-import './news-list-item.js';
-import './news-side-list.js';
-import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
-
-class NewsList extends Element {
+    `;
+  }
 
   static get is() { return 'news-list'; }
 
@@ -268,6 +245,3 @@ class NewsList extends Element {
 }
 
 customElements.define(NewsList.is, NewsList);
-</script>
-
-</dom-module>

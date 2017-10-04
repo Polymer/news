@@ -1,20 +1,9 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
+import '../node_modules/@polymer/iron-icon/iron-icon.js';
 
-<script type="module" src="../node_modules/@polymer/polymer/polymer-element.js"></script>
-<script type="module" src="../node_modules/@polymer/iron-icon/iron-icon.js"></script>
-
-<dom-module id="news-path-warning">
-
-  <template>
-
+class NewsPathWarning extends Element {
+  static get template() {
+    return `
     <style>
       :host {
         display: block;
@@ -58,20 +47,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
     <a href="/">Go to the home page</a>
-
-  </template>
-
-  <script type="module">
-import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import '../node_modules/@polymer/iron-icon/iron-icon.js';
-
-class NewsPathWarning extends Element {
-
+    `;
+  }
   static get is() { return 'news-path-warning'; }
 
 }
 
 customElements.define(NewsPathWarning.is, NewsPathWarning);
-</script>
-
-</dom-module>

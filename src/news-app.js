@@ -228,7 +228,7 @@ class NewsApp extends Element {
     // load lazy resources after render and set `loadComplete` when done.
     if (!this.loadComplete) {
       afterNextRender(this, () => {
-        importHref(this.resolveUrl('lazy-resources.html'), () => {
+        import('./lazy-resources.js').then( () => {
           this._notifyNetworkStatus();
           this.loadComplete = true;
 

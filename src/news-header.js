@@ -1,22 +1,11 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../../../@polymer/polymer/polymer-element.js';
+import '../../../@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../../@polymer/iron-selector/iron-selector.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-
-<dom-module id="news-header">
-
-  <template>
-
+class NewsHeader extends Element {
+  static get template() {
+    return `
     <style>
 
       paper-icon-button {
@@ -249,19 +238,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     -->
     <header>
       <app-toolbar class="logo-toolbar">
-        <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu"
-            on-click="_toggleDrawer" aria-label="Main navigation"></paper-icon-button>
-        <div class="logo" main-title>
-          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+        <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu" on-click="_toggleDrawer" aria-label="Main navigation"></paper-icon-button>
+        <div class="logo" main-title="">
+          <a href="/" aria-label\$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
         </div>
       </app-toolbar>
       <div class="date-line" role="heading">
-        [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
+        [[category.title]] <span aria-hidden="true">&nbsp;·&nbsp;</span> [[_currentTime()]]
       </div>
       <dom-if if="[[!smallScreen]]">
         <template>
-          <iron-selector role="navigation" class="menu-list" selected="[[category.name]]"
-              attr-for-selected="name">
+          <iron-selector role="navigation" class="menu-list" selected="[[category.name]]" attr-for-selected="name">
             <dom-repeat items="[[categories]]" as="category" initial-count="9">
               <template>
                 <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
@@ -277,15 +264,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     -->
     <app-box role="banner" class="sticky-nav" threshold="[[_getScrollThreshold(smallScreen)]]">
       <app-toolbar class="sticky-nav-toolbar">
-        <paper-icon-button
-          arial-label="Main navigation"
-          icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
+        <paper-icon-button arial-label="Main navigation" icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
         <div class="sticky-nav-center">
           <div class="logo">
-            <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+            <a href="/" aria-label\$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
           </div>
           <div class="date-line" role="heading">
-            [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
+            [[category.title]] <span aria-hidden="true">&nbsp; · &nbsp;</span> [[_currentTime()]]
           </div>
           <div class="article-headline">
             <slot></slot>
@@ -294,9 +279,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button icon="mail" aria-label="Send by mail"></paper-icon-button>
         <paper-icon-button icon="share" aria-label="Share on social networks"></paper-icon-button>
       </app-toolbar>
-      <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
-        <iron-selector class="grid-container" role="navigation"
-            selected="[[category.name]]" attr-for-selected="name">
+      <div class="sticky-nav-menu" shown\$="[[drawerOpened]]">
+        <iron-selector class="grid-container" role="navigation" selected="[[category.name]]" attr-for-selected="name">
           <dom-repeat items="[[categories]]" as="category" initial-count="9">
             <template>
               <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
@@ -305,70 +289,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </iron-selector>
       </div>
     </app-box>
+`;
+  }
 
-  </template>
+  static get is() { return 'news-header'; }
 
-  <script>
+  static get properties() { return {
 
-    class NewsHeader extends Polymer.Element {
+    appTitle: String,
 
-      static get is() { return 'news-header'; }
+    page: {
+      type: String,
+      reflectToAttribute: true
+    },
 
-      static get properties() { return {
+    categories: Array,
 
-        appTitle: String,
+    category: Object,
 
-        page: {
-          type: String,
-          reflectToAttribute: true
-        },
+    smallScreen: Boolean,
 
-        categories: Array,
-
-        category: Object,
-
-        smallScreen: Boolean,
-
-        drawerOpened: {
-          type: Boolean,
-          notify: true
-        }
-
-      }}
-
-      _menuIcon(drawerOpened) {
-        return drawerOpened ? 'close' : 'menu';
-      }
-
-      _currentTime() {
-        let monthNames = [
-          'January', 'February', 'March',
-          'April', 'May', 'June', 'July',
-          'August', 'September', 'October',
-          'November', 'December'
-        ];
-
-        let date = new Date();
-
-        return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
-      }
-
-      _toggleDrawer() {
-        this.drawerOpened = !this.drawerOpened;
-      }
-
-      _getScrollThreshold(smallScreen) {
-        return smallScreen ? window.innerHeight - 64 : 162;
-      }
-
-      _computeAppHomeLabel(appTitle) {
-        return appTitle + ' Home';
-      }
-
+    drawerOpened: {
+      type: Boolean,
+      notify: true
     }
 
-    customElements.define(NewsHeader.is, NewsHeader);
+  }}
 
-  </script>
+  _menuIcon(drawerOpened) {
+    return drawerOpened ? 'close' : 'menu';
+  }
 
-</dom-module>
+  _currentTime() {
+    let monthNames = [
+      'January', 'February', 'March',
+      'April', 'May', 'June', 'July',
+      'August', 'September', 'October',
+      'November', 'December'
+    ];
+
+    let date = new Date();
+
+    return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+  }
+
+  _toggleDrawer() {
+    this.drawerOpened = !this.drawerOpened;
+  }
+
+  _getScrollThreshold(smallScreen) {
+    return smallScreen ? window.innerHeight - 64 : 162;
+  }
+
+  _computeAppHomeLabel(appTitle) {
+    return appTitle + ' Home';
+  }
+}
+
+customElements.define(NewsHeader.is, NewsHeader);

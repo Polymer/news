@@ -1,22 +1,10 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../../../@polymer/polymer/polymer-element.js';
+import '../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import './news-img.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-
-<link rel="import" href="news-img.html">
-
-<dom-module id="news-list-item">
-
-  <template>
-
+class NewsListItem extends Element {
+  static get template() {
+    return `
     <style>
 
       :host {
@@ -110,10 +98,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <a href$="[[item.href]]">
+    <a href\$="[[item.href]]">
       <news-img src="[[item.imageUrl]]" alt="[[item.headline]]"></news-img>
       <div class="headline">
-        <div class="category" hidden$="[[!item.category]]">[[item.category]]</div>
+        <div class="category" hidden\$="[[!item.category]]">[[item.category]]</div>
         <h2>[[item.headline]]</h2>
         <div class="details">
           <div class="time-ago">[[item.timeAgo]]</div>
@@ -121,26 +109,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
       </div>
     </a>
-  </template>
+`;
+  }
 
-  <script>
+  static get is() { return 'news-list-item'; }
 
-    class NewsListItem extends Polymer.Element {
+  static get properties() { return {
 
-      static get is() { return 'news-list-item'; }
-
-      static get properties() { return {
-
-        item: {
-          type: Object
-        }
-
-      }}
-
+    item: {
+      type: Object
     }
 
-    customElements.define(NewsListItem.is, NewsListItem);
+  }}
+}
 
-  </script>
-
-</dom-module>
+customElements.define(NewsListItem.is, NewsListItem);

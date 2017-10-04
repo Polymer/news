@@ -8,8 +8,8 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<script type="module" src="../../../@polymer/polymer/polymer-element.js"></script>
+<script type="module" src="../../../@polymer/iron-icon/iron-icon.js"></script>
 
 <dom-module id="news-path-warning">
 
@@ -61,16 +61,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   </template>
 
-  <script>
+  <script type="module">
+import { Element } from '../../../@polymer/polymer/polymer-element.js';
+import '../../../@polymer/iron-icon/iron-icon.js';
 
-    class NewsPathWarning extends Polymer.Element {
+class NewsPathWarning extends Element {
 
-      static get is() { return 'news-path-warning'; }
+  static get is() { return 'news-path-warning'; }
 
-    }
+}
 
-    customElements.define(NewsPathWarning.is, NewsPathWarning);
-
-  </script>
+customElements.define(NewsPathWarning.is, NewsPathWarning);
+</script>
 
 </dom-module>

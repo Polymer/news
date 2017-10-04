@@ -1,22 +1,10 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+import { Element } from '../../../@polymer/polymer/polymer-element.js';
+import '../../../@polymer/iron-icon/iron-icon.js';
+import './news-img.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-
-<link rel="import" href="news-img.html">
-
-<dom-module id="news-article-cover">
-
-  <template>
-
+class NewsArticleCover extends Element {
+  static get template() {
+    return `
     <style>
       :host {
         display: block;
@@ -153,28 +141,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
     <div class="cover-img-container">
-      <news-img src="[[article.imageUrl]]" hidden$="[[!article.imageUrl]]"></news-img>
+      <news-img src="[[article.imageUrl]]" hidden\$="[[!article.imageUrl]]"></news-img>
       <div class="scrim"></div>
     </div>
+`;
+  }
 
-  </template>
+  static get is() { return 'news-article-cover'; }
 
-  <script>
+  static get properties() { return {
 
-    class NewsArticleCover extends Polymer.Element {
+    article: Object
 
-      static get is() { return 'news-article-cover'; }
+  }}
+}
 
-      static get properties() { return {
-
-        article: Object
-
-      }}
-
-    }
-
-    customElements.define(NewsArticleCover.is, NewsArticleCover);
-
-  </script>
-
-</dom-module>
+customElements.define(NewsArticleCover.is, NewsArticleCover);

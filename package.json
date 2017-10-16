@@ -2,7 +2,7 @@
   "name": "news",
   "private": true,
   "scripts": {
-    "start": "prpl-server --root build/ --host 0.0.0.0 --https-redirect",
+    "start": "prpl-server --root build/ --host 0.0.0.0 --https-redirect --bot-proxy https://render-tron.appspot.com/render",
     "deploy": "polymer build && node scripts/add_routes_to_push_manifest.js && gcloud app deploy --project polymer-news"
   },
   "engines": {

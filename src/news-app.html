@@ -318,12 +318,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (page === 'list') {
           this._setPageMetadata(categoryTitle, null);
         } else {
-          this._setPageMetadata(articleHeadline, this.articleId);
+          this._setPageMetadata(articleHeadline, this.article);
         }
       }
 
-      _setPageMetadata(description, articleId) {
-        let image = articleId ? `/images/${articleId}.jpg` : 'images/news-icon-128.png';
+      _setPageMetadata(description, article) {
+        let image = article ? article.imageUrl : 'images/news-icon-128.png';
 
         // Set open graph metadata
         this._setMeta('property', 'og:title', document.title);

@@ -6,7 +6,6 @@ import '../node_modules/@polymer/iron-pages/iron-pages.js';
 import './news-data.js';
 import './news-nav.js';
 import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
-import { importHref } from '../node_modules/@polymer/polymer/lib/utils/import-href.js';
 
 class NewsApp extends Element {
   static get template() {

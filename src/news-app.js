@@ -7,6 +7,8 @@ import './news-data.js';
 import './news-nav.js';
 import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
 
+import { store } from './redux/store.js';
+
 class NewsApp extends Element {
   static get template() {
     return `
@@ -150,6 +152,20 @@ class NewsApp extends Element {
     '_updateArticleHeadline(article.headline)',
     '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)'
   ]}
+
+  constructor() {
+    super();
+    store.subscribe(() => this.update());
+    this.update();
+  }
+
+  update() {
+    console.log('in store update');
+    const state = store.getState();
+    this.setProperties({
+      meow: true
+    });
+  }
 
   ready() {
     super.ready();

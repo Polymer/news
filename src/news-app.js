@@ -5,9 +5,11 @@ import '../node_modules/@polymer/app-route/app-route.js';
 import '../node_modules/@polymer/iron-pages/iron-pages.js';
 import './news-data.js';
 import './news-nav.js';
+import './news-snackbar.js';
 import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
 
 import { store } from './redux/store.js';
+import { networkStatusChanged } from './redux/actions/app.js';
 
 class NewsApp extends Element {
   static get template() {
@@ -137,8 +139,7 @@ class NewsApp extends Element {
 
     offline: {
       type: Boolean,
-      value: false,
-      readOnly: true
+      observer: '_offlineChanged'
     },
 
     failure: Boolean,
@@ -160,11 +161,11 @@ class NewsApp extends Element {
   }
 
   update() {
-    console.log('in store update');
     const state = store.getState();
     this.setProperties({
-      meow: true
+      offline: !state.app.online
     });
+    console.log('setted')
   }
 
   ready() {
@@ -185,8 +186,8 @@ class NewsApp extends Element {
     }
 
     afterNextRender(this, () => {
-      window.addEventListener('online', (e)=>this._notifyNetworkStatus(e));
-      window.addEventListener('offline', (e)=>this._notifyNetworkStatus(e));
+      window.addEventListener('online', (e)=>this._notifyNetworkStatus());
+      window.addEventListener('offline', (e)=>this._notifyNetworkStatus());
       this.addEventListener('refresh-data', (e)=>this._refreshData(e));
     });
   }
@@ -253,16 +254,18 @@ class NewsApp extends Element {
   }
 
   _notifyNetworkStatus() {
-    let oldOffline = this.offline;
-    this._setOffline(!window.navigator.onLine);
+    store.dispatch(networkStatusChanged(window.navigator.onLine));
+  }
+
+  _offlineChanged(offline, oldOffline) {
     // Show the snackbar if the user is offline when starting a new session
     // or if the network status changed.
-    if (this.offline || (!this.offline && oldOffline === true)) {
+    if (offline || (!offline && oldOffline === true)) {
       if (!this._networkSnackbar) {
         this._networkSnackbar = document.createElement('news-snackbar');
         this.root.appendChild(this._networkSnackbar);
       }
-      this._networkSnackbar.textContent = this.offline ?
+      this._networkSnackbar.textContent = offline ?
           'You are offline' : 'You are online';
       this._networkSnackbar.open();
     }

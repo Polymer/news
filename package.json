@@ -15,7 +15,8 @@
     "@polymer/iron-selector": "^3.0.0-pre.1",
     "@polymer/paper-icon-button": "^3.0.0-pre.1",
     "@polymer/polymer": "^3.0.0-pre.1",
-    "@0xcda7a/redux-es6": "^3.7.2"
+    "@0xcda7a/redux-es6": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {}
 }

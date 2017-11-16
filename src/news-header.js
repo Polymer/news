@@ -295,25 +295,15 @@ class NewsHeader extends Element {
   static get is() { return 'news-header'; }
 
   static get properties() { return {
-
     appTitle: String,
-
     page: {
       type: String,
       reflectToAttribute: true
     },
-
     categories: Array,
-
     category: Object,
-
     smallScreen: Boolean,
-
-    drawerOpened: {
-      type: Boolean,
-      notify: true
-    }
-
+    drawerOpened: Boolean
   }}
 
   _menuIcon(drawerOpened) {
@@ -334,7 +324,8 @@ class NewsHeader extends Element {
   }
 
   _toggleDrawer() {
-    this.drawerOpened = !this.drawerOpened;
+    this.dispatchEvent(new CustomEvent('drawer-opened',
+        {bubbles: true, composed: true, detail: {opened: !this.drawerOpened}}));
   }
 
   _getScrollThreshold(smallScreen) {

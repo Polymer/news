@@ -39,7 +39,7 @@ class NewsDrawer extends Element {
 
     </style>
 
-    <app-drawer opened="{{drawerOpened}}" swipe-open="" tabindex="0">
+    <app-drawer opened="[[drawerOpened]]" swipe-open="" tabindex="0">
       <paper-icon-button icon="close" on-click="_closeDrawer"></paper-icon-button>
       <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
         <dom-repeat items="[[categories]]" as="category" initial-count="9">
@@ -55,20 +55,14 @@ class NewsDrawer extends Element {
   static get is() { return 'news-drawer'; }
 
   static get properties() { return {
-
     categories: Array,
-
     category: Object,
-
-    drawerOpened: {
-      type: Boolean,
-      notify: true
-    }
-
+    drawerOpened: Boolean
   }}
 
   _closeDrawer() {
-    this.drawerOpened = false;
+    this.dispatchEvent(new CustomEvent('drawer-opened',
+        {bubbles: true, composed: true, detail: {opened: false}}));
   }
 }
 

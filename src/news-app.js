@@ -165,7 +165,6 @@ class NewsApp extends Element {
     this.setProperties({
       offline: !state.app.online
     });
-    console.log('setted')
   }
 
   ready() {
@@ -186,9 +185,9 @@ class NewsApp extends Element {
     }
 
     afterNextRender(this, () => {
-      window.addEventListener('online', (e)=>this._notifyNetworkStatus());
-      window.addEventListener('offline', (e)=>this._notifyNetworkStatus());
-      this.addEventListener('refresh-data', (e)=>this._refreshData(e));
+      window.addEventListener('online', (e) => this._notifyNetworkStatus());
+      window.addEventListener('offline', (e) => this._notifyNetworkStatus());
+      this.addEventListener('refresh-data', (e) => this._refreshData(e));
     });
   }
 

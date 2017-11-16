@@ -1,5 +1,4 @@
 import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import '../node_modules/@polymer/app-route/app-route.js';
 import '../node_modules/@polymer/app-layout/app-grid/app-grid-style.js';
 import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
 import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
@@ -129,14 +128,6 @@ class NewsList extends Element {
 
     </style>
 
-    <!--
-      app-route provides the name of the category.
-    -->
-    <app-route
-        route="[[route]]"
-        pattern="/:category"
-        data="{{routeData}}"></app-route>
-
     <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
       <div class="content">
         <news-list-featured-item item="[[_getFeaturedItem(category.items)]]">
@@ -187,25 +178,10 @@ class NewsList extends Element {
   static get is() { return 'news-list'; }
 
   static get properties() { return {
-
-    route: Object,
-
     category: Object,
-
     offline: Boolean,
-
     failure: Boolean,
-
-    categoryName: {
-      type: Boolean,
-      computed: '_return(routeData.category)',
-      notify: true
-    },
-
-    routeData: Object,
-
     loading: Boolean
-
   }}
 
   connectedCallback() {

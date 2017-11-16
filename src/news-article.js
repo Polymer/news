@@ -1,5 +1,4 @@
 import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import '../node_modules/@polymer/app-route/app-route.js';
 import '../node_modules/@polymer/iron-icon/iron-icon.js';
 import './news-article-cover.js';
 import './news-iframe.js';
@@ -148,11 +147,6 @@ class NewsArticle extends Element {
       }
     </style>
 
-    <app-route
-        route="{{route}}"
-        pattern="/:category/:id"
-        data="{{_routeData}}"></app-route>
-
     <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
       <article class="flex">
         <news-article-cover id="cover0" class="fade-in"></news-article-cover>
@@ -188,9 +182,6 @@ class NewsArticle extends Element {
   static get is() { return 'news-article'; }
 
   static get properties() { return {
-
-    route: Object,
-
     category: Object,
 
     article: Object,
@@ -210,20 +201,6 @@ class NewsArticle extends Element {
     offline: Boolean,
 
     failure: Boolean,
-
-    categoryName: {
-      type: Boolean,
-      computed: '_return(_routeData.category)',
-      notify: true
-    },
-
-    articleId: {
-      type: Boolean,
-      computed: '_return(_routeData.id)',
-      notify: true
-    },
-
-    _routeData: Object
 
   }}
 

@@ -78,9 +78,6 @@ class NewsApp extends Element {
 
     <news-analytics key="UA-39334307-18"></news-analytics>
 
-    <app-location route="{{route}}"></app-location>
-    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
-
     <!--
       news-data provides the list of categories and the articles for the category.
     -->
@@ -92,9 +89,9 @@ class NewsApp extends Element {
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="path-warning">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" route="[[subroute]]" category-name="{{categoryName}}" category="[[category]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-list>
+      <news-list id="list" name="list" route="[[subroute]]" category-name="[[categoryName]]" category="[[category]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-list>
       <!-- article view -->
-      <news-article name="article" route="{{subroute}}" category-name="{{categoryName}}" category="[[category]]" article-id="{{articleId}}" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-article>
+      <news-article name="article" route="{{subroute}}" category-name="[[categoryName]]" category="[[category]]" article-id="[[articleId]]" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-article>
       <!-- invalid top level paths -->
       <news-path-warning name="path-warning"></news-path-warning>
 
@@ -146,7 +143,6 @@ class NewsApp extends Element {
   }}
 
   static get observers() { return [
-    '_routePageChanged(routeData.page, isAttached)',
     '_updateArticleHeadline(article.headline)',
     '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)'
   ]}
@@ -160,7 +156,10 @@ class NewsApp extends Element {
   update() {
     const state = store.getState();
     this.setProperties({
-      offline: !state.app.online
+      offline: !state.app.online,
+      categoryName: state.path.category,
+      articleId: state.path.article,
+      page: state.path.page
     });
   }
 
@@ -218,22 +217,22 @@ class NewsApp extends Element {
     this.isAttached = true;
   }
 
-  _routePageChanged(page, isAttached) {
-    if (!isAttached) {
-      return;
-    }
-    if (!page) {
-      // set default route if route path is empty
-      this.set('route.path', 'list/top_stories');
-      return;
-    }
-    this.page = page;
-    // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
-    // with `behavior: 'silent'` to disable header scroll effects during the scroll.
-    scroll({ top: 0, behavior: 'silent' });
-    // Close the drawer - in case the *route* change came from a link in the drawer.
-    this.$.nav.closeDrawer();
-  }
+  // _routePageChanged(page, isAttached) {
+  //   if (!isAttached) {
+  //     return;
+  //   }
+  //   if (!page) {
+  //     // set default route if route path is empty
+  //     this.set('route.path', 'list/top_stories');
+  //     return;
+  //   }
+  //   this.page = page;
+  //   // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
+  //   // with `behavior: 'silent'` to disable header scroll effects during the scroll.
+  //   scroll({ top: 0, behavior: 'silent' });
+  //   // Close the drawer - in case the *route* change came from a link in the drawer.
+  //   this.$.nav.closeDrawer();
+  // }
 
   _pageChanged(page, oldPage) {
     let href;

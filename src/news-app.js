@@ -9,7 +9,7 @@ import './news-snackbar.js';
 import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
 
 import { store } from './redux/store.js';
-import { networkStatusChanged } from './redux/actions/app.js';
+import { networkStatusChanged, pathChanged } from './redux/actions/app.js';
 
 class NewsApp extends Element {
   static get template() {
@@ -189,6 +189,32 @@ class NewsApp extends Element {
       window.addEventListener('offline', (e) => this._notifyNetworkStatus());
       this.addEventListener('refresh-data', (e) => this._refreshData(e));
     });
+
+    this.setupRouteListeners();
+  }
+
+  setupRouteListeners() {
+    document.body.addEventListener('click', e => {
+      debugger
+      if ((e.button !== 0) ||           // Left click only
+          (e.metaKey || e.ctrlKey)) {   // No modifiers
+        return;
+      }
+
+      let origin = window.location.origin ?
+          window.location.origin :
+          window.location.protocol + '//' + window.location.host
+
+      let anchor = e.composedPath().filter(n => n.localName == 'a')[0];
+      if (anchor && anchor.href.indexOf(origin) === 0) {
+        e.preventDefault();
+        window.history.pushState({}, '', anchor.href);
+        this._notifyPathChanged();
+      }
+    });
+
+    window.addEventListener('popstate', this._notifyPathChanged);
+    this._notifyPathChanged();
   }
 
   connectedCallback() {
@@ -254,6 +280,10 @@ class NewsApp extends Element {
 
   _notifyNetworkStatus() {
     store.dispatch(networkStatusChanged(window.navigator.onLine));
+  }
+
+  _notifyPathChanged() {
+    store.dispatch(pathChanged(window.decodeURIComponent(window.location.pathname)));
   }
 
   _offlineChanged(offline, oldOffline) {

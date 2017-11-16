@@ -78,9 +78,6 @@ class NewsApp extends Element {
 
     <news-analytics key="UA-39334307-18"></news-analytics>
 
-    <!--
-      app-location and app-route elements provide the state of the URL for the app.
-    -->
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
@@ -195,7 +192,6 @@ class NewsApp extends Element {
 
   setupRouteListeners() {
     document.body.addEventListener('click', e => {
-      debugger
       if ((e.button !== 0) ||           // Left click only
           (e.metaKey || e.ctrlKey)) {   // No modifiers
         return;

@@ -1,7 +1,7 @@
 import { PATH_CHANGED } from '../actions/app.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
 
-const pathSelector = action => action.path;
+const pathSelector = action => action.path === '/' ? '/list/top_stories' : action.path;
 
 export const splitPathSelector = createSelector(
   pathSelector,
@@ -25,7 +25,7 @@ const path = (state = {}, action) => {
     case PATH_CHANGED:
       return {
         ...state,
-        fullPath: action.path,
+        fullPath: pathSelector(action),
         page: pageSelector(action),
         category: categorySelector(action),
         article: articleIdSelector(action)

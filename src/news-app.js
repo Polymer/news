@@ -1,7 +1,5 @@
 import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
 import { scroll } from '../node_modules/@polymer/app-layout/helpers/helpers.js';
-import '../node_modules/@polymer/app-route/app-location.js';
-import '../node_modules/@polymer/app-route/app-route.js';
 import '../node_modules/@polymer/iron-pages/iron-pages.js';
 import './news-data.js';
 import './news-nav.js';
@@ -89,9 +87,9 @@ class NewsApp extends Element {
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="path-warning">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" route="[[subroute]]" category-name="[[categoryName]]" category="[[category]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-list>
+      <news-list id="list" name="list" category-name="[[categoryName]]" category="[[category]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-list>
       <!-- article view -->
-      <news-article name="article" route="{{subroute}}" category-name="[[categoryName]]" category="[[category]]" article-id="[[articleId]]" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-article>
+      <news-article name="article" category-name="[[categoryName]]" category="[[category]]" article-id="[[articleId]]" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-article>
       <!-- invalid top level paths -->
       <news-path-warning name="path-warning"></news-path-warning>
 
@@ -113,8 +111,6 @@ class NewsApp extends Element {
       type: String,
       observer: '_pageChanged'
     },
-
-    routeData: Object,
 
     categories: Array,
 

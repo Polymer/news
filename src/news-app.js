@@ -79,7 +79,7 @@ class NewsApp extends Element {
     <!--
       news-data provides the list of categories and the articles for the category.
     -->
-    <news-data id="data" categories="{{categories}}" category-name="[[categoryName]]" category="{{category}}" article-id="[[articleId]]" article="{{article}}" loading="{{loading}}" offline="[[offline]]" failure="{{failure}}"></news-data>
+    <news-data id="data" category-name="[[categoryName]]" category="[[category]]" article-id="[[articleId]]" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-data>
 
     <news-nav id="nav" app-title="[[appTitle]]" page="[[page]]" categories="[[categories]]" category="[[category]]" load-complete="[[loadComplete]]">
       [[articleHeadline]]
@@ -155,8 +155,15 @@ class NewsApp extends Element {
       offline: !state.app.online,
       categoryName: state.path.category,
       articleId: state.path.article,
-      page: state.path.page
+      page: state.path.page,
+      categories: state.data.categories,
+      category: state.data.category,
+      article: state.data.article,
+      failure: state.data.failure,
+      loading: state.data.loading
     });
+
+    console.log(state);
   }
 
   ready() {

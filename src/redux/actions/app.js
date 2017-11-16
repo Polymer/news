@@ -16,7 +16,6 @@ export const drawerOpened = (opened) => (dispatch) => {
   });
 };
 
-
 export const pathChanged = (path) => (dispatch, getState) => {
   dispatch({
     type: PATH_CHANGED,

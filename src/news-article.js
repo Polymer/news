@@ -152,7 +152,9 @@ class NewsArticle extends Element {
         <news-article-cover id="cover0" class="fade-in"></news-article-cover>
         <news-article-cover id="cover1" class="preview-cover"></news-article-cover>
         <news-article-cover id="cover2" class="preview-cover"></news-article-cover>
-        <div id="content" class="fade-in"></div>
+        <div id="content" class="fade-in">
+          [[article.html]]
+        </div>
       </article>
 
       <aside>
@@ -365,6 +367,7 @@ class NewsArticle extends Element {
   }
 
   _loadArticle(html) {
+    debugger
     // If this._currentArticleCover isn't defined here, then it hasn't been stamped yet, and
     // the template already has the `fade-in` class.
     if (this._currentArticleCover) {

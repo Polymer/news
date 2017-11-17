@@ -25,7 +25,7 @@ const path = (state = {}, action) => {
     case PATH_CHANGED:
       return {
         ...state,
-        fullPath: pathSelector(action),
+        route: pathSelector(action),
         page: pageSelector(action),
         category: categorySelector(action),
         article: articleIdSelector(action)

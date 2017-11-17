@@ -102,6 +102,11 @@ class NewsApp extends Element {
 
     appTitle: String,
 
+    route: {
+      type: String,
+      observer: '_routeChanged'
+    },
+
     page: {
       type: String,
       observer: '_pageChanged'
@@ -144,6 +149,7 @@ class NewsApp extends Element {
       offline: !state.app.online,
       categoryName: state.path.category,
       articleId: state.path.article,
+      route: state.path.route,
       page: state.path.page,
       categories: state.data.categories,
       category: state.data.category,
@@ -179,6 +185,11 @@ class NewsApp extends Element {
     this.setupRouteListeners();
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.isAttached = true;
+  }
+
   setupRouteListeners() {
     document.body.addEventListener('click', e => {
       if ((e.button !== 0) ||           // Left click only
@@ -200,11 +211,6 @@ class NewsApp extends Element {
 
     window.addEventListener('popstate', this._notifyPathChanged);
     this._notifyPathChanged();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.isAttached = true;
   }
 
   _articleIdChanged(categoryItems, articleId) {
@@ -235,22 +241,16 @@ class NewsApp extends Element {
     store.dispatch(categoryUpdated(category, this.offline, this.loading));
   }
 
-  // _routePageChanged(page, isAttached) {
-  //   if (!isAttached) {
-  //     return;
-  //   }
-  //   if (!page) {
-  //     // set default route if route path is empty
-  //     this.set('route.path', 'list/top_stories');
-  //     return;
-  //   }
-  //   this.page = page;
-  //   // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
-  //   // with `behavior: 'silent'` to disable header scroll effects during the scroll.
-  //   scroll({ top: 0, behavior: 'silent' });
-  //   // Close the drawer - in case the *route* change came from a link in the drawer.
-  //   this.$.nav.closeDrawer();
-  // }
+  _routeChanged(route) {
+    if (!this.isAttached) {
+      return;
+    }
+    // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
+    // with `behavior: 'silent'` to disable header scroll effects during the scroll.
+    scroll({ top: 0, behavior: 'silent' });
+    // Close the drawer - in case the *route* change came from a link in the drawer.
+    this.$.nav.closeDrawer();
+  }
 
   _pageChanged(page, oldPage) {
     let href;

@@ -77,7 +77,7 @@ class NewsApp extends Element {
     <news-analytics key="UA-39334307-18"></news-analytics>
 
     <news-nav id="nav" app-title="[[appTitle]]" page="[[page]]" categories="[[categories]]" category="[[category]]" load-complete="[[loadComplete]]">
-      [[articleHeadline]]
+      [[article.headline]]
     </news-nav>
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="path-warning">
@@ -118,25 +118,17 @@ class NewsApp extends Element {
     articleId: String,
     article: Object,
 
-    articleHeadline: {
-      type: String,
-      value: ''
-    },
-
     offline: {
       type: Boolean,
       observer: '_offlineChanged'
     },
 
     failure: Boolean,
-
     loadComplete: Boolean
-
   }}
 
   static get observers() { return [
-    '_updateArticleHeadline(article.headline)',
-    '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)',
+    '_updateDocumentTitle(page, category.title, article.headline, appTitle)',
     '_articleIdChanged(category.items, articleId)'
   ]}
 
@@ -159,8 +151,6 @@ class NewsApp extends Element {
       failure: state.data.failure,
       loading: state.data.loading
     });
-
-    console.log(state);
   }
 
   ready() {
@@ -321,10 +311,6 @@ class NewsApp extends Element {
           'You are offline' : 'You are online';
       this._networkSnackbar.open();
     }
-  }
-
-  _updateArticleHeadline(articleHeadline) {
-    this.articleHeadline = articleHeadline;
   }
 
   // Elements in the app can notify section changes.

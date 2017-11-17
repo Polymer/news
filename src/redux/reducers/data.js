@@ -36,12 +36,15 @@ const data = (state = {categories: categoryList}, action) => {
         loading: action.loading
       };
     case ARTICLE_FETCHED:
-    debugger
-      state.article.html = action.html;
-      return state;
+      return {
+        ...state,
+        article: {...state.article, html: action.html}
+      }
     case CATEGORY_FETCHED:
-      state.category.items = action.items;
-      return state;
+      return {
+        ...state,
+        category: {...state.category, items: action.items}
+      }
     default:
       return state;
   }

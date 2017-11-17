@@ -1,4 +1,4 @@
-import { NETWORK_STATUS_CHANGED, DRAWER_OPENED } from '../actions/app.js';
+import { NETWORK_STATUS_CHANGED, DRAWER_OPENED, DRAWER_CLOSED } from '../actions/app.js';
 
 const app = (state = {online: true, drawerOpened: false}, action) => {
   switch (action.type) {
@@ -10,7 +10,12 @@ const app = (state = {online: true, drawerOpened: false}, action) => {
     case DRAWER_OPENED:
       return {
         ...state,
-        drawerOpened: action.opened
+        drawerOpened: true
+      }
+    case DRAWER_CLOSED:
+      return {
+        ...state,
+        drawerOpened: false
       }
     default:
       return state;

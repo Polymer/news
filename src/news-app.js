@@ -7,7 +7,7 @@ import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/rend
 
 import { store } from './redux/store.js';
 import { networkStatusChanged, pathChanged } from './redux/actions/app.js';
-import { categoryUpdated, articleUpdated, failureChanged, loadingChanged} from './redux/actions/data.js';
+import { categoryUpdated, articleUpdated} from './redux/actions/data.js';
 
 class NewsApp extends Element {
   static get template() {

@@ -3,7 +3,7 @@ import '../node_modules/@polymer/iron-media-query/iron-media-query.js';
 import './news-header.js';
 
 import { store } from './redux/store.js';
-import { drawerOpened } from './redux/actions/app.js';
+import { drawerOpened, drawerClosed } from './redux/actions/app.js';
 
 class NewsNav extends Element {
   static get template() {
@@ -62,7 +62,11 @@ class NewsNav extends Element {
   ready() {
     super.ready();
     this.addEventListener('drawer-opened', function(e) {
-      store.dispatch(drawerOpened(e.detail.opened));
+      if (e.detail.opened) {
+        store.dispatch(drawerOpened());
+      } else {
+        store.dispatch(drawerClosed());
+      }
     })
   }
 

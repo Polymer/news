@@ -1,5 +1,7 @@
-import { CATEGORY_UPDATED, ARTICLE_UPDATED, FAILURE_CHANGED, LOADING_CHANGED,
-         ARTICLE_FETCHED, CATEGORY_FETCHED } from '../actions/data.js';
+import { CATEGORY_UPDATED, CATEGORY_FETCHED,
+         ARTICLE_UPDATED, ARTICLE_FETCHED,
+         FAILURE_HAPPENED, FAILURE_DIDNT_HAPPEN,
+         LOADING_STARTED, LOADING_ENDED } from '../actions/data.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
 import { Debouncer } from '../../../node_modules/@polymer/polymer/lib/utils/debounce.js';
 
@@ -26,15 +28,25 @@ const data = (state = {categories: categoryList}, action) => {
         ...state,
         article: action.article
       };
-    case FAILURE_CHANGED:
+    case FAILURE_HAPPENED:
       return {
         ...state,
-        failure: action.failure
+        failure: true
       };
-    case LOADING_CHANGED:
+    case FAILURE_DIDNT_HAPPEN:
       return {
         ...state,
-        loading: action.loading
+        failure: false
+      };
+    case LOADING_STARTED:
+      return {
+        ...state,
+        loading: true
+      };
+    case LOADING_ENDED:
+      return {
+        ...state,
+        loading: false
       };
     case ARTICLE_FETCHED:
       return {

@@ -1,7 +1,9 @@
 export const CATEGORY_UPDATED = 'CATEGORY_UPDATED';
 export const ARTICLE_UPDATED = 'ARTICLE_UPDATED';
-export const FAILURE_CHANGED = 'FAILURE_CHANGED';
-export const LOADING_CHANGED = 'LOADING_CHANGED';
+export const FAILURE_HAPPENED = 'FAILURE_HAPPENED';
+export const FAILURE_DIDNT_HAPPEN = 'FAILURE_DIDNT_HAPPEN';
+export const LOADING_STARTED = 'LOADING_STARTED';
+export const LOADING_ENDED = 'LOADING_ENDED';
 export const ARTICLE_FETCHED = 'ARTICLE_FETCHED';
 export const CATEGORY_FETCHED = 'CATEGORY_FETCHED';
 
@@ -17,8 +19,7 @@ export const categoryUpdated = (category, offline, loading, attempts) => (dispat
   // nothing to fetch, or if already loading.
   if ((offline && category && category.items) || !category || loading) {
     dispatch({
-      type: FAILURE_CHANGED,
-      failure: false
+      type: FAILURE_DIDNT_HAPPEN
     });
   } else {
     fetch('data/' + category.name + '.json',
@@ -41,8 +42,7 @@ export const articleUpdated = (article, offline, loading) => (dispatch) => {
   // nothing to fetch, or if already loading.
   if ((offline && article && article.html) || !article || loading) {
     dispatch({
-      type: FAILURE_CHANGED,
-      failure: false
+      type: FAILURE_DIDNT_HAPPEN
     });
   } else {
     fetch('data/articles/' + article.id + '.html',
@@ -55,26 +55,11 @@ export const articleUpdated = (article, offline, loading) => (dispatch) => {
   }
 };
 
-export const failureChanged = (failure) => (dispatch) => {
-  dispatch({
-    type: FAILURE_CHANGED,
-    failure
-  });
-};
-
-export const loadingChanged = (loading) => (dispatch) => {
-  dispatch({
-    type: LOADING_CHANGED,
-    failure
-  });
-};
-
 function fetch(url, callback, attempts, isRaw, dispatch) {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener('load', (e) => {
     dispatch({
-      type: LOADING_CHANGED,
-      loading: false
+      type: LOADING_ENDED
     });
     if (isRaw) {
       callback(e.target.responseText);
@@ -89,23 +74,19 @@ function fetch(url, callback, attempts, isRaw, dispatch) {
         timeOut.after(200), fetch.bind(this, url, callback, attempts - 1, isRaw, dispatch));
     } else {
       dispatch({
-        type: LOADING_CHANGED,
-        loading: false
+        type: LOADING_ENDED
       });
       dispatch({
-        type: FAILURE_CHANGED,
-        loading: true
+        type: FAILURE_HAPPENED
       });
     }
   });
 
   dispatch({
-    type: LOADING_CHANGED,
-    loading: true
+    type: LOADING_STARTED
   });
   dispatch({
-    type: FAILURE_CHANGED,
-    loading: false
+    type: FAILURE_DIDNT_HAPPEN
   });
   xhr.open('GET', url);
   xhr.send();

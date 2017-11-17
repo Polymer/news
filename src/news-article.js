@@ -367,7 +367,6 @@ class NewsArticle extends Element {
   }
 
   _loadArticle(html) {
-    debugger
     // If this._currentArticleCover isn't defined here, then it hasn't been stamped yet, and
     // the template already has the `fade-in` class.
     if (this._currentArticleCover) {

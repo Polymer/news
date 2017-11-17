@@ -5,6 +5,8 @@ export const LOADING_CHANGED = 'LOADING_CHANGED';
 export const ARTICLE_FETCHED = 'ARTICLE_FETCHED';
 export const CATEGORY_FETCHED = 'CATEGORY_FETCHED';
 
+import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
+
 let textarea = document.createElement('textarea');
 
 export const categoryUpdated = (category, offline, loading, attempts) => (dispatch) => {
@@ -47,8 +49,6 @@ export const articleUpdated = (article, offline, loading) => (dispatch) => {
   } else {
     fetch('data/articles/' + article.id + '.html',
       (response) => {
-        debugger
-        dispatch({
           type: ARTICLE_FETCHED,
           html: _formatHTML(response)
         });
@@ -156,8 +156,6 @@ function _formatHTML(html) {
     img.removeAttribute('width');
     img.removeAttribute('height');
   }
-
-debugger
   return template.content.querySelector('.content').innerHTML;
 }
 

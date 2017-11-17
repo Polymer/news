@@ -1,13 +1,13 @@
 import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
 import { scroll } from '../node_modules/@polymer/app-layout/helpers/helpers.js';
 import '../node_modules/@polymer/iron-pages/iron-pages.js';
-import './news-data.js';
 import './news-nav.js';
 import './news-snackbar.js';
 import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
 
 import { store } from './redux/store.js';
 import { networkStatusChanged, pathChanged } from './redux/actions/app.js';
+import { categoryUpdated, articleUpdated, failureChanged, loadingChanged} from './redux/actions/data.js';
 
 class NewsApp extends Element {
   static get template() {
@@ -76,11 +76,6 @@ class NewsApp extends Element {
 
     <news-analytics key="UA-39334307-18"></news-analytics>
 
-    <!--
-      news-data provides the list of categories and the articles for the category.
-    -->
-    <news-data id="data" category-name="[[categoryName]]" category="[[category]]" article-id="[[articleId]]" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-data>
-
     <news-nav id="nav" app-title="[[appTitle]]" page="[[page]]" categories="[[categories]]" category="[[category]]" load-complete="[[loadComplete]]">
       [[articleHeadline]]
     </news-nav>
@@ -114,12 +109,13 @@ class NewsApp extends Element {
 
     categories: Array,
 
-    categoryName: String,
-
+    categoryName: {
+      type: String,
+      observer: '_categoryNameChanged'
+    },
     category: Object,
 
     articleId: String,
-
     article: Object,
 
     articleHeadline: {
@@ -140,7 +136,8 @@ class NewsApp extends Element {
 
   static get observers() { return [
     '_updateArticleHeadline(article.headline)',
-    '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)'
+    '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)',
+    '_articleIdChanged(category.items, articleId)'
   ]}
 
   constructor() {
@@ -218,6 +215,34 @@ class NewsApp extends Element {
   connectedCallback() {
     super.connectedCallback();
     this.isAttached = true;
+  }
+
+  _articleIdChanged(categoryItems, articleId) {
+    if (!categoryItems) {
+      return;
+    }
+    let article = null;
+    if (categoryItems && articleId) {
+      for (let i = 0; i < categoryItems.length; ++i) {
+        let a = categoryItems[i];
+        if (a.id === articleId) {
+          article = a;
+          break;
+        }
+      }
+    }
+    store.dispatch(articleUpdated(article, this.offline, this.loading));
+  }
+
+  _categoryNameChanged(categoryName) {
+    let category = null;
+    for (let i = 0, c; c = this.categories[i]; ++i) {
+      if (c.name === categoryName) {
+        category = c;
+        break;
+      }
+    }
+    store.dispatch(categoryUpdated(category, this.offline, this.loading));
   }
 
   // _routePageChanged(page, isAttached) {

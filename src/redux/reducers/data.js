@@ -1,6 +1,7 @@
 import { CATEGORY_UPDATED, ARTICLE_UPDATED, FAILURE_CHANGED, LOADING_CHANGED,
          ARTICLE_FETCHED, CATEGORY_FETCHED } from '../actions/data.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
+import { Debouncer } from '../../../node_modules/@polymer/polymer/lib/utils/debounce.js';
 
 const pathSelector = action => action.path === '/' ? '/list/top_stories' : action.path;
 

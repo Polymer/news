@@ -72,7 +72,7 @@ class NewsNav extends Element {
 
   closeDrawer() {
     this.dispatchEvent(new CustomEvent('drawer-opened',
-        {bubbles: true, composed: true}, {opened: false}));
+        {bubbles: true, composed: true, detail: {opened: false}}));
   }
 
   _shouldRenderDrawer(smallScreen, loadComplete) {

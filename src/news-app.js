@@ -214,7 +214,7 @@ class NewsApp extends Element {
   }
 
   _articleIdChanged(categoryItems, articleId) {
-    if (!categoryItems) {
+    if (!categoryItems || !articleId) {
       return;
     }
     let article = null;

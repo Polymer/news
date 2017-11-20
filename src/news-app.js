@@ -76,7 +76,7 @@ class NewsApp extends Element {
 
     <news-analytics key="UA-39334307-18"></news-analytics>
 
-    <news-nav id="nav" app-title="[[appTitle]]" page="[[page]]" categories="[[categories]]" category="[[category]]" load-complete="[[loadComplete]]">
+    <news-nav id="nav" app-title="[[appTitle]]" page="[[page]]" category="[[category]]" load-complete="[[loadComplete]]">
       [[article.headline]]
     </news-nav>
 
@@ -112,7 +112,7 @@ class NewsApp extends Element {
       observer: '_pageChanged'
     },
 
-    categories: Array,
+    categories: Object,
 
     categoryName: {
       type: String,
@@ -134,7 +134,7 @@ class NewsApp extends Element {
 
   static get observers() { return [
     '_updateDocumentTitle(page, category.title, article.headline, appTitle)',
-    '_articleIdChanged(category.items, articleId)'
+    '_articleIdChanged(categories.items, articleId)'
   ]}
 
   constructor() {
@@ -145,15 +145,16 @@ class NewsApp extends Element {
 
   update() {
     const state = store.getState();
+    debugger
     this.setProperties({
       offline: !state.app.online,
-      categoryName: state.path.category,
-      articleId: state.path.article,
       route: state.path.route,
       page: state.path.page,
+      categoryName: state.path.category,
+      articleId: state.path.article,
       categories: state.data.categories,
-      category: state.data.category,
-      article: state.data.article,
+      category: this.getCategoryData(state),
+      article: this.getArticleData(state),
       failure: state.data.failure,
       loading: state.data.loading
     });
@@ -217,6 +218,7 @@ class NewsApp extends Element {
     if (!categoryItems || !articleId) {
       return;
     }
+    debugger
     let article = null;
     if (categoryItems && articleId) {
       for (let i = 0; i < categoryItems.length; ++i) {
@@ -230,15 +232,15 @@ class NewsApp extends Element {
     store.dispatch(articleUpdated(article, this.offline, this.loading));
   }
 
+  getCategoryData(state) {
+    return state.data.categories[state.path.category];
+  }
+  getArticleData(state) {
+    return 'null';
+  }
+
   _categoryNameChanged(categoryName) {
-    let category = null;
-    for (let i = 0, c; c = this.categories[i]; ++i) {
-      if (c.name === categoryName) {
-        category = c;
-        break;
-      }
-    }
-    store.dispatch(categoryUpdated(category, this.offline, this.loading));
+    store.dispatch(categoryUpdated(categoryName, this.offline, this.loading));
   }
 
   _routeChanged(route) {

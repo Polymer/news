@@ -1,4 +1,3 @@
-export const CATEGORY_UPDATED = 'CATEGORY_UPDATED';
 export const ARTICLE_UPDATED = 'ARTICLE_UPDATED';
 export const FAILURE_HAPPENED = 'FAILURE_HAPPENED';
 export const FAILURE_DIDNT_HAPPEN = 'FAILURE_DIDNT_HAPPEN';
@@ -10,11 +9,6 @@ export const CATEGORY_FETCHED = 'CATEGORY_FETCHED';
 let textarea = document.createElement('textarea');
 
 export const categoryUpdated = (category, offline, loading, attempts) => (dispatch) => {
-  dispatch({
-    type: CATEGORY_UPDATED,
-    category
-  });
-
   // Don't fail if we become offline but already have a cached version, or if there's
   // nothing to fetch, or if already loading.
   if ((offline && category && category.items) || !category || loading) {
@@ -22,11 +16,13 @@ export const categoryUpdated = (category, offline, loading, attempts) => (dispat
       type: FAILURE_DIDNT_HAPPEN
     });
   } else {
-    fetch('data/' + category.name + '.json',
+    fetch('data/' + category + '.json',
       (response) => {
+        debugger
         dispatch({
           type: CATEGORY_FETCHED,
-          items: _parseCategoryItems(JSON.parse(response), category.name)
+          category: category,
+          items: _parseCategoryItems(JSON.parse(response), category)
         });
       }, 1 /* attempts */, true /* isRaw */, dispatch);
   }
@@ -47,6 +43,7 @@ export const articleUpdated = (article, offline, loading) => (dispatch) => {
   } else {
     fetch('data/articles/' + article.id + '.html',
       (response) => {
+        debugger
         dispatch({
           type: ARTICLE_FETCHED,
           html: _formatHTML(response)

@@ -10,7 +10,7 @@ class NewsNav extends Element {
     return `
     <iron-media-query query="max-width: 767px" query-matches="{{_smallScreen}}"></iron-media-query>
 
-    <news-header app-title="[[appTitle]]" page="[[page]]" categories="[[categories]]" category="[[category]]" small-screen="[[_smallScreen]]" drawer-opened="[[_drawerOpened]]">
+    <news-header app-title="[[appTitle]]" page="[[page]]" categories="[[_categoryList]]" category="[[category]]" small-screen="[[_smallScreen]]" drawer-opened="[[_drawerOpened]]">
       <slot></slot>
     </news-header>
 
@@ -19,7 +19,7 @@ class NewsNav extends Element {
     -->
     <dom-if if="[[_shouldRenderDrawer(_smallScreen, loadComplete)]]">
       <template>
-        <news-drawer categories="[[categories]]" category="[[category]]" drawer-opened="[[_drawerOpened]]">
+        <news-drawer categories="[[_categoryList]]" category="[[category]]" drawer-opened="[[_drawerOpened]]">
         </news-drawer>
       </template>
     </dom-if>
@@ -31,19 +31,14 @@ class NewsNav extends Element {
   static get properties() { return {
 
     appTitle: String,
-
     page: String,
-
-    categories: Array,
-
     category: Object,
-
     loadComplete: Boolean,
-
     _smallScreen: Boolean,
 
-    _drawerOpened: Boolean
-
+    // From the redux state.
+    _drawerOpened: Boolean,
+    _categoryList: Array
   }}
 
   constructor() {
@@ -55,7 +50,8 @@ class NewsNav extends Element {
   update() {
     const state = store.getState();
     this.setProperties({
-      _drawerOpened: state.app.drawerOpened
+      _drawerOpened: state.app.drawerOpened,
+      _categoryList: Object.values(state.data.categories)
     });
   }
 

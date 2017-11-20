@@ -1,4 +1,4 @@
-import { CATEGORY_UPDATED, CATEGORY_FETCHED,
+import { CATEGORY_FETCHED,
          ARTICLE_UPDATED, ARTICLE_FETCHED,
          FAILURE_HAPPENED, FAILURE_DIDNT_HAPPEN,
          LOADING_STARTED, LOADING_ENDED } from '../actions/data.js';
@@ -7,22 +7,17 @@ import { Debouncer } from '../../../node_modules/@polymer/polymer/lib/utils/debo
 
 const pathSelector = action => action.path === '/' ? '/list/top_stories' : action.path;
 
-let categoryList = [
-  {name: 'top_stories', title: 'Top Stories'},
-  {name: 'doodles', title: 'Doodles'},
-  {name: 'chrome', title: 'Chrome'},
-  {name: 'search', title: 'Search'},
-  {name: 'shopping_payments', title: 'Shopping & Payments'},
-  {name: 'nonprofits', title: 'Nonprofits'}
-];
+let categoryList = {
+  top_stories: {name: 'top_stories', title: 'Top Stories'},
+  doodles: {name: 'doodles', title: 'Doodles'},
+  chrome: {name: 'chrome', title: 'Chrome'},
+  search: {name: 'search', title: 'Search'},
+  shopping_payments: {name: 'shopping_payments', title: 'Shopping & Payments'},
+  nonprofits: {name: 'nonprofits', title: 'Nonprofits'}
+};
 
 const data = (state = {categories: categoryList}, action) => {
   switch (action.type) {
-    case CATEGORY_UPDATED:
-      return {
-        ...state,
-        category: action.category
-      };
     case ARTICLE_UPDATED:
       return {
         ...state,
@@ -49,6 +44,7 @@ const data = (state = {categories: categoryList}, action) => {
         loading: false
       };
     case ARTICLE_FETCHED:
+    debugger
       return {
         ...state,
         article: {...state.article, html: action.html}
@@ -56,10 +52,24 @@ const data = (state = {categories: categoryList}, action) => {
     case CATEGORY_FETCHED:
       return {
         ...state,
-        category: {...state.category, items: action.items}
+        categories: updateCategories(state.categories, action.category, action.items)
       }
     default:
       return state;
   }
 }
 export default data;
+
+const updateCategories = (state = {}, categoryId, items) => {
+  const updateCategory = (state = {}, items) => {
+    return {
+      ...state,
+      items
+    };
+  };
+
+  return {
+    ...state,
+    [categoryId]: updateCategory(state[categoryId], items)
+  }
+};

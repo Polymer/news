@@ -237,7 +237,7 @@ class NewsApp extends Element {
   }
 
   getArticleData(state) {
-    if (!state.path.category || !state.data.articleIndex) {
+    if (!state.path.category || !this.getCategoryData(state) || !state.data.articleIndex) {
       return undefined;
     }
     return state.data.categories[state.path.category].items[state.data.articleIndex];
@@ -253,7 +253,7 @@ class NewsApp extends Element {
     }
     // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
     // with `behavior: 'silent'` to disable header scroll effects during the scroll.
-    scroll({ top: 0, behavior: 'silent' });
+    //scroll({ top: 0, behavior: 'silent' });
     // Close the drawer - in case the *route* change came from a link in the drawer.
     this.$.nav.closeDrawer();
   }

@@ -1,5 +1,4 @@
-import { CATEGORY_FETCHED,
-         ARTICLE_UPDATED, ARTICLE_FETCHED,
+import { CATEGORY_FETCHED, ARTICLE_FETCHED,
          FAILURE_HAPPENED, FAILURE_DIDNT_HAPPEN,
          LOADING_STARTED, LOADING_ENDED } from '../actions/data.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
@@ -18,11 +17,6 @@ let categoryList = {
 
 const data = (state = {categories: categoryList}, action) => {
   switch (action.type) {
-    case ARTICLE_UPDATED:
-      return {
-        ...state,
-        article: action.article
-      };
     case FAILURE_HAPPENED:
       return {
         ...state,
@@ -44,11 +38,12 @@ const data = (state = {categories: categoryList}, action) => {
         loading: false
       };
     case ARTICLE_FETCHED:
-    debugger
-      return {
+      var f = {
         ...state,
-        article: {...state.article, html: action.html}
+        articleIndex: action.index,
+        categories: updateCategoriesWithArticle(state.categories, action.category, action.index, action.html)
       }
+      return f;
     case CATEGORY_FETCHED:
       return {
         ...state,
@@ -59,6 +54,26 @@ const data = (state = {categories: categoryList}, action) => {
   }
 }
 export default data;
+
+const updateCategoriesWithArticle = (state = {}, categoryId, articleId, html) => {
+  const updateArticleForCategory = (state = {}, articleId, html) => {
+    const updateItems = (state = [], articleId, html) => {
+      state[articleId].html = html;
+  //    state[articleId] = Object.assign({}, state[articleId]);
+      return state;
+    }
+
+    return {
+      ...state,
+      items: updateItems(state.items, articleId, html)
+    }
+  }
+
+  return {
+    ...state,
+    [categoryId]: updateArticleForCategory(state[categoryId], articleId, html)
+  }
+}
 
 const updateCategories = (state = {}, categoryId, items) => {
   const updateCategory = (state = {}, items) => {

@@ -134,7 +134,7 @@ class NewsApp extends Element {
 
   static get observers() { return [
     '_updateDocumentTitle(page, category.title, article.headline, appTitle)',
-    '_articleIdChanged(categories.items, articleId)'
+    '_articleIdChanged(category.items, articleId)'
   ]}
 
   constructor() {
@@ -145,7 +145,6 @@ class NewsApp extends Element {
 
   update() {
     const state = store.getState();
-    debugger
     this.setProperties({
       offline: !state.app.online,
       route: state.path.route,
@@ -218,25 +217,30 @@ class NewsApp extends Element {
     if (!categoryItems || !articleId) {
       return;
     }
-    debugger
     let article = null;
-    if (categoryItems && articleId) {
-      for (let i = 0; i < categoryItems.length; ++i) {
-        let a = categoryItems[i];
-        if (a.id === articleId) {
-          article = a;
-          break;
-        }
+    let index = null;
+    for (let i = 0; i < categoryItems.length; ++i) {
+      let a = categoryItems[i];
+      if (a.id === articleId) {
+        article = a;
+        index = i;
+        break;
       }
     }
-    store.dispatch(articleUpdated(article, this.offline, this.loading));
+    if (!article.html) {
+      store.dispatch(articleUpdated(article, index, this.categoryName, this.offline, this.loading));
+    }
   }
 
   getCategoryData(state) {
     return state.data.categories[state.path.category];
   }
+
   getArticleData(state) {
-    return 'null';
+    if (!state.path.category || !state.data.articleIndex) {
+      return undefined;
+    }
+    return state.data.categories[state.path.category].items[state.data.articleIndex];
   }
 
   _categoryNameChanged(categoryName) {

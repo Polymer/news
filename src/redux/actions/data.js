@@ -18,7 +18,6 @@ export const categoryUpdated = (category, offline, loading, attempts) => (dispat
   } else {
     fetch('data/' + category + '.json',
       (response) => {
-        debugger
         dispatch({
           type: CATEGORY_FETCHED,
           category: category,
@@ -28,12 +27,7 @@ export const categoryUpdated = (category, offline, loading, attempts) => (dispat
   }
 };
 
-export const articleUpdated = (article, offline, loading) => (dispatch) => {
-  dispatch({
-    type: ARTICLE_UPDATED,
-    article
-  });
-
+export const articleUpdated = (article, articleIndex, categoryName, offline, loading) => (dispatch) => {
   // Don't fail if we become offline but already have a cached version, or if there's
   // nothing to fetch, or if already loading.
   if ((offline && article && article.html) || !article || loading) {
@@ -43,9 +37,10 @@ export const articleUpdated = (article, offline, loading) => (dispatch) => {
   } else {
     fetch('data/articles/' + article.id + '.html',
       (response) => {
-        debugger
         dispatch({
           type: ARTICLE_FETCHED,
+          index: articleIndex,
+          category: categoryName,
           html: _formatHTML(response)
         });
       }, 1 /* attempts */, true /* isRaw */, dispatch);

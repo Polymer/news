@@ -1,4 +1,3 @@
-export const ARTICLE_UPDATED = 'ARTICLE_UPDATED';
 export const FAILURE_HAPPENED = 'FAILURE_HAPPENED';
 export const FAILURE_DIDNT_HAPPEN = 'FAILURE_DIDNT_HAPPEN';
 export const LOADING_STARTED = 'LOADING_STARTED';
@@ -16,11 +15,11 @@ export const categoryUpdated = (category, offline, loading, attempts) => (dispat
       type: FAILURE_DIDNT_HAPPEN
     });
   } else {
-    fetch('data/' + category + '.json',
+    fetch('data/' + category.name + '.json',
       (response) => {
         dispatch({
           type: CATEGORY_FETCHED,
-          category: category,
+          category: category.name,
           items: _parseCategoryItems(JSON.parse(response), category)
         });
       }, 1 /* attempts */, true /* isRaw */, dispatch);

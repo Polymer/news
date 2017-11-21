@@ -244,7 +244,14 @@ class NewsApp extends Element {
   }
 
   _categoryNameChanged(categoryName) {
-    store.dispatch(categoryUpdated(categoryName, this.offline, this.loading));
+    let category = null;
+    for (let c in this.categories) {
+      if (c === categoryName) {
+        category = this.categories[c];
+        break;
+      }
+    }
+    store.dispatch(categoryUpdated(category, this.offline, this.loading));
   }
 
   _routeChanged(route) {

@@ -20,7 +20,7 @@ export const categoryUpdated = (category, offline, loading, attempts) => (dispat
         dispatch({
           type: CATEGORY_FETCHED,
           category: category.name,
-          items: _parseCategoryItems(JSON.parse(response), category)
+          items: _parseCategoryItems(JSON.parse(response), category.name)
         });
       }, 1 /* attempts */, true /* isRaw */, dispatch);
   }

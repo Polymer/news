@@ -237,7 +237,10 @@ class NewsApp extends Element {
   }
 
   getArticleData(state) {
-    if (!state.path.category || !this.getCategoryData(state) || !state.data.articleIndex) {
+    if (!state.data.categories || !state.path.category || !state.data.articleIndex) {
+      return undefined;
+    }
+    if (!state.data.categories[state.path.category].items) {
       return undefined;
     }
     return state.data.categories[state.path.category].items[state.data.articleIndex];

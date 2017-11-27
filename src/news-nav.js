@@ -58,6 +58,10 @@ class NewsNav extends Element {
   ready() {
     super.ready();
     this.addEventListener('drawer-opened', function(e) {
+      // We only care if there's a change.
+      if (this._drawerOpened === e.detail.opened) {
+        return;
+      }
       if (e.detail.opened) {
         store.dispatch(drawerOpened());
       } else {

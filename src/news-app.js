@@ -121,7 +121,11 @@ class NewsApp extends Element {
     category: Object,
 
     articleId: String,
-    article: Object,
+    articleIndex: Number,
+    article: {
+      type: Object,
+      computed: '_computeArticle(category.items, articleIndex)'
+    },
 
     offline: {
       type: Boolean,
@@ -151,9 +155,9 @@ class NewsApp extends Element {
       page: state.path.page,
       categoryName: state.path.category,
       articleId: state.path.article,
+      articleIndex: state.data.articleIndex,
       categories: state.data.categories,
       category: this.getCategoryData(state),
-      article: this.getArticleData(state),
       failure: state.data.failure,
       loading: state.data.loading
     });
@@ -236,16 +240,13 @@ class NewsApp extends Element {
     return state.data.categories[state.path.category];
   }
 
-  getArticleData(state) {
-    if (!state.data.categories || !state.path.category || !state.data.articleIndex) {
+  _computeArticle(items, index) {
+    if (!items || index === undefined) {
       return undefined;
     }
-    if (!state.data.categories[state.path.category].items) {
-      return undefined;
-    }
-    return state.data.categories[state.path.category].items[state.data.articleIndex];
+    return items[index];
   }
-
+  
   _categoryNameChanged(categoryName) {
     let category = null;
     for (let c in this.categories) {

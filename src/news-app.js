@@ -157,7 +157,7 @@ class NewsApp extends Element {
       articleName: state.path.article,
       articleIndex: state.data.articleIndex,
       categories: state.data.categories,
-      category: this.getCategoryData(state),
+      category: this._getCategoryData(state),
       // article is a computed property
       failure: state.data.failure,
       loading: state.data.loading
@@ -237,7 +237,7 @@ class NewsApp extends Element {
     }
   }
 
-  getCategoryData(state) {
+  _getCategoryData(state) {
     return state.data.categories[state.path.category];
   }
 

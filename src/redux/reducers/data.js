@@ -55,23 +55,23 @@ const data = (state = {categories: categoryList}, action) => {
 }
 export default data;
 
-const updateCategoriesWithArticle = (state = {}, categoryId, articleId, html) => {
-  const updateArticleForCategory = (state = {}, articleId, html) => {
-    const updateItems = (state = [], articleId, html) => {
-      state[articleId].html = html;
-  //    state[articleId] = Object.assign({}, state[articleId]);
+const updateCategoriesWithArticle = (state = {}, categoryId, articleName, html) => {
+  const updateArticleForCategory = (state = {}, articleName, html) => {
+    const updateItems = (state = [], articleName, html) => {
+      state[articleName].html = html;
+  //    state[articleName] = Object.assign({}, state[articleName]);
       return state;
     }
 
     return {
       ...state,
-      items: updateItems(state.items, articleId, html)
+      items: updateItems(state.items, articleName, html)
     }
   }
 
   return {
     ...state,
-    [categoryId]: updateArticleForCategory(state[categoryId], articleId, html)
+    [categoryId]: updateArticleForCategory(state[categoryId], articleName, html)
   }
 }
 

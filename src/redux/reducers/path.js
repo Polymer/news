@@ -15,7 +15,7 @@ const categorySelector = createSelector(
   splitPathSelector,
   splitPath => splitPath[1] || 'top_stories'
 );
-const articleIdSelector = createSelector(
+const articleNameSelector = createSelector(
   splitPathSelector,
   splitPath => splitPath[2] || ''
 );
@@ -28,7 +28,7 @@ const path = (state = {}, action) => {
         route: pathSelector(action),
         page: pageSelector(action),
         category: categorySelector(action),
-        article: articleIdSelector(action)
+        article: articleNameSelector(action)
       };
     default:
       return state;

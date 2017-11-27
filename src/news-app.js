@@ -84,7 +84,7 @@ class NewsApp extends Element {
       <!-- list view of articles in a category -->
       <news-list id="list" name="list" category-name="[[categoryName]]" category="[[category]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-list>
       <!-- article view -->
-      <news-article name="article" category-name="[[categoryName]]" category="[[category]]" article-id="[[articleId]]" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-article>
+      <news-article name="article" category-name="[[categoryName]]" category="[[category]]" article-name="[[articleName]]" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-article>
       <!-- invalid top level paths -->
       <news-path-warning name="path-warning"></news-path-warning>
 
@@ -120,7 +120,7 @@ class NewsApp extends Element {
     },
     category: Object,
 
-    articleId: String,
+    articleName: String,
     articleIndex: Number,
     article: {
       type: Object,
@@ -138,7 +138,7 @@ class NewsApp extends Element {
 
   static get observers() { return [
     '_updateDocumentTitle(page, category.title, article.headline, appTitle)',
-    '_articleIdChanged(category.items, articleId)'
+    '_articleNameChanged(category.items, articleName)'
   ]}
 
   constructor() {
@@ -154,10 +154,11 @@ class NewsApp extends Element {
       route: state.path.route,
       page: state.path.page,
       categoryName: state.path.category,
-      articleId: state.path.article,
+      articleName: state.path.article,
       articleIndex: state.data.articleIndex,
       categories: state.data.categories,
       category: this.getCategoryData(state),
+      // article is a computed property
       failure: state.data.failure,
       loading: state.data.loading
     });
@@ -217,15 +218,15 @@ class NewsApp extends Element {
     this._notifyPathChanged();
   }
 
-  _articleIdChanged(categoryItems, articleId) {
-    if (!categoryItems || !articleId) {
+  _articleNameChanged(categoryItems, articleName) {
+    if (!categoryItems || !articleName) {
       return;
     }
     let article = null;
     let index = null;
     for (let i = 0; i < categoryItems.length; ++i) {
       let a = categoryItems[i];
-      if (a.id === articleId) {
+      if (a.id === articleName) {
         article = a;
         index = i;
         break;
@@ -246,7 +247,7 @@ class NewsApp extends Element {
     }
     return items[index];
   }
-  
+
   _categoryNameChanged(categoryName) {
     let category = null;
     for (let c in this.categories) {

@@ -3,28 +3,28 @@ export const OPEN_DRAWER = 'OPEN_DRAWER';
 export const CLOSE_DRAWER = 'CLOSE_DRAWER';
 export const NAVIGATE = 'NAVIGATE';
 
-export const networkStatusChanged = (online) => (dispatch) => {
-  dispatch({
+export const networkStatusChanged = (online) =>  {
+  return {
     type: CHANGE_NETWORK_STATUS,
     online
-  });
+  };
 };
 
-export const drawerOpened = () => (dispatch) => {
-  dispatch({
+export const drawerOpened = () => {
+  return {
     type: OPEN_DRAWER
-  });
+  };
 };
 
-export const drawerClosed = () => (dispatch) => {
-  dispatch({
+export const drawerClosed = () => {
+  return {
     type: CLOSE_DRAWER
-  });
+  };
 };
 
-export const pathChanged = (path) => (dispatch, getState) => {
-  dispatch({
+export const pathChanged = (path) => {
+  return {
     type: NAVIGATE,
     path
-  });
+  };
 };

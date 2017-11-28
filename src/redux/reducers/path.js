@@ -1,4 +1,4 @@
-import { PATH_CHANGED } from '../actions/app.js';
+import { NAVIGATE } from '../actions/app.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
 
 const pathSelector = action => action.path === '/' ? '/list/top_stories' : action.path;
@@ -22,7 +22,7 @@ const articleNameSelector = createSelector(
 
 const path = (state = {}, action) => {
   switch (action.type) {
-    case PATH_CHANGED:
+    case NAVIGATE:
       return {
         ...state,
         route: pathSelector(action),

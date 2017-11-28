@@ -1,6 +1,6 @@
-import { CATEGORY_FETCHED, ARTICLE_FETCHED,
-         FAILURE_HAPPENED, FAILURE_DIDNT_HAPPEN,
-         LOADING_STARTED, LOADING_ENDED } from '../actions/data.js';
+import { FETCH_CATEGORY, FETCH_ARTICLE,
+         FETCH_FAILED, FETCH_OK,
+         START_LOADING, FINISH_LOADING } from '../actions/data.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
 import { Debouncer } from '../../../node_modules/@polymer/polymer/lib/utils/debounce.js';
 
@@ -17,34 +17,34 @@ let categoryList = {
 
 const data = (state = {categories: categoryList}, action) => {
   switch (action.type) {
-    case FAILURE_HAPPENED:
+    case FETCH_FAILED:
       return {
         ...state,
         failure: true
       };
-    case FAILURE_DIDNT_HAPPEN:
+    case FETCH_OK:
       return {
         ...state,
         failure: false
       };
-    case LOADING_STARTED:
+    case START_LOADING:
       return {
         ...state,
         loading: true
       };
-    case LOADING_ENDED:
+    case FINISH_LOADING:
       return {
         ...state,
         loading: false
       };
-    case ARTICLE_FETCHED:
+    case FETCH_ARTICLE:
       var f = {
         ...state,
         articleIndex: action.index,
         categories: updateCategoriesWithArticle(state.categories, action.category, action.index, action.html)
       }
       return f;
-    case CATEGORY_FETCHED:
+    case FETCH_CATEGORY:
       return {
         ...state,
         categories: updateCategories(state.categories, action.category, action.items)

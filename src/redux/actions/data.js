@@ -1,9 +1,9 @@
-export const FAILURE_HAPPENED = 'FAILURE_HAPPENED';
-export const FAILURE_DIDNT_HAPPEN = 'FAILURE_DIDNT_HAPPEN';
-export const LOADING_STARTED = 'LOADING_STARTED';
-export const LOADING_ENDED = 'LOADING_ENDED';
-export const ARTICLE_FETCHED = 'ARTICLE_FETCHED';
-export const CATEGORY_FETCHED = 'CATEGORY_FETCHED';
+export const FETCH_FAILED = 'FETCH_FAILED';
+export const FETCH_OK = 'FETCH_OK';
+export const START_LOADING = 'START_LOADING';
+export const FINISH_LOADING = 'FINISH_LOADING';
+export const FETCH_ARTICLE = 'FETCH_ARTICLE';
+export const FETCH_CATEGORY = 'FETCH_CATEGORY';
 
 let textarea = document.createElement('textarea');
 
@@ -12,13 +12,13 @@ export const categoryUpdated = (category, offline, loading, attempts) => (dispat
   // nothing to fetch, or if already loading.
   if ((offline && category && category.items) || !category || loading) {
     dispatch({
-      type: FAILURE_DIDNT_HAPPEN
+      type: FETCH_OK
     });
   } else {
     fetch('data/' + category.name + '.json',
       (response) => {
         dispatch({
-          type: CATEGORY_FETCHED,
+          type: FETCH_CATEGORY,
           category: category.name,
           items: _parseCategoryItems(JSON.parse(response), category.name)
         });
@@ -31,13 +31,13 @@ export const articleUpdated = (article, articleIndex, categoryName, offline, loa
   // nothing to fetch, or if already loading.
   if ((offline && article && article.html) || !article || loading) {
     dispatch({
-      type: FAILURE_DIDNT_HAPPEN
+      type: FETCH_OK
     });
   } else {
     fetch('data/articles/' + article.id + '.html',
       (response) => {
         dispatch({
-          type: ARTICLE_FETCHED,
+          type: FETCH_ARTICLE,
           index: articleIndex,
           category: categoryName,
           html: _formatHTML(response)
@@ -50,7 +50,7 @@ function fetch(url, callback, attempts, isRaw, dispatch) {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener('load', (e) => {
     dispatch({
-      type: LOADING_ENDED
+      type: FINISH_LOADING
     });
     if (isRaw) {
       callback(e.target.responseText);
@@ -65,19 +65,19 @@ function fetch(url, callback, attempts, isRaw, dispatch) {
         timeOut.after(200), fetch.bind(this, url, callback, attempts - 1, isRaw, dispatch));
     } else {
       dispatch({
-        type: LOADING_ENDED
+        type: FINISH_LOADING
       });
       dispatch({
-        type: FAILURE_HAPPENED
+        type: FETCH_FAILED
       });
     }
   });
 
   dispatch({
-    type: LOADING_STARTED
+    type: START_LOADING
   });
   dispatch({
-    type: FAILURE_DIDNT_HAPPEN
+    type: FETCH_OK
   });
   xhr.open('GET', url);
   xhr.send();

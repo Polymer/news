@@ -1,30 +1,30 @@
-export const NETWORK_STATUS_CHANGED = 'NETWORK_STATUS_CHANGED';
-export const DRAWER_OPENED = 'DRAWER_OPENED';
-export const DRAWER_CLOSED = 'DRAWER_CLOSED';
-export const PATH_CHANGED = 'PATH_CHANGED';
+export const CHANGE_NETWORK_STATUS = 'CHANGE_NETWORK_STATUS';
+export const OPEN_DRAWER = 'OPEN_DRAWER';
+export const CLOSE_DRAWER = 'CLOSE_DRAWER';
+export const NAVIGATE = 'NAVIGATE';
 
 export const networkStatusChanged = (online) => (dispatch) => {
   dispatch({
-    type: NETWORK_STATUS_CHANGED,
+    type: CHANGE_NETWORK_STATUS,
     online
   });
 };
 
 export const drawerOpened = () => (dispatch) => {
   dispatch({
-    type: DRAWER_OPENED
+    type: OPEN_DRAWER
   });
 };
 
 export const drawerClosed = () => (dispatch) => {
   dispatch({
-    type: DRAWER_CLOSED
+    type: CLOSE_DRAWER
   });
 };
 
 export const pathChanged = (path) => (dispatch, getState) => {
   dispatch({
-    type: PATH_CHANGED,
+    type: NAVIGATE,
     path
   });
 };

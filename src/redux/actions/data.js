@@ -1,3 +1,5 @@
+import { createSelector } from '../../../node_modules/reselect/es/index.js';
+
 export const FETCH_FAILED = 'FETCH_FAILED';
 export const FETCH_OK = 'FETCH_OK';
 export const START_LOADING = 'START_LOADING';
@@ -12,7 +14,7 @@ export const fetchCategory = () => (dispatch, getState) => {
 
   const categoryName = state.path.category;
   const categories = state.data.categories;
-  const category = _findCategory(categories, categoryName);
+  const category = categorySelector(state);
   const loading = category.loading;
   const offline = !state.app.online;
 
@@ -45,7 +47,13 @@ export const fetchCategory = () => (dispatch, getState) => {
     }
 };
 
-export const articleUpdated = (article, articleIndex, categoryName, offline, loading) => (dispatch) => {
+export const articleUpdated = (article, articleIndex) => (dispatch, getState) => {
+  const state = getState();
+
+  const categoryName = state.path.category;
+  const loading = article.loading;
+  const offline = !state.app.online;
+
   // Don't fail if we become offline but already have a cached version, or if there's
   // nothing to fetch, or if already loading.
   if ((offline && article && article.html) || !article || loading) {
@@ -100,15 +108,6 @@ function fetch(url, callback, attempts, isRaw, dispatch) {
   });
   xhr.open('GET', url);
   xhr.send();
-}
-
-function _findCategory(categories, categoryName) {
-  for (let c in categories) {
-    if (c === categoryName) {
-      return categories[c];
-    }
-  }
-  return null;
 }
 
 function _findArticle(categoryItems, articleName) {
@@ -210,3 +209,25 @@ function _trimRight(text, maxLength) {
   let breakIdx = text.indexOf(' ', maxLength);
   return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
 }
+
+const categoriesSelector = state => (state.data.categories);
+const categoryNameSelector = state => (state.path.category);
+const articleNameSelector = state => (state.path.article);
+
+const categorySelector = createSelector(
+  categoriesSelector,
+  categoryNameSelector,
+  (categories, category) => {
+    return categories[category];
+  }
+);
+const articleSelector = createSelector(
+  categorySelector,
+  articleNameSelector,
+  (category, article) => {
+    if (category.items) {
+      return 'ok';
+    }
+    return null;
+  }
+);

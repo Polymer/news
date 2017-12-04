@@ -1,3 +1,5 @@
+import { fetchCategory } from './data.js';
+
 export const CHANGE_NETWORK_STATUS = 'CHANGE_NETWORK_STATUS';
 export const OPEN_DRAWER = 'OPEN_DRAWER';
 export const CLOSE_DRAWER = 'CLOSE_DRAWER';
@@ -22,9 +24,10 @@ export const drawerClosed = () => {
   };
 };
 
-export const pathChanged = (path) => {
-  return {
+export const pathChanged = (path) => (dispatch, getState) => {
+  dispatch({
     type: NAVIGATE,
     path
-  };
+  });
+  dispatch(fetchCategory());
 };

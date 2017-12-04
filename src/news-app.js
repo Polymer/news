@@ -7,7 +7,6 @@ import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/rend
 
 import { store } from './redux/store.js';
 import { networkStatusChanged, pathChanged } from './redux/actions/app.js';
-import { categoryUpdated, articleUpdated} from './redux/actions/data.js';
 
 class NewsApp extends Element {
   static get template() {
@@ -115,8 +114,7 @@ class NewsApp extends Element {
     categories: Object,
 
     categoryName: {
-      type: String,
-      observer: '_categoryNameChanged'
+      type: String
     },
     category: Object,
 
@@ -138,7 +136,6 @@ class NewsApp extends Element {
 
   static get observers() { return [
     '_updateDocumentTitle(page, category.title, article.headline, appTitle)',
-    '_articleNameChanged(category.items, articleName)'
   ]}
 
   constructor() {
@@ -218,25 +215,6 @@ class NewsApp extends Element {
     this._notifyPathChanged();
   }
 
-  _articleNameChanged(categoryItems, articleName) {
-    if (!categoryItems || !articleName) {
-      return;
-    }
-    let article = null;
-    let index = null;
-    for (let i = 0; i < categoryItems.length; ++i) {
-      let a = categoryItems[i];
-      if (a.id === articleName) {
-        article = a;
-        index = i;
-        break;
-      }
-    }
-    if (!article.html) {
-      store.dispatch(articleUpdated(article, index, this.categoryName, this.offline, this.loading));
-    }
-  }
-
   _getCategoryData(state) {
     return state.data.categories[state.path.category];
   }
@@ -246,17 +224,6 @@ class NewsApp extends Element {
       return undefined;
     }
     return items[index];
-  }
-
-  _categoryNameChanged(categoryName) {
-    let category = null;
-    for (let c in this.categories) {
-      if (c === categoryName) {
-        category = this.categories[c];
-        break;
-      }
-    }
-    store.dispatch(categoryUpdated(category, this.offline, this.loading));
   }
 
   _routeChanged(route) {

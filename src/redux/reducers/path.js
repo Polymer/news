@@ -30,6 +30,7 @@ const path = (state = {}, action) => {
         category: categorySelector(action),
         article: articleNameSelector(action)
       };
+
     default:
       return state;
   }

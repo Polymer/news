@@ -7,7 +7,15 @@ export const FETCH_CATEGORY = 'FETCH_CATEGORY';
 
 let textarea = document.createElement('textarea');
 
-export const categoryUpdated = (category, offline, loading, attempts) => (dispatch) => {
+export const fetchCategory = () => (dispatch, getState) => {
+  const state = getState();
+
+  const categoryName = state.path.category;
+  const categories = state.data.categories;
+  const category = _findCategory(categories, categoryName);
+  const loading = category.loading;
+  const offline = !state.app.online;
+
   // Don't fail if we become offline but already have a cached version, or if there's
   // nothing to fetch, or if already loading.
   if ((offline && category && category.items) || !category || loading) {
@@ -17,13 +25,24 @@ export const categoryUpdated = (category, offline, loading, attempts) => (dispat
   } else {
     fetch('data/' + category.name + '.json',
       (response) => {
+        const items = _parseCategoryItems(JSON.parse(response), category.name);
+        const state = getState();
+
         dispatch({
           type: FETCH_CATEGORY,
           category: category.name,
-          items: _parseCategoryItems(JSON.parse(response), category.name)
+          items: items
         });
+
+        const articleName = state.path.article;
+        if (articleName) {
+          const [article, index] = _findArticle(items, articleName);
+          if (!article.html) {
+            dispatch(articleUpdated(article, index, categoryName, offline, loading));
+          }
+        }
       }, 1 /* attempts */, true /* isRaw */, dispatch);
-  }
+    }
 };
 
 export const articleUpdated = (article, articleIndex, categoryName, offline, loading) => (dispatch) => {
@@ -81,6 +100,28 @@ function fetch(url, callback, attempts, isRaw, dispatch) {
   });
   xhr.open('GET', url);
   xhr.send();
+}
+
+function _findCategory(categories, categoryName) {
+  for (let c in categories) {
+    if (c === categoryName) {
+      return categories[c];
+    }
+  }
+  return null;
+}
+
+function _findArticle(categoryItems, articleName) {
+  if (!categoryItems || !articleName) {
+    return;
+  }
+  for (let i = 0; i < categoryItems.length; ++i) {
+    let a = categoryItems[i];
+    if (a.id === articleName) {
+      return [a, i];
+    }
+  }
+  return [null, null];
 }
 
 function _parseCategoryItems(response, categoryName) {

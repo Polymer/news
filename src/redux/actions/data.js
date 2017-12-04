@@ -4,8 +4,8 @@ export const FETCH_FAILED = 'FETCH_FAILED';
 export const FETCH_OK = 'FETCH_OK';
 export const START_LOADING = 'START_LOADING';
 export const FINISH_LOADING = 'FINISH_LOADING';
-export const FETCH_ARTICLE = 'FETCH_ARTICLE';
-export const FETCH_CATEGORY = 'FETCH_CATEGORY';
+export const RECEIVE_ARTICLE = 'RECEIVE_ARTICLE';
+export const RECEIVE_CATEGORY = 'RECEIVE_CATEGORY';
 
 let textarea = document.createElement('textarea');
 
@@ -31,7 +31,7 @@ export const fetchCategory = () => (dispatch, getState) => {
         const state = getState();
 
         dispatch({
-          type: FETCH_CATEGORY,
+          type: RECEIVE_CATEGORY,
           category: category.name,
           items: items
         });
@@ -64,7 +64,7 @@ export const articleUpdated = (article, articleIndex) => (dispatch, getState) =>
     fetch('data/articles/' + article.id + '.html',
       (response) => {
         dispatch({
-          type: FETCH_ARTICLE,
+          type: RECEIVE_ARTICLE,
           index: articleIndex,
           category: categoryName,
           html: _formatHTML(response)

@@ -1,4 +1,4 @@
-import { FETCH_CATEGORY, FETCH_ARTICLE,
+import { RECEIVE_CATEGORY, RECEIVE_ARTICLE,
          FETCH_FAILED, FETCH_OK,
          START_LOADING, FINISH_LOADING } from '../actions/data.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
@@ -37,14 +37,14 @@ const data = (state = {categories: categoryList}, action) => {
         ...state,
         loading: false
       };
-    case FETCH_ARTICLE:
+    case RECEIVE_ARTICLE:
       var f = {
         ...state,
         articleIndex: action.index,
         categories: updateCategoriesWithArticle(state.categories, action.category, action.index, action.html)
       }
       return f;
-    case FETCH_CATEGORY:
+    case RECEIVE_CATEGORY:
       return {
         ...state,
         categories: updateCategories(state.categories, action.category, action.items)

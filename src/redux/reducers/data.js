@@ -1,12 +1,13 @@
-import { RECEIVE_CATEGORY, RECEIVE_ARTICLE,
-         FETCH_FAILED, FETCH_OK,
-         START_LOADING, FINISH_LOADING } from '../actions/data.js';
+import { START_LOADING_CATEGORY, RECEIVE_CATEGORY,
+         START_LOADING_ARTICLE, RECEIVE_ARTICLE,
+         FETCH_FAILED, FETCH_OK
+        } from '../actions/data.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
 import { Debouncer } from '../../../node_modules/@polymer/polymer/lib/utils/debounce.js';
 
 const pathSelector = action => action.path === '/' ? '/list/top_stories' : action.path;
 
-let categoryList = {
+const INITIAL_CATEGORIES = {
   top_stories: {name: 'top_stories', title: 'Top Stories'},
   doodles: {name: 'doodles', title: 'Doodles'},
   chrome: {name: 'chrome', title: 'Chrome'},
@@ -15,76 +16,100 @@ let categoryList = {
   nonprofits: {name: 'nonprofits', title: 'Nonprofits'}
 };
 
-const data = (state = {categories: categoryList}, action) => {
+const data = (state = INITIAL_CATEGORIES, action) => {
+  const categoryName = action.categoryName;
   switch (action.type) {
     case FETCH_FAILED:
-      return {
-        ...state,
-        failure: true
-      };
     case FETCH_OK:
-      return {
-        ...state,
-        failure: false
-      };
-    case START_LOADING:
-      return {
-        ...state,
-        loading: true
-      };
-    case FINISH_LOADING:
-      return {
-        ...state,
-        loading: false
-      };
-    case RECEIVE_ARTICLE:
-      var f = {
-        ...state,
-        articleIndex: action.index,
-        categories: updateCategoriesWithArticle(state.categories, action.category, action.index, action.html)
-      }
-      return f;
+    case START_LOADING_CATEGORY:
     case RECEIVE_CATEGORY:
       return {
         ...state,
-        categories: updateCategories(state.categories, action.category, action.items)
-      }
+        [categoryName]: category(action, state[categoryName], action.items)
+      };
+    case START_LOADING_ARTICLE:
+    case RECEIVE_ARTICLE:
+      const articleIndex = action.articleIndex;
+      return {
+        ...state,
+        [categoryName]: category(action, state[categoryName], state[categoryName].items, articleIndex, action.html)
+      };
     default:
       return state;
   }
 }
-export default data;
 
-const updateCategoriesWithArticle = (state = {}, categoryId, articleName, html) => {
-  const updateArticleForCategory = (state = {}, articleName, html) => {
-    const updateItems = (state = [], articleName, html) => {
-      state[articleName].html = html;
-  //    state[articleName] = Object.assign({}, state[articleName]);
+const category = (action, state = {}, items, articleIndex, articleHtml) => {
+  switch (action.type) {
+    case FETCH_FAILED:
+      return {
+        ...state,
+        failure: true,
+        loading: false
+      };
+    case FETCH_OK:
+      return {
+        ...state,
+        failure: false,
+        loading: false
+      };
+    case START_LOADING_CATEGORY:
+      return {
+        ...state,
+        failure: false,
+        loading: true
+      };
+    case RECEIVE_CATEGORY:
+      return {
+        ...state,
+        failure: false,
+        loading: false,
+        items: items
+      };
+    case START_LOADING_ARTICLE:
+      return {
+        ...state,
+        items: categoryItems(action, state.items, articleIndex, articleHtml)
+      };
+    case RECEIVE_ARTICLE:
+      var fff = {
+        ...state,
+        items: categoryItems(action, state.items, articleIndex, articleHtml)
+      };
+      return fff;
+    default:
       return state;
-    }
-
-    return {
-      ...state,
-      items: updateItems(state.items, articleName, html)
-    }
-  }
-
-  return {
-    ...state,
-    [categoryId]: updateArticleForCategory(state[categoryId], articleName, html)
   }
 }
 
-const updateCategories = (state = {}, categoryId, items) => {
-  const updateCategory = (state = {}, items) => {
-    return {
-      ...state,
-      items
-    };
-  };
-
-  return {
-    ...state,
-    [categoryId]: updateCategory(state[categoryId], items)
+const categoryItems = (action, state = {}, articleIndex, articleHtml) => {
+  switch (action.type) {
+    case START_LOADING_ARTICLE:
+      return state.splice(0);
+    case RECEIVE_ARTICLE:
+      state[articleIndex] = article(action, state[articleIndex], articleHtml);
+      return state.splice(0);
   }
-};
+}
+
+const article = (action, state = {}, html) => {
+  switch (action.type) {
+    case START_LOADING_ARTICLE:
+      return {
+        ...state,
+        failure: false,
+        loading: true
+      };
+    case RECEIVE_ARTICLE:
+      return {
+        ...state,
+        failure: false,
+        loading: false,
+        html
+      };
+    default:
+      return state;
+  }
+}
+
+export default data;

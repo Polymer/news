@@ -2,8 +2,8 @@ import { createSelector } from '../../../node_modules/reselect/es/index.js';
 
 export const FETCH_FAILED = 'FETCH_FAILED';
 export const FETCH_OK = 'FETCH_OK';
-export const START_LOADING = 'START_LOADING';
-export const FINISH_LOADING = 'FINISH_LOADING';
+export const START_LOADING_CATEGORY = 'START_LOADING_CATEGORY';
+export const START_LOADING_ARTICLE = 'START_LOADING_ARTICLE';
 export const RECEIVE_ARTICLE = 'RECEIVE_ARTICLE';
 export const RECEIVE_CATEGORY = 'RECEIVE_CATEGORY';
 
@@ -13,7 +13,7 @@ export const fetchCategory = () => (dispatch, getState) => {
   const state = getState();
 
   const categoryName = state.path.category;
-  const categories = state.data.categories;
+  const categories = state.data;
   const category = categorySelector(state);
   const loading = category.loading;
   const offline = !state.app.online;
@@ -25,6 +25,11 @@ export const fetchCategory = () => (dispatch, getState) => {
       type: FETCH_OK
     });
   } else {
+    dispatch({
+      type: START_LOADING_CATEGORY,
+      categoryName
+    });
+
     fetch('data/' + category.name + '.json',
       (response) => {
         const items = _parseCategoryItems(JSON.parse(response), category.name);
@@ -32,7 +37,7 @@ export const fetchCategory = () => (dispatch, getState) => {
 
         dispatch({
           type: RECEIVE_CATEGORY,
-          category: category.name,
+          categoryName: category.name,
           items: items
         });
 
@@ -43,7 +48,8 @@ export const fetchCategory = () => (dispatch, getState) => {
             dispatch(articleUpdated(article, index, categoryName, offline, loading));
           }
         }
-      }, 1 /* attempts */, true /* isRaw */, dispatch);
+      },
+      1 /* attempts */, true /* isRaw */, dispatch);
     }
 };
 
@@ -61,15 +67,21 @@ export const articleUpdated = (article, articleIndex) => (dispatch, getState) =>
       type: FETCH_OK
     });
   } else {
+    dispatch({
+      type: START_LOADING_ARTICLE,
+      categoryName: categoryName,
+      articleIndex: articleIndex
+    });
     fetch('data/articles/' + article.id + '.html',
       (response) => {
         dispatch({
           type: RECEIVE_ARTICLE,
-          index: articleIndex,
-          category: categoryName,
+          articleIndex: articleIndex,
+          categoryName: categoryName,
           html: _formatHTML(response)
         });
-      }, 1 /* attempts */, true /* isRaw */, dispatch);
+      },
+      1 /* attempts */, true /* isRaw */, dispatch);
   }
 };
 
@@ -77,7 +89,7 @@ function fetch(url, callback, attempts, isRaw, dispatch) {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener('load', (e) => {
     dispatch({
-      type: FINISH_LOADING
+      type: FETCH_OK
     });
     if (isRaw) {
       callback(e.target.responseText);
@@ -92,20 +104,11 @@ function fetch(url, callback, attempts, isRaw, dispatch) {
         timeOut.after(200), fetch.bind(this, url, callback, attempts - 1, isRaw, dispatch));
     } else {
       dispatch({
-        type: FINISH_LOADING
-      });
-      dispatch({
         type: FETCH_FAILED
       });
     }
   });
 
-  dispatch({
-    type: START_LOADING
-  });
-  dispatch({
-    type: FETCH_OK
-  });
   xhr.open('GET', url);
   xhr.send();
 }
@@ -210,7 +213,7 @@ function _trimRight(text, maxLength) {
   return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
 }
 
-const categoriesSelector = state => (state.data.categories);
+const categoriesSelector = state => (state.data);
 const categoryNameSelector = state => (state.path.category);
 const articleNameSelector = state => (state.path.article);
 

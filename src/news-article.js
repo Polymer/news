@@ -399,14 +399,14 @@ class NewsArticle extends Element {
   }
 
   _computePreviousArticle(categoryItems, article) {
-    if (categoryItems) {
+    if (categoryItems && article) {
       const i = categoryItems.indexOf(article);
       return i > 0 ? categoryItems[i-1] : null;
     }
   }
 
   _computeNextArticle(categoryItems, article) {
-    if (categoryItems) {
+    if (categoryItems && article) {
       const i = categoryItems.indexOf(article);
       return (i > -1 && i < categoryItems.length-1) ? categoryItems[i+1] : null;
     }

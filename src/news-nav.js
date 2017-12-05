@@ -51,7 +51,7 @@ class NewsNav extends Element {
     const state = store.getState();
     this.setProperties({
       _drawerOpened: state.app.drawerOpened,
-      _categoryList: Object.values(state.data.categories)
+      _categoryList: Object.values(state.data)
     });
   }
 

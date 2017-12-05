@@ -81,9 +81,9 @@ class NewsApp extends Element {
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="path-warning">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" category-name="[[categoryName]]" category="[[category]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-list>
+      <news-list id="list" name="list" category-name="[[categoryName]]" category="[[category]]" loading="[[category.loading]]" offline="[[offline]]" failure="[[category.failure]]"></news-list>
       <!-- article view -->
-      <news-article name="article" category-name="[[categoryName]]" category="[[category]]" article-name="[[articleName]]" article="[[article]]" loading="[[loading]]" offline="[[offline]]" failure="[[failure]]"></news-article>
+      <news-article name="article" category-name="[[categoryName]]" category="[[category]]" article-name="[[articleName]]" article="[[article]]" loading="[[article.loading]]" offline="[[offline]]" failure="[[article.failure]]"></news-article>
       <!-- invalid top level paths -->
       <news-path-warning name="path-warning"></news-path-warning>
 
@@ -119,10 +119,9 @@ class NewsApp extends Element {
     category: Object,
 
     articleName: String,
-    articleIndex: Number,
     article: {
       type: Object,
-      computed: '_computeArticle(category.items, articleIndex)'
+      computed: '_computeArticle(category.items, articleName)'
     },
 
     offline: {
@@ -152,8 +151,7 @@ class NewsApp extends Element {
       page: state.path.page,
       categoryName: state.path.category,
       articleName: state.path.article,
-      articleIndex: state.data.articleIndex,
-      categories: state.data.categories,
+      categories: state.data,
       category: this._getCategoryData(state),
       // article is a computed property
       failure: state.data.failure,
@@ -216,14 +214,19 @@ class NewsApp extends Element {
   }
 
   _getCategoryData(state) {
-    return state.data.categories[state.path.category];
+    return state.data[state.path.category];
   }
 
-  _computeArticle(items, index) {
-    if (!items || index === undefined) {
+  _computeArticle(items, articleName) {
+    if (!items) {
       return undefined;
     }
-    return items[index];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === articleName) {
+        return items[i];
+      }
+    }
+    return undefined;
   }
 
   _routeChanged(route) {

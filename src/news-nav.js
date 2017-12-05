@@ -2,8 +2,8 @@ import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
 import '../node_modules/@polymer/iron-media-query/iron-media-query.js';
 import './news-header.js';
 
-import { store } from './redux/store.js';
-import { drawerOpened, drawerClosed } from './redux/actions/app.js';
+import { store } from './store/store.js';
+import { drawerOpened, drawerClosed } from './store/actions/app.js';
 
 class NewsNav extends Element {
   static get template() {

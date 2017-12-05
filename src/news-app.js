@@ -5,8 +5,8 @@ import './news-nav.js';
 import './news-snackbar.js';
 import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
 
-import { store } from './redux/store.js';
-import { networkStatusChanged, pathChanged } from './redux/actions/app.js';
+import { store } from './store/store.js';
+import { networkStatusChanged, pathChanged } from './store/actions/app.js';
 
 class NewsApp extends Element {
   static get template() {

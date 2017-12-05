@@ -80,10 +80,10 @@ const category = (action, state = {}, items) => {
 const categoryItems = (action, state = {}, articleIndex) => {
   switch (action.type) {
     case START_LOADING_ARTICLE:
-      return state.splice(0);
+      return state.slice(0);
     case RECEIVE_ARTICLE:
-      state[articleIndex] = article(action, state[articleIndex], action.articleHtml);
-      return state.splice(0);
+      state[articleIndex] = article(action, state[articleIndex], action.html);
+      return state.slice(0);
   }
 }
 

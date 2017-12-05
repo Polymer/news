@@ -7,8 +7,6 @@ export const START_LOADING_ARTICLE = 'START_LOADING_ARTICLE';
 export const RECEIVE_ARTICLE = 'RECEIVE_ARTICLE';
 export const RECEIVE_CATEGORY = 'RECEIVE_CATEGORY';
 
-let textarea = document.createElement('textarea');
-
 export const fetchCategory = () => (dispatch, getState) => {
   const state = getState();
 
@@ -174,6 +172,7 @@ function _formatHTML(html) {
   return template.content.querySelector('.content').innerHTML;
 }
 
+let textarea = document.createElement('textarea');
 function _unescapeText(text) {
   textarea.innerHTML = text;
   return textarea.textContent;

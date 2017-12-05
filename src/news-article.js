@@ -147,7 +147,7 @@ class NewsArticle extends Element {
       }
     </style>
 
-    <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
+    <div class="container" fade-in$="[[!article.loading]]" hidden$="[[article.failure]]">
       <article class="flex">
         <news-article-cover id="cover0" class="fade-in"></news-article-cover>
         <news-article-cover id="cover1" class="preview-cover"></news-article-cover>
@@ -177,7 +177,7 @@ class NewsArticle extends Element {
     </div>
 
     <news-network-warning
-        hidden$="[[!failure]]"
+        hidden$="[[!article.failure]]"
         offline="[[offline]]"
         on-try-reconnect="_tryReconnect"></news-network-warning>`;
   }
@@ -185,9 +185,8 @@ class NewsArticle extends Element {
 
   static get properties() { return {
     category: Object,
-
     article: Object,
-
+    offline: Boolean,
     previousArticle: {
       type: Object,
       computed: '_computePreviousArticle(category.items, article)'
@@ -196,14 +195,7 @@ class NewsArticle extends Element {
     nextArticle: {
       type: Object,
       computed: '_computeNextArticle(category.items, article)'
-    },
-
-    loading: Boolean,
-
-    offline: Boolean,
-
-    failure: Boolean,
-
+    }
   }}
 
   static get observers() { return [

@@ -128,7 +128,7 @@ class NewsList extends Element {
 
     </style>
 
-    <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
+    <div class="container" fade-in$="[[!category.loading]]" hidden$="[[category.failure]]">
       <div class="content">
         <news-list-featured-item item="[[_getFeaturedItem(category.items)]]">
         </news-list-featured-item>
@@ -169,7 +169,7 @@ class NewsList extends Element {
     </div>
 
     <news-network-warning
-        hidden$="[[!failure]]"
+        hidden$="[[!category.failure]]"
         offline="[[offline]]"
         on-try-reconnect="_tryReconnect"></news-network-warning>
     `;
@@ -179,9 +179,7 @@ class NewsList extends Element {
 
   static get properties() { return {
     category: Object,
-    offline: Boolean,
-    failure: Boolean,
-    loading: Boolean
+    offline: Boolean
   }}
 
   connectedCallback() {

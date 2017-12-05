@@ -81,9 +81,9 @@ class NewsApp extends Element {
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name" fallback-selection="path-warning">
       <!-- list view of articles in a category -->
-      <news-list id="list" name="list" category-name="[[categoryName]]" category="[[category]]" loading="[[category.loading]]" offline="[[offline]]" failure="[[category.failure]]"></news-list>
+      <news-list id="list" name="list" category="[[category]]" offline="[[offline]]"></news-list>
       <!-- article view -->
-      <news-article name="article" category-name="[[categoryName]]" category="[[category]]" article-name="[[articleName]]" article="[[article]]" loading="[[article.loading]]" offline="[[offline]]" failure="[[article.failure]]"></news-article>
+      <news-article name="article" category="[[category]]" article="[[article]]" offline="[[offline]]"></news-article>
       <!-- invalid top level paths -->
       <news-path-warning name="path-warning"></news-path-warning>
 

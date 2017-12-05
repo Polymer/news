@@ -24,6 +24,7 @@ export const fetchCategory = () => (dispatch, getState) => {
     dispatch({
       type: USE_CATEGORY_FROM_CACHE
     });
+    dispatch(fetchArticle());
   } else {
     dispatch({
       type: START_FETCH_CATEGORY,
@@ -39,26 +40,29 @@ export const fetchCategory = () => (dispatch, getState) => {
           });
           return;
         }
-        const items = _parseCategoryItems(JSON.parse(response), category.name);
-        const state = getState();
-
         dispatch({
           type: RECEIVE_CATEGORY,
           categoryName: category.name,
-          items: items
+          items: _parseCategoryItems(JSON.parse(response), category.name)
         });
 
-        const articleName = state.path.article;
-        if (articleName) {
-          const [article, index] = _findArticle(items, articleName);
-          if (!article.html) {
-            dispatch(articleUpdated(article, index, categoryName, offline, loading));
-          }
-        }
+        dispatch(fetchArticle());
       },
       1 /* attempts */, true /* isRaw */, dispatch);
     }
 };
+
+const fetchArticle = () => (dispatch, getState) => {
+  const state = getState();
+  const articleName = state.path.article;
+  const category = categorySelector(state);
+  if (articleName) {
+    const [article, index] = _findArticle(category.items, articleName);
+    if (!article.html) {
+      dispatch(articleUpdated(article, index, category.name, article.offline, article.loading));
+    }
+  }
+}
 
 export const articleUpdated = (article, articleIndex) => (dispatch, getState) => {
   const state = getState();

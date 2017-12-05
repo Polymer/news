@@ -1,36 +1,20 @@
 import { NAVIGATE } from '../actions/app.js';
-import { createSelector } from '../../../node_modules/reselect/es/index.js';
-
-const pathSelector = action => action.path === '/' ? '/list/top_stories' : action.path;
-
-export const splitPathSelector = createSelector(
-  pathSelector,
-  path => path.slice(1).split('/') || []
-);
-const pageSelector = createSelector(
-  splitPathSelector,
-  splitPath => splitPath[0] || 'list'
-);
-const categorySelector = createSelector(
-  splitPathSelector,
-  splitPath => splitPath[1] || 'top_stories'
-);
-const articleNameSelector = createSelector(
-  splitPathSelector,
-  splitPath => splitPath[2] || ''
-);
 
 const path = (state = {}, action) => {
   switch (action.type) {
     case NAVIGATE:
+      const route = action.path === '/' ? '/list/top_stories' : action.path;
+      const splitPath = route.slice(1).split('/') || [];
+      const page = splitPath[0] || list;
+      const category = splitPath[1] || 'top_stories';
+      const article = splitPath[2] || '';
       return {
         ...state,
-        route: pathSelector(action),
-        page: pageSelector(action),
-        category: categorySelector(action),
-        article: articleNameSelector(action)
+        route,
+        page,
+        category,
+        article
       };
-
     default:
       return state;
   }

@@ -1,11 +1,13 @@
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
 
-export const FETCH_FAILED = 'FETCH_FAILED';
-export const FETCH_OK = 'FETCH_OK';
-export const START_LOADING_CATEGORY = 'START_LOADING_CATEGORY';
-export const START_LOADING_ARTICLE = 'START_LOADING_ARTICLE';
-export const RECEIVE_ARTICLE = 'RECEIVE_ARTICLE';
+export const START_FETCH_CATEGORY = 'START_FETCH_CATEGORY';
 export const RECEIVE_CATEGORY = 'RECEIVE_CATEGORY';
+export const USE_CATEGORY_FROM_CACHE = 'USE_CATEGORY_FROM_CACHE';
+export const ERROR_FETCH_CATEGORY = 'ERROR_FETCH_CATEGORY';
+export const START_FETCH_ARTICLE = 'START_FETCH_ARTICLE';
+export const RECEIVE_ARTICLE = 'RECEIVE_ARTICLE';
+export const USE_ARTICLE_FROM_CACHE = 'USE_ARTICLE_FROM_CACHE';
+export const ERROR_FETCH_ARTICLE = 'ERROR_FETCH_ARTICLE';
 
 export const fetchCategory = () => (dispatch, getState) => {
   const state = getState();
@@ -20,16 +22,23 @@ export const fetchCategory = () => (dispatch, getState) => {
   // nothing to fetch, or if already loading.
   if ((offline && category && category.items) || !category || loading) {
     dispatch({
-      type: FETCH_OK
+      type: USE_CATEGORY_FROM_CACHE
     });
   } else {
     dispatch({
-      type: START_LOADING_CATEGORY,
+      type: START_FETCH_CATEGORY,
       categoryName
     });
 
     fetch('data/' + category.name + '.json',
       (response) => {
+        if (!response) {
+          dispatch({
+            type: ERROR_FETCH_CATEGORY,
+            categoryName
+          });
+          return;
+        }
         const items = _parseCategoryItems(JSON.parse(response), category.name);
         const state = getState();
 
@@ -62,16 +71,24 @@ export const articleUpdated = (article, articleIndex) => (dispatch, getState) =>
   // nothing to fetch, or if already loading.
   if ((offline && article && article.html) || !article || loading) {
     dispatch({
-      type: FETCH_OK
+      type: USE_ARTICLE_FROM_CACHE
     });
   } else {
     dispatch({
-      type: START_LOADING_ARTICLE,
+      type: START_FETCH_ARTICLE,
       categoryName: categoryName,
       articleIndex: articleIndex
     });
     fetch('data/articles/' + article.id + '.html',
       (response) => {
+        if (!response) {
+          dispatch({
+            type: ERROR_FETCH_ARTICLE,
+            articleIndex: articleIndex,
+            categoryName: categoryName,
+          });
+          return;
+        }
         dispatch({
           type: RECEIVE_ARTICLE,
           articleIndex: articleIndex,
@@ -86,9 +103,6 @@ export const articleUpdated = (article, articleIndex) => (dispatch, getState) =>
 function fetch(url, callback, attempts, isRaw, dispatch) {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener('load', (e) => {
-    dispatch({
-      type: FETCH_OK
-    });
     if (isRaw) {
       callback(e.target.responseText);
     } else {
@@ -101,9 +115,7 @@ function fetch(url, callback, attempts, isRaw, dispatch) {
       this._fetchDebouncer = Debouncer.debounce(this._fetchDebouncer,
         timeOut.after(200), fetch.bind(this, url, callback, attempts - 1, isRaw, dispatch));
     } else {
-      dispatch({
-        type: FETCH_FAILED
-      });
+      callback(null);
     }
   });
 

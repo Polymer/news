@@ -1,6 +1,7 @@
-import { START_LOADING_CATEGORY, RECEIVE_CATEGORY,
-         START_LOADING_ARTICLE, RECEIVE_ARTICLE,
-         FETCH_FAILED, FETCH_OK
+import { START_FETCH_CATEGORY, ERROR_FETCH_CATEGORY,
+         RECEIVE_CATEGORY, USE_CATEGORY_FROM_CACHE,
+         START_FETCH_ARTICLE, ERROR_FETCH_ARTICLE,
+         RECEIVE_ARTICLE, USE_ARTICLE_FROM_CACHE
         } from '../actions/data.js';
 import { createSelector } from '../../../node_modules/reselect/es/index.js';
 import { Debouncer } from '../../../node_modules/@polymer/polymer/lib/utils/debounce.js';
@@ -19,15 +20,17 @@ const INITIAL_CATEGORIES = {
 const data = (state = INITIAL_CATEGORIES, action) => {
   const categoryName = action.categoryName;
   switch (action.type) {
-    case FETCH_FAILED:
-    case FETCH_OK:
-    case START_LOADING_CATEGORY:
+    case ERROR_FETCH_CATEGORY:
+    case USE_CATEGORY_FROM_CACHE:
+    case START_FETCH_CATEGORY:
     case RECEIVE_CATEGORY:
       return {
         ...state,
         [categoryName]: category(action, state[categoryName], action.items)
       };
-    case START_LOADING_ARTICLE:
+    case ERROR_FETCH_ARTICLE:
+    case USE_ARTICLE_FROM_CACHE:
+    case START_FETCH_ARTICLE:
     case RECEIVE_ARTICLE:
       const articleIndex = action.articleIndex;
       return {
@@ -41,23 +44,23 @@ const data = (state = INITIAL_CATEGORIES, action) => {
 
 const category = (action, state = {}, items) => {
   switch (action.type) {
-    case FETCH_FAILED:
+    case START_FETCH_CATEGORY:
+      return {
+        ...state,
+        failure: false,
+        loading: true
+      };
+    case ERROR_FETCH_CATEGORY:
       return {
         ...state,
         failure: true,
         loading: false
       };
-    case FETCH_OK:
+    case USE_CATEGORY_FROM_CACHE:
       return {
         ...state,
         failure: false,
         loading: false
-      };
-    case START_LOADING_CATEGORY:
-      return {
-        ...state,
-        failure: false,
-        loading: true
       };
     case RECEIVE_CATEGORY:
       return {
@@ -66,7 +69,9 @@ const category = (action, state = {}, items) => {
         loading: false,
         items: items
       };
-    case START_LOADING_ARTICLE:
+    case START_FETCH_ARTICLE:
+    case ERROR_FETCH_ARTICLE:
+    case USE_ARTICLE_FROM_CACHE:
     case RECEIVE_ARTICLE:
       return {
         ...state,
@@ -79,8 +84,9 @@ const category = (action, state = {}, items) => {
 
 const categoryItems = (action, state = {}, articleIndex) => {
   switch (action.type) {
-    case START_LOADING_ARTICLE:
-      return state.slice(0);
+    case START_FETCH_ARTICLE:
+    case ERROR_FETCH_ARTICLE:
+    case USE_ARTICLE_FROM_CACHE:
     case RECEIVE_ARTICLE:
       state[articleIndex] = article(action, state[articleIndex], action.html);
       return state.slice(0);
@@ -89,11 +95,23 @@ const categoryItems = (action, state = {}, articleIndex) => {
 
 const article = (action, state = {}, html) => {
   switch (action.type) {
-    case START_LOADING_ARTICLE:
+    case START_FETCH_ARTICLE:
       return {
         ...state,
         failure: false,
         loading: true
+      };
+    case ERROR_FETCH_CATEGORY:
+      return {
+        ...state,
+        failure: true,
+        loading: false
+      };
+    case USE_ARTICLE_FROM_CACHE:
+      return {
+        ...state,
+        failure: false,
+        loading: false
       };
     case RECEIVE_ARTICLE:
       return {

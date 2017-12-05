@@ -32,14 +32,14 @@ const data = (state = INITIAL_CATEGORIES, action) => {
       const articleIndex = action.articleIndex;
       return {
         ...state,
-        [categoryName]: category(action, state[categoryName], state[categoryName].items, articleIndex, action.html)
+        [categoryName]: category(action, state[categoryName], state[categoryName].items)
       };
     default:
       return state;
   }
 }
 
-const category = (action, state = {}, items, articleIndex, articleHtml) => {
+const category = (action, state = {}, items) => {
   switch (action.type) {
     case FETCH_FAILED:
       return {
@@ -67,27 +67,22 @@ const category = (action, state = {}, items, articleIndex, articleHtml) => {
         items: items
       };
     case START_LOADING_ARTICLE:
+    case RECEIVE_ARTICLE:
       return {
         ...state,
-        items: categoryItems(action, state.items, articleIndex, articleHtml)
+        items: categoryItems(action, state.items, action.articleIndex)
       };
-    case RECEIVE_ARTICLE:
-      var fff = {
-        ...state,
-        items: categoryItems(action, state.items, articleIndex, articleHtml)
-      };
-      return fff;
     default:
       return state;
   }
 }
 
-const categoryItems = (action, state = {}, articleIndex, articleHtml) => {
+const categoryItems = (action, state = {}, articleIndex) => {
   switch (action.type) {
     case START_LOADING_ARTICLE:
       return state.splice(0);
     case RECEIVE_ARTICLE:
-      state[articleIndex] = article(action, state[articleIndex], articleHtml);
+      state[articleIndex] = article(action, state[articleIndex], action.articleHtml);
       return state.splice(0);
   }
 }

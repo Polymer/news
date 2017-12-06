@@ -6,6 +6,7 @@ import './news-snackbar.js';
 import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
 
 import { store } from './store/store.js';
+import { fetchCategory } from './store/actions/data.js';
 import { networkStatusChanged, pathChanged } from './store/actions/app.js';
 
 class NewsApp extends Element {
@@ -304,7 +305,7 @@ class NewsApp extends Element {
   }
 
   _refreshData() {
-    this.$.data.refresh();
+    store.dispatch(fetchCategory(3));
   }
 }
 

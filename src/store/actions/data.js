@@ -9,7 +9,7 @@ export const RECEIVE_ARTICLE = 'RECEIVE_ARTICLE';
 export const USE_ARTICLE_FROM_CACHE = 'USE_ARTICLE_FROM_CACHE';
 export const ERROR_FETCH_ARTICLE = 'ERROR_FETCH_ARTICLE';
 
-export const fetchCategory = () => (dispatch, getState) => {
+export const fetchCategory = (attempts=1) => (dispatch, getState) => {
   const state = getState();
 
   const categoryName = state.path.category;
@@ -48,7 +48,7 @@ export const fetchCategory = () => (dispatch, getState) => {
 
         dispatch(fetchArticle());
       },
-      1 /* attempts */, true /* isRaw */, dispatch);
+      attempts, true /* isRaw */, dispatch);
     }
 };
 

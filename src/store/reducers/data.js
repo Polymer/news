@@ -101,7 +101,7 @@ const article = (action, state = {}, html) => {
         failure: false,
         loading: true
       };
-    case ERROR_FETCH_CATEGORY:
+    case ERROR_FETCH_ARTICLE:
       return {
         ...state,
         failure: true,

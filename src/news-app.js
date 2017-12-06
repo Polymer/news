@@ -128,8 +128,6 @@ class NewsApp extends Element {
       type: Boolean,
       observer: '_offlineChanged'
     },
-
-    failure: Boolean,
     loadComplete: Boolean
   }}
 
@@ -154,8 +152,6 @@ class NewsApp extends Element {
       categories: state.data,
       category: this._getCategoryData(state),
       // article is a computed property
-      failure: state.data.failure,
-      loading: state.data.loading
     });
   }
 

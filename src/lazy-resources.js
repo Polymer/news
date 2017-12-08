@@ -1,6 +1,7 @@
 import './news-icons.js';
 import './news-analytics.js';
 import './news-drawer.js';
+import './news-gpt-ad.js';
 import './news-network-warning.js';
 import './news-snackbar.js';
 

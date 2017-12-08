@@ -260,6 +260,37 @@ class NewsApp extends Element {
   // Response by a11y announcing the section and syncronizing the category.
   _updateDocumentTitle(page, categoryTitle, articleHeadline, appTitle) {
     document.title = (page === 'list' ? categoryTitle : articleHeadline) + ' - ' + appTitle;
+    if (page === 'list') {
+      this._setPageMetadata(categoryTitle, null);
+    } else {
+      this._setPageMetadata(articleHeadline, this.article);
+    }
+  }
+
+  _setPageMetadata(description, article) {
+    let image = article ? article.imageUrl : 'images/news-icon-128.png';
+
+    // Set open graph metadata
+    this._setMeta('property', 'og:title', document.title);
+    this._setMeta('property', 'og:description', description || document.title);
+    this._setMeta('property', 'og:url', document.location.href);
+    this._setMeta('property', 'og:image', this.baseURI + image);
+
+    // Set twitter card metadata
+    this._setMeta('property', 'twitter:title', document.title);
+    this._setMeta('property', 'twitter:description', description || document.title);
+    this._setMeta('property', 'twitter:url', document.location.href);
+    this._setMeta('property', 'twitter:image:src', this.baseURI + image);
+  }
+
+  _setMeta(attrName, attrValue, content) {
+    let element = document.head.querySelector(`meta[${attrName}="${attrValue}"]`);
+    if (!element) {
+      element = document.createElement('meta');
+      element.setAttribute(attrName, attrValue);
+      document.head.appendChild(element);
+    }
+    element.setAttribute('content', content || '');
   }
 
   _refreshData() {

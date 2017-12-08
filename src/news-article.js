@@ -2,7 +2,6 @@ import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
 import '../node_modules/@polymer/app-route/app-route.js';
 import '../node_modules/@polymer/iron-icon/iron-icon.js';
 import './news-article-cover.js';
-import './news-iframe.js';
 import './news-side-list.js';
 import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
 import { scroll } from '../node_modules/@polymer/app-layout/helpers/helpers.js';
@@ -74,7 +73,8 @@ class NewsArticle extends Element {
         margin-bottom: 32px;
       }
 
-      news-iframe {
+      news-gpt-ad {
+        display: block;
         width: 300px;
         height: 250px;
       }
@@ -163,7 +163,9 @@ class NewsArticle extends Element {
 
       <aside>
         <div class="ad-container">
-          <news-iframe src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=12&l=ur1&f=ifr"></news-iframe>
+        <news-gpt-ad id="ad_slot_2"
+            ad-unit-path="/6355419/Travel/Europe/France/Paris"
+            ad-width="300" ad-height="250"></news-gpt-ad>
         </div>
         <a href="#" class="share-link" aria-label="Send by email">
           <iron-icon icon="mail"></iron-icon> Email

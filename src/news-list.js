@@ -3,7 +3,6 @@ import '../node_modules/@polymer/app-route/app-route.js';
 import '../node_modules/@polymer/app-layout/app-grid/app-grid-style.js';
 import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
 import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
-import './news-iframe.js';
 import './news-list-featured-item.js';
 import './news-list-item.js';
 import './news-side-list.js';
@@ -58,7 +57,8 @@ class NewsList extends Element {
         margin-bottom: 32px;
       }
 
-      news-iframe {
+      news-gpt-ad {
+        display: block;
         width: 300px;
         height: 250px;
       }
@@ -166,7 +166,9 @@ class NewsList extends Element {
 
       <aside>
         <div class="ad-container">
-          <news-iframe src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=12&l=ur1&f=ifr"></news-iframe>
+          <news-gpt-ad id="ad_slot_1"
+              ad-unit-path="/6355419/Travel/Europe/France/Paris"
+              ad-width="300" ad-height="250"></news-gpt-ad>
         </div>
         <news-side-list class="fade-in" items="[[_slice(category.items, 0, 3)]]">
           Most Read

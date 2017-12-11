@@ -7,7 +7,7 @@ import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/rend
 
 import { store } from './store/store.js';
 import { fetchCategory } from './store/actions/data.js';
-import { networkStatusChanged, pathChanged } from './store/actions/app.js';
+import { changeNetworkStatus, navigate } from './store/actions/app.js';
 
 class NewsApp extends Element {
   static get template() {
@@ -202,7 +202,7 @@ class NewsApp extends Element {
       if (anchor && anchor.href.indexOf(origin) === 0) {
         e.preventDefault();
         window.history.pushState({}, '', anchor.href);
-        this._notifyPathChanged();
+        this._notify();
       }
     });
 
@@ -277,11 +277,11 @@ class NewsApp extends Element {
   }
 
   _notifyNetworkStatus() {
-    store.dispatch(networkStatusChanged(window.navigator.onLine));
+    store.dispatch(changeNetworkStatus(window.navigator.onLine));
   }
 
   _notifyPathChanged() {
-    store.dispatch(pathChanged(window.decodeURIComponent(window.location.pathname)));
+    store.dispatch(navigate(window.decodeURIComponent(window.location.pathname)));
   }
 
   _offlineChanged(offline, oldOffline) {

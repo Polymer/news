@@ -5,7 +5,7 @@ export const OPEN_DRAWER = 'OPEN_DRAWER';
 export const CLOSE_DRAWER = 'CLOSE_DRAWER';
 export const NAVIGATE = 'NAVIGATE';
 
-export const networkStatusChanged = (online) =>  {
+export const changeNetworkStatus = (online) =>  {
   return {
     type: CHANGE_NETWORK_STATUS,
     online
@@ -24,7 +24,7 @@ export const drawerClosed = () => {
   };
 };
 
-export const pathChanged = (path) => (dispatch, getState) => {
+export const navigate = (path) => (dispatch, getState) => {
   dispatch({
     type: NAVIGATE,
     path

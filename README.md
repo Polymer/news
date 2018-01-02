@@ -1,4 +1,4 @@
-# NEWS
+# com-mkpartners-www
 
 ## Prerequisites
 

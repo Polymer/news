@@ -57,10 +57,64 @@
 
     <div>
       <div class="uni-paragraph">
-        <div class="map_container"></div>
-        <google-map class="map" fit-to-markers api-key="AIzaSyALslL7FPKuGkQ1Aqe_9cgeSl7_4B_D4a0">
-          <google-map-marker latitude="37.78" longitude="-122.4" draggable="true"></google-map-marker>
+        <google-map latitude="34.174607" longitude="-118.361773" zoom="16" class="map" fit-to-markers api-key="AIzaSyALslL7FPKuGkQ1Aqe_9cgeSl7_4B_D4a0">
+          <google-map-marker latitude="34.174607" longitude="-118.361773" draggable="true"></google-map-marker>
         </google-map>
+
+
+        <div class="flexparent">
+          <div style="width: 50%;" itemscope="itemscope" itemtype="http://schema.org/LocalBusiness">
+            <h3>Contact Info</h3>
+            <p>
+              <span itemprop="name">MK Partners, Inc.</span><br>
+            </p>
+            <p itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+              <span itemprop="streetAddress">5709 Cahuenga Blvd</span><br>
+              <span itemprop="addressLocality">Los Angeles</span>,
+              <span itemprop="addressRegion">CA</span>
+              <span itemprop="postalCode">91601</span>
+              <br> USA
+            </p>
+
+            <p><span itemprop="telephone">Phone: (818) 760-8285</span><br> Fax: (310) 424-2962<br> Email: <span itemprop="email">sales [at] mkpartners.com</span><br> Web: <span itemprop="url">www.mkpartners.com</span></p>
+          </div>
+
+
+          <div class="fcontainer">
+            <h3>Let's keep in touch</h3>
+            <form>
+              <ul class="flex-outer">
+                <li>
+                  <label for="first-name">First Name</label>
+                  <input type="text" id="first-name" placeholder="">
+                </li>
+                <li>
+                  <label for="last-name">Last Name</label>
+                  <input type="text" id="last-name" placeholder="">
+                </li>
+                <li>
+                  <label for="email">Email</label>
+                  <input type="email" id="email" placeholder="">
+                </li>
+                <li>
+                  <label for="email">Company</label>
+                  <input type="text" id="company" placeholder="">
+                </li>
+                <li>
+                  <label for="phone">Phone</label>
+                  <input type="tel" id="phone" placeholder="">
+                </li>
+                <li>
+                  <label for="message">Message</label>
+                  <textarea rows="6" id="message" placeholder=""></textarea>
+                </li>
+                <li>
+                  <button type="submit">Submit</button>
+                </li>
+              </ul>
+            </form>
+          </div>
+        </div>
       </div>
 
     </div>

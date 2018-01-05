@@ -10,23 +10,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <base href="/">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-  <title>NEWS</title>
+  <title>Mk Partners</title>
 
-  <link rel="shortcut icon" sizes="32x32" href="images/news-icon-32.png">
+  <link rel="shortcut icon" sizes="32x32" href="images/mkp-icon-32.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/mkp-icon-32.png">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@Polymer">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="NEWS">
+  <meta property="og:site_name" content="MkPartners">
   <meta name="theme-color" content="#000">
   <link rel="manifest" href="manifest.json">
 
-  <style>
 
+  <style>
     body {
       margin: 0;
       background-color: #FAFAFA;
@@ -37,6 +39,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     /* styling for render while resources are loading */
+
     news-app[unresolved] {
       display: block;
       height: 45px;
@@ -49,9 +52,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     /* mobile */
+
     @media (max-width: 767px) {
       body {
-        background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 15%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.7) 48%, rgba(0,0,0,1) 60%);
+        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.25) 15%, rgba(0, 0, 0, 0.25) 30%, rgba(0, 0, 0, 0.7) 48%, rgba(0, 0, 0, 1) 60%);
         background-repeat: no-repeat;
         background-size: 100% 100vh;
       }
@@ -64,19 +68,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: 22px;
         padding-top: 21px;
         font-size: 20px;
-        color: #FFF; /* --app-cover-text-color */
+        color: #FFF;
+        /* --app-cover-text-color */
       }
     }
-
   </style>
 
 </head>
-<body>
 
-  <news-app unresolved app-title="NEWS">NEWS</news-app>
+<body>
+  <news-app unresolved app-title="MKPartners">MkPartners</news-app>
 
   <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
   <link rel="import" href="src/news-app.html">
+  <link rel="import" href="bower_components/google-map/google-map.html">
 
 </body>
+
 </html>

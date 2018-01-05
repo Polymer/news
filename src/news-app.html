@@ -153,54 +153,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-
     class NewsApp extends Polymer.Element {
 
-      static get is() { return 'news-app'; }
+      static get is() {
+        return 'news-app';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        appTitle: String,
+          appTitle: String,
 
-        page: {
-          type: String,
-          observer: '_pageChanged'
-        },
+          page: {
+            type: String,
+            observer: '_pageChanged'
+          },
 
-        routeData: Object,
+          routeData: Object,
 
-        categories: Array,
+          categories: Array,
 
-        categoryName: String,
+          categoryName: String,
 
-        category: Object,
+          category: Object,
 
-        articleId: String,
+          articleId: String,
 
-        article: Object,
+          article: Object,
 
-        articleHeadline: {
-          type: String,
-          value: ''
-        },
+          articleHeadline: {
+            type: String,
+            value: ''
+          },
 
-        offline: {
-          type: Boolean,
-          value: false,
-          readOnly: true
-        },
+          offline: {
+            type: Boolean,
+            value: false,
+            readOnly: true
+          },
 
-        failure: Boolean,
+          failure: Boolean,
 
-        loadComplete: Boolean
+          loadComplete: Boolean
 
-      }}
+        }
+      }
 
-      static get observers() { return [
-        '_routePageChanged(routeData.page, isAttached)',
-        '_updateArticleHeadline(article.headline)',
-        '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)'
-      ]}
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page, isAttached)',
+          '_updateArticleHeadline(article.headline)',
+          '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)'
+        ]
+      }
 
       ready() {
         super.ready();
@@ -220,9 +225,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         Polymer.RenderStatus.afterNextRender(this, () => {
-          window.addEventListener('online', (e)=>this._notifyNetworkStatus(e));
-          window.addEventListener('offline', (e)=>this._notifyNetworkStatus(e));
-          this.addEventListener('refresh-data', (e)=>this._refreshData(e));
+          window.addEventListener('online', (e) => this._notifyNetworkStatus(e));
+          window.addEventListener('offline', (e) => this._notifyNetworkStatus(e));
+          this.addEventListener('refresh-data', (e) => this._refreshData(e));
         });
       }
 
@@ -237,13 +242,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         if (!page) {
           // set default route if route path is empty
-          this.set('route.path', 'list/top_stories');
+          this.set('route.path', 'list/home');
           return;
         }
         this.page = page;
         // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
-        Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });
+        Polymer.AppLayout.scroll({
+          top: 0,
+          behavior: 'silent'
+        });
         // Close the drawer - in case the *route* change came from a link in the drawer.
         this.$.nav.closeDrawer();
       }
@@ -251,23 +259,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _pageChanged(page, oldPage) {
         let href;
 
-        switch(page) {
+        switch (page) {
           case 'list':
             href = 'news-list.html';
-          break;
+            break;
           case 'article':
             href = 'news-article.html';
-          break;
+            break;
           default:
             href = 'news-path-warning.html';
-          break;
+            break;
         }
         let cb = this._pageLoaded.bind(this, Boolean(oldPage));
         Polymer.importHref(
-            this.resolveUrl(href),
-            cb,
-            cb,
-            true);
+          this.resolveUrl(href),
+          cb,
+          cb,
+          true);
       }
 
       _pageLoaded(shouldResetLayout) {
@@ -284,7 +292,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               // Load pre-caching Service Worker
               if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('service-worker.js', {scope: '/'});
+                navigator.serviceWorker.register('service-worker.js', {
+                  scope: '/'
+                });
               }
             });
           });
@@ -302,7 +312,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.root.appendChild(this._networkSnackbar);
           }
           this._networkSnackbar.textContent = this.offline ?
-              'You are offline' : 'You are online';
+            'You are offline' : 'You are online';
           this._networkSnackbar.open();
         }
       }
@@ -323,7 +333,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _setPageMetadata(description, article) {
-        let image = article ? article.imageUrl : 'images/news-icon-128.png';
+        let image = article ? article.imageUrl : 'images/mkp-icon-128.png';
 
         // Set open graph metadata
         this._setMeta('property', 'og:title', document.title);
@@ -355,7 +365,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     customElements.define(NewsApp.is, NewsApp);
-
   </script>
 
 </dom-module>

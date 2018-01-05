@@ -14,7 +14,8 @@
     "iron-iconset-svg": "polymerelements/iron-iconset-svg#^2.0.0",
     "iron-pages": "polymerelements/iron-pages#^2.0.0",
     "iron-selector": "polymerelements/iron-selector#^2.0.0",
-    "paper-icon-button": "polymerelements/paper-icon-button#^2.0.0"
+    "paper-icon-button": "polymerelements/paper-icon-button#^2.0.0",
+    "google-map": "GoogleWebComponents/google-map#^2.0.3"
   },
   "devDependencies": {
     "web-component-tester": "^6.0.0"

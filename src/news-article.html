@@ -136,6 +136,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         .share-link {
           display: none;
         }
+
+        .opinions-grid li{
+          border-bottom: var(--app-border-style);
+          margin: 0px 24px 24px 24px;
+          padding-bottom: 24px;
+        }
+
+        .opinions-grid li:last-of-type {
+          border-bottom: none;
+        }
+      }
+
+      /* desktop */
+      @media (min-width: 768px) {
+        .opinions-grid {
+          @apply --layout-horizontal;
+          @apply --layout-wrap;
+        }
+
+        .opinions-grid li {
+          width: calc(50% - 32px);
+          margin-right: 32px;
+        }
+
+        .opinions-grid {
+          margin-right: -32px;
+        }
       }
 
       /* mobile and desktop small */
@@ -156,6 +183,140 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           max-height: calc(var(--viewport-height) * 0.49);
         }
       }
+
+      .opinions-grid {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+
+      .news-img {
+        height: 150px;
+        width: 150px;
+      }
+
+      h2 {
+        margin: 18px 0;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 28px;
+      }
+
+      .headline {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 150px;
+        right: 0;
+        padding: 24px;
+      }
+
+      a {
+        display: block;
+        position: relative;
+        text-decoration: none;
+        color: inherit;
+        overflow: hidden;
+        margin-bottom: 10px;
+      }
+
+      .item {
+    display: var(--layout-horizontal_-_display);
+    -ms-flex-direction: var(--layout-horizontal_-_-ms-flex-direction);
+    -webkit-flex-direction: var(--layout-horizontal_-_-webkit-flex-direction);
+    flex-direction: var(--layout-horizontal_-_flex-direction);
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    }
+
+    .item:hover {
+      background-color: #f6f6f6;
+    }
+    .item:hover .primary,
+    .item:hover h2,
+    .shortText:hover {
+      color: #f15a23;
+    }
+
+    .pad {
+    padding: 0 16px;
+    -ms-flex: var(--layout-flex_-_-ms-flex);
+    -webkit-flex: var(--layout-flex_-_-webkit-flex);
+    flex: var(--layout-flex_-_flex);
+    -webkit-flex-basis: var(--layout-flex_-_-webkit-flex-basis);
+    flex-basis: var(--layout-flex_-_flex-basis);
+    display: var(--layout-vertical_-_display);
+    -ms-flex-direction: var(--layout-vertical_-_-ms-flex-direction);
+    -webkit-flex-direction: var(--layout-vertical_-_-webkit-flex-direction);
+    flex-direction: var(--layout-vertical_-_flex-direction);
+  }
+
+  .primary {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .shortText {
+    font-size: 14px;
+  }
+
+  .jobDesc {
+    padding: 0 20px 25px 55px;
+  }
+
+
+  .css-expander {
+	display:block;
+}
+
+label.css-expander:hover {
+  cursor: pointer;
+}
+
+input.css-expander {
+	display:none;
+}
+
+.css-expander-hide {
+	max-height:0em;
+	opacity:0;
+	height:auto;
+	overflow:hidden;
+	transition:opacity .5s linear;
+}
+
+.hide p {
+	padding:10px;
+	margin:0
+}
+
+input[type=checkbox]:checked + h4 + div {
+	opacity:1;
+	max-height:999em;
+	border:none;
+}
+
+input[type=checkbox]:not(:checked) + h4 > label.css-expander > label.expanded-status:before {
+  content: "+";
+}
+
+label.expanded-status:before {
+  content: "-";
+}
+
+.pad h4 {
+  font-size: 13px;
+  margin: 5px;
+  font-weight: normal;
+}
+
+google-map {
+  height: 440px;
+}
+
     </style>
 
     <app-route
@@ -171,7 +332,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div id="content" class="fade-in"></div>
       </article>
 
-      <aside>
+      <!-- <aside>
         <div class="ad-container">
           <news-gpt-ad id="ad_slot_2"
               ad-unit-path="/6355419/Travel/Europe/France/Paris"
@@ -189,7 +350,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <news-side-list class="fade-in" featured items="[[_slice(category.items, 3, 9)]]">
           Top Stories
         </news-side-list>
-      </aside>
+      </aside> -->
     </div>
 
     <news-network-warning
@@ -200,55 +361,60 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-
     class NewsArticle extends Polymer.Element {
 
-      static get is() { return 'news-article'; }
+      static get is() {
+        return 'news-article';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        route: Object,
+          route: Object,
 
-        category: Object,
+          category: Object,
 
-        article: Object,
+          article: Object,
 
-        previousArticle: {
-          type: Object,
-          computed: '_computePreviousArticle(category.items, article)'
-        },
+          previousArticle: {
+            type: Object,
+            computed: '_computePreviousArticle(category.items, article)'
+          },
 
-        nextArticle: {
-          type: Object,
-          computed: '_computeNextArticle(category.items, article)'
-        },
+          nextArticle: {
+            type: Object,
+            computed: '_computeNextArticle(category.items, article)'
+          },
 
-        loading: Boolean,
+          loading: Boolean,
 
-        offline: Boolean,
+          offline: Boolean,
 
-        failure: Boolean,
+          failure: Boolean,
 
-        categoryName: {
-          type: Boolean,
-          computed: '_return(_routeData.category)',
-          notify: true
-        },
+          categoryName: {
+            type: Boolean,
+            computed: '_return(_routeData.category)',
+            notify: true
+          },
 
-        articleId: {
-          type: Boolean,
-          computed: '_return(_routeData.id)',
-          notify: true
-        },
+          articleId: {
+            type: Boolean,
+            computed: '_return(_routeData.id)',
+            notify: true
+          },
 
-        _routeData: Object
+          _routeData: Object
 
-      }}
+        }
+      }
 
-      static get observers() { return [
-        '_loadArticle(article.html)',
-        '_articleChanged(article)'
-      ]}
+      static get observers() {
+        return [
+          '_loadArticle(article.html)',
+          '_articleChanged(article)'
+        ]
+      }
 
       connectedCallback() {
         super.connectedCallback();
@@ -339,15 +505,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           if (dx > 0) {
             if (dx > 100) {
-              this._translate(this._previousArticleCover, 0, window.pageYOffset, true /* transition */);
+              this._translate(this._previousArticleCover, 0, window.pageYOffset, true /* transition */ );
               window.setTimeout(() => {
                 this.set('_routeData.id', this.previousArticle.id);
-                Polymer.AppLayout.scroll({ top: 0 });
+                Polymer.AppLayout.scroll({
+                  top: 0
+                });
                 this._previousArticleCover = this._swapCurrentArticleCovers(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
               }, 200);
             } else {
-              this._translate(this._previousArticleCover, -this.offsetWidth, window.pageYOffset, true /* transition */);
+              this._translate(this._previousArticleCover, -this.offsetWidth, window.pageYOffset, true /* transition */ );
               window.setTimeout(() => {
                 this._resetElementStyles(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
@@ -355,15 +523,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           } else if (dx < 0) {
             if (dx < -100) {
-              this._translate(this._nextArticleCover, 0, window.pageYOffset, true /* transition */);
+              this._translate(this._nextArticleCover, 0, window.pageYOffset, true /* transition */ );
               window.setTimeout(() => {
                 this.set('_routeData.id', this.nextArticle.id);
-                Polymer.AppLayout.scroll({ top: 0 });
+                Polymer.AppLayout.scroll({
+                  top: 0
+                });
                 this._nextArticleCover = this._swapCurrentArticleCovers(this._nextArticleCover);
                 this._resetElementStyles(this._previousArticleCover);
               }, 200);
             } else {
-              this._translate(this._nextArticleCover, this.offsetWidth, window.pageYOffset, true /* transition */);
+              this._translate(this._nextArticleCover, this.offsetWidth, window.pageYOffset, true /* transition */ );
               window.setTimeout(() => {
                 this._resetElementStyles(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
@@ -424,7 +594,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _tryReconnect() {
-        this.dispatchEvent(new CustomEvent('refresh-data', {bubbles: true, composed: true}));
+        this.dispatchEvent(new CustomEvent('refresh-data', {
+          bubbles: true,
+          composed: true
+        }));
       }
 
       _slice(list, begin, end) {
@@ -440,21 +613,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _computePreviousArticle(categoryItems, article) {
         if (categoryItems) {
           const i = categoryItems.indexOf(article);
-          return i > 0 ? categoryItems[i-1] : null;
+          return i > 0 ? categoryItems[i - 1] : null;
         }
       }
 
       _computeNextArticle(categoryItems, article) {
         if (categoryItems) {
           const i = categoryItems.indexOf(article);
-          return (i > -1 && i < categoryItems.length-1) ? categoryItems[i+1] : null;
+          return (i > -1 && i < categoryItems.length - 1) ? categoryItems[i + 1] : null;
         }
       }
 
     }
 
     customElements.define(NewsArticle.is, NewsArticle);
-
   </script>
 
 </dom-module>

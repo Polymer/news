@@ -159,22 +159,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <news-list-item item="[[item]]"></news-list-item>
               </li>
             </template>
-          </dom-repeat>
-        </ul>
+  </dom-repeat>
+  </ul>
 
-        <h3>Opinions</h3>
-        <ul class="opinions-grid fade-in">
-          <dom-repeat items="[[_slice(category.items, 5)]]">
-            <template>
+  <h3></h3>
+  <ul class="opinions-grid fade-in">
+    <dom-repeat items="[[_slice(category.items, 5)]]">
+      <template>
               <li>
                 <news-list-item horizontal item="[[item]]"></news-list-item>
               </li>
             </template>
-          </dom-repeat>
-        </ul>
-      </div>
+    </dom-repeat>
+  </ul>
+  </div>
 
-      <aside>
+  <!-- <aside>
         <div class="ad-container">
           <news-gpt-ad id="ad_slot_1"
               ad-unit-path="/6355419/Travel/Europe/France/Paris"
@@ -186,43 +186,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <news-side-list class="fade-in" featured items="[[_slice(category.items, 3, 9)]]">
           More Top Stories
         </news-side-list>
-      </aside>
-    </div>
+      </aside> -->
+  </div>
 
-    <news-network-warning
-        hidden$="[[!failure]]"
-        offline="[[offline]]"
-        on-try-reconnect="_tryReconnect"></news-network-warning>
+  <news-network-warning hidden$="[[!failure]]" offline="[[offline]]" on-try-reconnect="_tryReconnect"></news-network-warning>
 
   </template>
 
   <script>
-
     class NewsList extends Polymer.Element {
 
-      static get is() { return 'news-list'; }
+      static get is() {
+        return 'news-list';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        route: Object,
+          route: Object,
 
-        category: Object,
+          category: Object,
 
-        offline: Boolean,
+          offline: Boolean,
 
-        failure: Boolean,
+          failure: Boolean,
 
-        categoryName: {
-          type: Boolean,
-          computed: '_return(routeData.category)',
-          notify: true
-        },
+          categoryName: {
+            type: Boolean,
+            computed: '_return(routeData.category)',
+            notify: true
+          },
 
-        routeData: Object,
+          routeData: Object,
 
-        loading: Boolean
+          loading: Boolean
 
-      }}
+        }
+      }
 
       connectedCallback() {
         super.connectedCallback();
@@ -240,12 +240,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _tryReconnect() {
-        this.dispatchEvent(new CustomEvent('refresh-data', {bubbles: true, composed: true}));
+        this.dispatchEvent(new CustomEvent('refresh-data', {
+          bubbles: true,
+          composed: true
+        }));
       }
 
       _resizeHandler() {
         this._resizeDebouncer = Polymer.Debouncer.debounce(this._resizeDebouncer,
-          Polymer.Async.timeOut.after(50), () => { this.updateStyles(); });
+          Polymer.Async.timeOut.after(50), () => {
+            this.updateStyles();
+          });
       }
 
       _slice(list, begin, end) {
@@ -261,7 +266,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     customElements.define(NewsList.is, NewsList);
-
   </script>
 
 </dom-module>

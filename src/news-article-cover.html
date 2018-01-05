@@ -142,7 +142,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="cover-text">
       <div class="flex"></div>
       <div>
-        <div class="category">[[article.category]]</div>
+        <!-- <div class="category">[[article.category]]</div> -->
       </div>
       <h1>[[article.headline]]</h1>
       <div class="meta">
@@ -160,22 +160,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-
-
     class NewsArticleCover extends Polymer.Element {
 
-      static get is() { return 'news-article-cover'; }
+      static get is() {
+        return 'news-article-cover';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        article: Object
+          article: Object
 
-      }}
+        }
+      }
 
     }
 
     customElements.define(NewsArticleCover.is, NewsArticleCover);
-
   </script>
 
 </dom-module>

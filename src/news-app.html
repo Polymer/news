@@ -56,22 +56,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       footer {
+        width: 100vw;
         position: absolute;
         bottom: 0;
         right: 0;
-        left: 0;
-        padding-bottom: 24px;
+        left: -40px;
         text-align: center;
+        background: #3a3a3a;
+        color: #868686;
+        margin-top: 80px;
+        padding: 35px 0 30px;
       }
 
       footer a {
         text-decoration: none;
         font-size: 13px;
         color: #757575;
+        margin-right: 15px;
       }
 
       footer a:hover {
         text-decoration: underline;
+        color: #f15a23;
       }
 
       /* desktop */
@@ -79,6 +85,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :host {
           margin: 0 40px;
         }
+      }
+
+      .footercontainer {
+        margin: 0 auto;
+        position: relative;
+        width: 940px;
+      }
+
+      .flexparent {
+        display: flex;
+      }
+
+      .flexparent li {
+        font-size: 12px;
+        list-style: none;
+        margin: 0 0 5px 24px;
+      }
+
+      .flexcontainer {
+        display: flex;
+       justify-content: space-evenly;
+      }
+
+      #footer-nav {
+        border-bottom: 1px solid #4b4b4b;
+        margin: 0 0 12px;
+        padding: 0 0 12px;
+      }
+
+      .title {
+        border-bottom: 1px solid #4b4b4b;
+        display: block;
+        font-size: 18px;
+        margin: 0 0 12px;
+        margin-left: 30px;
+        padding: 0 0 12px;
       }
 
     </style>
@@ -147,10 +189,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </iron-pages>
 
     <footer>
-      <a href="https://www.polymer-project.org/1.0/toolbox/">Made by Polymer</a>
-    </footer>
+      <!-- <a href="https://www.polymer-project.org/1.0/toolbox/">Made by Polymer</a> -->
+      <div class="footercontainer">
+        <div class="flexparent">
+          <div>
+      <div class="footernav" id="footer-nav">
+        <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
+        <dom-repeat items="[[categories]]" as="category" initial-count="9">
+                <template>
+                  <a style="font-size: 18px;" name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+                </template>
+  </dom-repeat>
+  </iron-selector>
+  </div>
+  <!-- <div style="width: 70%;"> -->
+  <ul class="contact-info flexcontainer">
+    <li class="address">5709 Cahuenga Blvd, North Hollywood, CA 91601</li>
+    <li class="phone">(818) 760-8285</li>
+    <li class="email"><a href="mailto:sales@mkpartners.com">sales@mkpartners.com</a></li>
+  </ul>
+  </div>
+  <!-- </div> -->
+  <div>
+    <span class="title" style="font-size: 18px;">Stay connected</span>
+    <ul class="social-links flexcontainer">
+      <li class="twitter"><a href="https://twitter.com/mkpartners" target="_blank">Twitter</a></li>
+      <li class="facebook"><a href="https://www.facebook.com/pages/MK-Partners-Inc/111342268891832">Facebook</a></li>
+      <li class="youtube"><a href="http://www.youtube.com">YouTube</a></li>
+
+    </ul>
+  </div>
+  </div>
+  </div>
+  </footer>
 
   </template>
+
 
   <script>
     class NewsApp extends Polymer.Element {

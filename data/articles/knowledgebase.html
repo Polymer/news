@@ -53,8 +53,7 @@
 
 <body>
 
-  <div class="content">
-
+  <div class="content" style="width: 93%;">
     <div>
 
       <div class="listcontainer" style="margin: 0 auto; max-width: 100%;">
@@ -158,23 +157,46 @@
                 <div>
                   <p>If you are familiar with SQL and learning Salesforce's SOQL, then you've probably realized that there is no ability to do a "Select *" in SOQL. This can be rather frustrating for newbies, but is easily worked around using existing features
                     of Apex as demonstrated below:</p>
-                  <code>
-                    String queryString = 'Select '; for ( String s : Schema.SObjectType.Account.fields.getMap().keySet() ){ queryString += s + ', '; } queryString = queryString.subString(0,queryString.length()-2); queryString += ' from Account '; List
-                    < Account> resultsList = database.query(queryString);
-                  </code>
+                  <code-sample>
+                    <template>
+                    String queryString = 'Select ';
+                    for ( String s : Schema.SObjectType.Account.fields.getMap().keySet() ){
+                      queryString += s + ', ';
+                    }
+                    queryString = queryString.subString(0,queryString.length()-2);
+                    queryString += ' from Account ';
+                    List < Account> resultsList = database.query(queryString);
+
+                    </template>
+                  </code-sample>
                   <p>The above example is a dynamic query of Accounts. You can easily query any other object using the same concept by just replacing the word "Account" with the name of your object on lines 2 and 6. We also recommend adding WHERE and LIMIT
                     clauses to all queries to ensure you're only querying what you actually need. Dynamic queries are great for managed packages when you don't know what schema is going to look like in the install org. It's also great in a multi-developer
                     environment, when one person may be adding fields to a Visualforce page or if statements and the other is responsible for the constructor or a getter. If you want to get clever (and we always do) then you can setup a method like the
                     one below:
                   </p>
-                  <code>
-                    public static List
-                    < sObject> queryDynamically(String objectName, Map
-                      < String,Schema.SObjectField> schemaMap, String whereClause, String orderBy, Integer queryLimit ){ String queryString = 'Select '; for ( String s : schemaMap.keySet() ){ queryString += s + ', '; } queryString = queryString.subString(0,queryString.length()-2);
-                        queryString += ' from ' + objectName; if ( whereClause != null ){ queryString += ' where ' + whereClause; } if ( orderBy != null ){ queryString += ' order by ' + orderBy; } if ( queryLimit != null ){ queryString += ' limit ' +
-                        queryLimit; } return database.query(queryString); }
-
-                  </code>
+                  <code-sample>
+                    <template>
+                    public static List < sObject> queryDynamically(String objectName,
+                    Map < String,Schema.SObjectField> schemaMap, String whereClause, String orderBy, Integer queryLimit ){
+                      String queryString = 'Select ';
+                      for ( String s : schemaMap.keySet() ){
+                        queryString += s + ', ';
+                      }
+                      queryString = queryString.subString(0,queryString.length()-2);
+                        queryString += ' from ' + objectName;
+                        if ( whereClause != null ){
+                          queryString += ' where ' + whereClause;
+                        }
+                        if ( orderBy != null ){
+                          queryString += ' order by ' + orderBy;
+                        }
+                        if ( queryLimit != null ){
+                          queryString += ' limit ' + queryLimit;
+                        }
+                        return database.query(queryString);
+                      }
+                      </template>
+                  </code-sample>
                 </div>
               </p>
             </div>
@@ -191,7 +213,8 @@
             <div class="css-expander-hide">
               <p>
                 <div>
-                  <code>
+                  <code-sample>
+                    <template>
 
 < apex:page standardController="Account" title="This is the Page Title" >
 
@@ -205,13 +228,13 @@
 
 < apex:commandButton value="This is a commandButton" action="{!cancel}" />
 
-</ apex:pageBlockButtons>
+< /apex:pageBlockButtons>
 
 < apex:pageBlockButtons location="bottom" > This is only on Bottom
 
 < apex:commandButton value="This is a commandButton" action="{!cancel}" />
 
-</ apex:pageBlockButtons>
+< /apex:pageBlockButtons>
 
 < apex:pageBlockSection title="This is a page Block Section" >
 
@@ -221,19 +244,19 @@
 
 < apex:inputText value="{!account.Name}" />
 
-</ apex:pageBlockSectionItem>
+< /apex:pageBlockSectionItem>
 
 < apex:pageBlockSection />
 
 < apex:pageBlockSectionItem >
 
-< apex:outputLink value="{!$Page.sample_VisualForce}" > This is an outputLink </ apex:outputLink>
+< apex:outputLink value="{!$Page.sample_VisualForce}" > This is an outputLink < / apex:outputLink>
 
-< /apex:pageBlockSectionItem >
+< / apex:pageBlockSectionItem >
 
-</ apex:pageBlockSection >
+< / apex:pageBlockSection >
 
-</ apex:pageBlock >
+< / apex:pageBlock >
 
 < apex:tabPanel switchType="client" selectedTab="tab1" >
 
@@ -243,11 +266,11 @@
 
 < apex:pageBlockSection title="Tab1 Section" >
 
-</ apex:pageBlockSection>
+< / apex:pageBlockSection>
 
-</ apex:pageBlock>
+< / apex:pageBlock>
 
-</ apex:tab>
+< / apex:tab>
 
 < apex:tab id="tab2" name="tab2" label="Tab2" >
 
@@ -255,18 +278,20 @@
 
 < apex:pageBlockSection title="Tab2 Section">
 
-</ apex:pageBlockSection>
+< / apex:pageBlockSection>
 
-</ apex:pageBlock>
+< / apex:pageBlock>
 
-</ apex:tab>
+< / apex:tab>
 
-</ apex:tabPanel>
+< / apex:tabPanel>
 
-</ apex:form>
+< / apex:form>
 
-</ apex:page>
-                  </code>
+< / apex:page>
+
+                    </template>
+                  </code-sample>
                 </div>
               </p>
             </div>
@@ -407,7 +432,8 @@
             <div class="css-expander-hide">
               <p>
                 <div>
-                  <code>
+                  <code-sample>
+                    <template>
                     public with sharing class sample_Transient_Controller {
                     DateTime t1;
                     transient DateTime t2;
@@ -421,17 +447,18 @@
                     }
                     }
                     [/code]
-                    <b>VisualForce Page</b><br/>
+                    < b>VisualForce Page < /b> < br/>
                     [code]
-                    <apex:page controller="sample_Transient_Controller">
-                    T1: {!t1} <br/>
-                    T2: {!t2} <br/>
-                    <apex:form >
-                    <apex:commandLink value="refresh" />
-                    </apex:form>
-                    </apex:page>
+                    < apex:page controller="sample_Transient_Controller">
+                    T1: {!t1} < br/>
+                    T2: {!t2} < br/>
+                    < apex:form >
+                    < apex:commandLink value="refresh" />
+                    < / apex:form>
+                    < / apex:page>
 
-                  </code>
+                  </template>
+                  </code-sample>
                 </div>
               </p>
             </div>
@@ -486,13 +513,15 @@
                   too without any authentication using Force.com Sites. &nbsp;<strong>NOTE: Whenever providing any service/page without authentication, you expose yourself to security vulnerabilities, so be sure to consult an expert before doing so.</strong><br>
                   <br> Let's start by creating a new Apex Class named "helloREST" and adding a single static method to it named "whatTimeIsIt" that returns the current date/time. &nbsp;Your class should look something like this:<br>
                   <br>
-                  <code>
+                  <code-sample>
+                    <template>
                   public class helloRest{
                     public static String whatTimeIsIt(){
                       return system.now().format();
                     }
                   }
-                  </code>
+                    </template>
+                  </code-sample>
                   <br>
                   <br> To transform this simple class and method into a REST Web Service, we need to do the following:
                   <ol>
@@ -508,7 +537,8 @@
                   Your class should now look something like this:
                   <br>
                   <br>
-                  <code>
+                  <code-sample>
+                    <template>
                     @RestResource(urlMapping='/helloRest/*')
                     global class helloRest{
                     @HttpGet
@@ -516,7 +546,8 @@
                       return system.now().format();
                       }
                     }
-                  </code>
+                  </template>
+                  </code-sample>
                   <br><br> You've just created a REST Web Service in Apex. Testing the web service requires you to first authenticate into Salesforce, get a SessionId and then pass in that SessionId in the header when calling the Web Service. That's great
                   for security, but not so great if the functionality needs to be exposed to the world. If you have a Force.com Site, you have already published Visualforce Pages to the world. With a few clicks you can also expose this Web Service.
                   <ol>
@@ -558,15 +589,21 @@
 
                     <p>Let's look at the code.</p>
 
-                    <code>
+                    <code-sample>
+                      <template>
                       < apex:commandbutton value="My Button" action="{!myApexAction}" onclick="if(!fieldsFilledOut()) return false;"/>
-                    </code>
+                    </template>
+                    </code-sample>
 
                     <p>You see that the onclick event of the button calls out fieldsFilledOut() javascript function; the function returns true if all fields are filled out. If the function returns false (there is a missing field), the action method is not
                       called because our onclick method will return false. A nice feature to add to your page is an instant check while the user is filling it out. If they tab to a field and then skip it, it's nice to instantly show them "Nope, you actually
                       need to fill this one out". We use a function called checkVal() for that and pass in the "this" variable which resolves to the specific element calling the function:</p>
 
-                    <code> < apex:inputtext styleClass="mustFillOut" value="{!myVar}" onkeyup="checkVal(this);"/> </code>
+                    <code-sample>
+                      <template>
+                        < apex:inputtext styleClass="mustFillOut" value="{!myVar}" onkeyup="checkVal(this);"/>
+                      </template>
+                    </code-sample>
 
 
                     <p style="font-weight:bold">**NOTE** For any field that you are using a selectlist (dropdown) option you should use the onchange action instead of onkeyup.**</p>
@@ -578,31 +615,30 @@
 
                     <p>Here is the actual code for the two functions, checkVal() and fieldsFilledOut() that we have been talking about.</p>
 
-                    <code>
-
-                      function fieldsFilledOut(){
-    var hasErrors = false;
-    var eles = document.getElementsByClassName('mustFillOut');
-    for (var i=0; i < eles.length; i++){
-        var ele = eles[i];
-        if (!ele.value && ele.tagName != 'A'){
-            checkVal(ele);
-            hasErrors = true;
-        }
-    }
-    if (hasErrors){
-        alert('You must fill out all required fields');
-        return false;
-    }
-    else { return true; }
-}
-
-function checkVal(ele){
-    if (ele.value) ele.style.background = 'white';
-    else ele.style.background = '#FFCCCC';
-}
-
-                    </code>
+                    <code-sample>
+                      <template>
+                          function fieldsFilledOut(){
+                              var hasErrors = false;
+                              var eles = document.getElementsByClassName('mustFillOut');
+                              for (var i=0; i < eles.length; i++){
+                                  var ele = eles[i];
+                                  if (!ele.value && ele.tagName != 'A'){
+                                      checkVal(ele);
+                                      hasErrors = true;
+                                  }
+                              }
+                              if (hasErrors){
+                                  alert('You must fill out all required fields');
+                                  return false;
+                              }
+                              else { return true; }
+                          }
+                          function checkVal(ele){
+                              if (ele.value) ele.style.background = 'white';
+                              else ele.style.background = '#FFCCCC';
+                          }
+                        </template>
+                    </code-sample>
 
                     <p>When calling the fieldsFilledOut() function, you'll notice we display an alert to the user notifying them that they need to fill out all the required fields.</p>
 

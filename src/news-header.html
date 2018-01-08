@@ -33,6 +33,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
       }
 
+      .onelogo {
+        width: 65px;
+        position: absolute;
+        top: 0px;
+        right: 0;
+      }
+
       .date-line,
       .article-headline {
         text-align: center;
@@ -148,11 +155,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         :host([page=article]) header .logo,
+        :host([page=article]) header .onelogo,
         :host([page=article]) header .date-line {
           visibility: hidden;
         }
 
         .sticky-nav .logo,
+        .sticky-nav .onelogo,
         :host([page=article]) .sticky-nav .date-line,
         :host([page=list]) .sticky-nav .article-headline {
           display: none;
@@ -262,6 +271,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="logo" main-title>
           <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]"><img src=[[appTitle]] alt="MKPartners"></a>
         </div>
+        <img class="onelogo" src="images/PledgeOneLogo.png" alt="">
       </app-toolbar>
       <div class="date-line" role="heading">
         [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
@@ -290,6 +300,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="logo">
           <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]"><img style="height: 80px;" src=[[appTitle]] alt="MKPartners"></a>
         </div>
+        <img class="onelogo" src="images/PledgeOneLogo.png" alt="">
         <div class="date-line" role="heading">
           [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
         </div>

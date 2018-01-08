@@ -137,9 +137,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         header .logo {
           margin-right: 40px;
+          padding-top: 68px;
         }
 
         header .date-line {
+          margin-top: 70px;
           padding: 6px 0;
           border-top: var(--app-transparent-border-style);
           border-bottom: var(--app-transparent-border-style);
@@ -169,8 +171,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* desktop */
       @media (min-width: 768px) {
+        .date-line {
+          margin-top: 55px;
+        }
+
         .logo {
           font-size: 39px;
+          padding-top: 15px;
         }
 
         .logo-toolbar {
@@ -204,6 +211,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .sticky-nav .date-line {
+          margin-top: 0px;
           padding: 4px 0 14px;
         }
 
@@ -252,7 +260,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu"
             on-click="_toggleDrawer" aria-label="Main navigation"></paper-icon-button>
         <div class="logo" main-title>
-          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]"><img src=[[appTitle]] alt="MKPartners"></a>
         </div>
       </app-toolbar>
       <div class="date-line" role="heading">
@@ -266,75 +274,75 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template>
                 <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
               </template>
-            </dom-repeat>
-          </iron-selector>
-        </template>
-      </dom-if>
-    </header>
+  </dom-repeat>
+  </iron-selector>
+  </template>
+  </dom-if>
+  </header>
 
-    <!--
+  <!--
       Sticky nav reveals when scrolled down on the page.
     -->
-    <app-box role="banner" class="sticky-nav" threshold="[[_getScrollThreshold(smallScreen)]]">
-      <app-toolbar class="sticky-nav-toolbar">
-        <paper-icon-button
-          arial-label="Main navigation"
-          icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
-        <div class="sticky-nav-center">
-          <div class="logo">
-            <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
-          </div>
-          <div class="date-line" role="heading">
-            [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
-          </div>
-          <div class="article-headline">
-            <slot></slot>
-          </div>
+  <app-box role="banner" class="sticky-nav" threshold="[[_getScrollThreshold(smallScreen)]]">
+    <app-toolbar class="sticky-nav-toolbar">
+      <paper-icon-button arial-label="Main navigation" icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
+      <div class="sticky-nav-center">
+        <div class="logo">
+          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]"><img style="height: 80px;" src=[[appTitle]] alt="MKPartners"></a>
         </div>
-        <paper-icon-button icon="mail" aria-label="Send by mail"></paper-icon-button>
-        <paper-icon-button icon="share" aria-label="Share on social networks"></paper-icon-button>
-      </app-toolbar>
-      <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
-        <iron-selector class="grid-container" role="navigation"
-            selected="[[category.name]]" attr-for-selected="name">
-          <dom-repeat items="[[categories]]" as="category" initial-count="9">
-            <template>
+        <div class="date-line" role="heading">
+          [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
+        </div>
+        <div class="article-headline">
+          <slot></slot>
+        </div>
+      </div>
+      <paper-icon-button icon="mail" aria-label="Send by mail"></paper-icon-button>
+      <paper-icon-button icon="share" aria-label="Share on social networks"></paper-icon-button>
+    </app-toolbar>
+    <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
+      <iron-selector class="grid-container" role="navigation" selected="[[category.name]]" attr-for-selected="name">
+        <dom-repeat items="[[categories]]" as="category" initial-count="9">
+          <template>
               <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
             </template>
-          </dom-repeat>
-        </iron-selector>
-      </div>
-    </app-box>
+        </dom-repeat>
+      </iron-selector>
+    </div>
+  </app-box>
 
   </template>
 
   <script>
-
     class NewsHeader extends Polymer.Element {
 
-      static get is() { return 'news-header'; }
+      static get is() {
+        return 'news-header';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        appTitle: String,
+          appTitle: String,
 
-        page: {
-          type: String,
-          reflectToAttribute: true
-        },
+          page: {
+            type: String,
+            reflectToAttribute: true
+          },
 
-        categories: Array,
+          categories: Array,
 
-        category: Object,
+          category: Object,
 
-        smallScreen: Boolean,
+          smallScreen: Boolean,
 
-        drawerOpened: {
-          type: Boolean,
-          notify: true
+          drawerOpened: {
+            type: Boolean,
+            notify: true
+          }
+
         }
-
-      }}
+      }
 
       _menuIcon(drawerOpened) {
         return drawerOpened ? 'close' : 'menu';
@@ -368,7 +376,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     customElements.define(NewsHeader.is, NewsHeader);
-
   </script>
 
 </dom-module>

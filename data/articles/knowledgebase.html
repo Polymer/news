@@ -148,17 +148,129 @@
         <div class="item">
           <div class="pad">
             <div class="primary">Dynamic SOQL in Apex</div>
-            <a style="font-weight: normal" href="">
-              <div class="shortText">SOQL doesn't include the ability to do a Select * but with a little creativity you can easily do it.... read more</div>
-            </a>
+            <input class="css-expander" type="checkbox" name="eight" id="item-8" />
+            <h4>
+        <label class="css-expander" for="item-8" title="Click to expand">
+        <label for="item-8" class="expanded-status"></label>&nbsp;SOQL doesn't include the ability to do a Select * but with a little creativity you can easily do it.... read more</label>
+      </h4>
+            <div class="css-expander-hide">
+              <p>
+                <div>
+                  <p>If you are familiar with SQL and learning Salesforce's SOQL, then you've probably realized that there is no ability to do a "Select *" in SOQL. This can be rather frustrating for newbies, but is easily worked around using existing features
+                    of Apex as demonstrated below:</p>
+                  <code>
+                    String queryString = 'Select '; for ( String s : Schema.SObjectType.Account.fields.getMap().keySet() ){ queryString += s + ', '; } queryString = queryString.subString(0,queryString.length()-2); queryString += ' from Account '; List
+                    < Account> resultsList = database.query(queryString);
+                  </code>
+                  <p>The above example is a dynamic query of Accounts. You can easily query any other object using the same concept by just replacing the word "Account" with the name of your object on lines 2 and 6. We also recommend adding WHERE and LIMIT
+                    clauses to all queries to ensure you're only querying what you actually need. Dynamic queries are great for managed packages when you don't know what schema is going to look like in the install org. It's also great in a multi-developer
+                    environment, when one person may be adding fields to a Visualforce page or if statements and the other is responsible for the constructor or a getter. If you want to get clever (and we always do) then you can setup a method like the
+                    one below:
+                  </p>
+                  <code>
+                    public static List
+                    < sObject> queryDynamically(String objectName, Map
+                      < String,Schema.SObjectField> schemaMap, String whereClause, String orderBy, Integer queryLimit ){ String queryString = 'Select '; for ( String s : schemaMap.keySet() ){ queryString += s + ', '; } queryString = queryString.subString(0,queryString.length()-2);
+                        queryString += ' from ' + objectName; if ( whereClause != null ){ queryString += ' where ' + whereClause; } if ( orderBy != null ){ queryString += ' order by ' + orderBy; } if ( queryLimit != null ){ queryString += ' limit ' +
+                        queryLimit; } return database.query(queryString); }
+
+                  </code>
+                </div>
+              </p>
+            </div>
           </div>
         </div>
         <div class="item">
           <div class="pad">
             <div class="primary">Visualforce Tags Explained Visually</div>
-            <a style="font-weight: normal" href="">
-              <div class="shortText">Since there are no images in the Visualforce developers guide, we've gone ahead and creating a sample page for you.... read more</div>
-            </a>
+            <input class="css-expander" type="checkbox" name="nine" id="item-9" />
+            <h4>
+        <label class="css-expander" for="item-9" title="Click to expand">
+        <label for="item-9" class="expanded-status"></label>&nbsp;Since there are no images in the Visualforce developers guide, we've gone ahead and creating a sample page for you.... read more</label>
+      </h4>
+            <div class="css-expander-hide">
+              <p>
+                <div>
+                  <code>
+
+< apex:page standardController="Account" title="This is the Page Title" >
+
+< apex:form >
+
+< apex:sectionheader title="Section Header Title" subtitle="Subtitle goes here" />
+
+< apex:pageBlock title="This is a Page Block" helpTitle="This is the Help Title" helpURL="http://www.salesforce.com/us/developer/docs/pages/index.htm" >
+
+< apex:pageBlockButtons location="top" > This is only on Top
+
+< apex:commandButton value="This is a commandButton" action="{!cancel}" />
+
+</ apex:pageBlockButtons>
+
+< apex:pageBlockButtons location="bottom" > This is only on Bottom
+
+< apex:commandButton value="This is a commandButton" action="{!cancel}" />
+
+</ apex:pageBlockButtons>
+
+< apex:pageBlockSection title="This is a page Block Section" >
+
+< apex:pageBlockSectionItem >
+
+< apex:outputlabel value="This is an output Label for a PageBlockSectionItem" />
+
+< apex:inputText value="{!account.Name}" />
+
+</ apex:pageBlockSectionItem>
+
+< apex:pageBlockSection />
+
+< apex:pageBlockSectionItem >
+
+< apex:outputLink value="{!$Page.sample_VisualForce}" > This is an outputLink </ apex:outputLink>
+
+< /apex:pageBlockSectionItem >
+
+</ apex:pageBlockSection >
+
+</ apex:pageBlock >
+
+< apex:tabPanel switchType="client" selectedTab="tab1" >
+
+< apex:tab id="tab1" name="tab1" label="Tab1" >
+
+< apex:pageBlock title="Tab1 pageblock">
+
+< apex:pageBlockSection title="Tab1 Section" >
+
+</ apex:pageBlockSection>
+
+</ apex:pageBlock>
+
+</ apex:tab>
+
+< apex:tab id="tab2" name="tab2" label="Tab2" >
+
+< apex:pageBlock title="Tab2 pageblock">
+
+< apex:pageBlockSection title="Tab2 Section">
+
+</ apex:pageBlockSection>
+
+</ apex:pageBlock>
+
+</ apex:tab>
+
+</ apex:tabPanel>
+
+</ apex:form>
+
+</ apex:page>
+                  </code>
+                </div>
+              </p>
+            </div>
+
           </div>
         </div>
         <div class="item">
@@ -287,9 +399,42 @@
         <div class="item">
           <div class="pad">
             <div class="primary">Avoiding Viewstate Limits with Transient Data in Visualforce</div>
-            <a style="font-weight: normal" href="">
-              <div class="shortText">By marking a variable as Transient, you can prevent your Controller from keeping its value in the viewstate.... read more</div>
-            </a>
+            <input class="css-expander" type="checkbox" name="ten" id="item-10" />
+            <h4>
+        <label class="css-expander" for="item-10" title="Click to expand">
+        <label for="item-10" class="expanded-status"></label>&nbsp;By marking a variable as Transient, you can prevent your Controller from keeping its value in the viewstate.... read more</label>
+      </h4>
+            <div class="css-expander-hide">
+              <p>
+                <div>
+                  <code>
+                    public with sharing class sample_Transient_Controller {
+                    DateTime t1;
+                    transient DateTime t2;
+                    public String getT1() {
+                    if (t1 == null) t1 = System.now();
+                    return '' + t1;
+                    }
+                    public String getT2() {
+                    if (t2 == null) t2 = System.now();
+                    return '' + t2;
+                    }
+                    }
+                    [/code]
+                    <b>VisualForce Page</b><br/>
+                    [code]
+                    <apex:page controller="sample_Transient_Controller">
+                    T1: {!t1} <br/>
+                    T2: {!t2} <br/>
+                    <apex:form >
+                    <apex:commandLink value="refresh" />
+                    </apex:form>
+                    </apex:page>
+
+                  </code>
+                </div>
+              </p>
+            </div>
           </div>
         </div>
         <div class="item">
@@ -328,17 +473,149 @@
         <div class="item">
           <div class="pad">
             <div class="primary">Exposing Apex REST Web Servies via Force.com Sites</div>
-            <a style="font-weight: normal" href="">
-              <div class="shortText">You can publish your Apex REST Web Services using Force.com Sites so that your web services are truly public without any authentication required.... read more</div>
-            </a>
+
+            <input class="css-expander" type="checkbox" name="eleven" id="item-11" />
+            <h4>
+            <label class="css-expander" for="item-11" title="Click to expand">
+            <label for="item-11" class="expanded-status"></label>&nbsp;You can publish your Apex REST Web Services using Force.com Sites so that your web services are truly public without any authentication required.... read more</label>
+            </h4>
+            <div class="css-expander-hide">
+              <p>
+                <div>
+                  Force.com makes it very simple to publish an Apex method as a REST Web Service. &nbsp;In order to call that Web Service you need to first authenticate with a username and password (or oAuth token). &nbsp;However, you can expose these Web Services publicly
+                  too without any authentication using Force.com Sites. &nbsp;<strong>NOTE: Whenever providing any service/page without authentication, you expose yourself to security vulnerabilities, so be sure to consult an expert before doing so.</strong><br>
+                  <br> Let's start by creating a new Apex Class named "helloREST" and adding a single static method to it named "whatTimeIsIt" that returns the current date/time. &nbsp;Your class should look something like this:<br>
+                  <br>
+                  <code>
+                  public class helloRest{
+                    public static String whatTimeIsIt(){
+                      return system.now().format();
+                    }
+                  }
+                  </code>
+                  <br>
+                  <br> To transform this simple class and method into a REST Web Service, we need to do the following:
+                  <ol>
+                    <li>
+                      Make our class Global</li>
+                    <li>
+                      Add the RestResource annotation with a URLmapping&nbsp;to our class</li>
+                    <li>
+                      Make our method Global</li>
+                    <li>
+                      Add a REST annotation to our method</li>
+                  </ol>
+                  Your class should now look something like this:
+                  <br>
+                  <br>
+                  <code>
+                    @RestResource(urlMapping='/helloRest/*')
+                    global class helloRest{
+                    @HttpGet
+                    global static String whatTimeIsIt(){
+                      return system.now().format();
+                      }
+                    }
+                  </code>
+                  <br><br> You've just created a REST Web Service in Apex. Testing the web service requires you to first authenticate into Salesforce, get a SessionId and then pass in that SessionId in the header when calling the Web Service. That's great
+                  for security, but not so great if the functionality needs to be exposed to the world. If you have a Force.com Site, you have already published Visualforce Pages to the world. With a few clicks you can also expose this Web Service.
+                  <ol>
+                    <li>
+                      Go to the detail page (not the edit page) for your Force.com Site and click on the Public Access Settings button.</li>
+                    <li>
+                      Scroll down to the Apex Class related list and click the Edit button.</li>
+                    <li>
+                      Move your new Class to the Enabled Apex Classes column and click Save</li>
+                  </ol>
+
+                  That's it, anyone can now call your Web Service using the below URL structure:
+                  <br> http://[SITE_NAME].force.com/services/apexrest/[URLMAPPING]
+                </div>
+              </p>
+            </div>
+
           </div>
         </div>
         <div class="item">
           <div class="pad">
             <div class="primary">Required Field Validation on VisualForce with Javascript</div>
-            <a style="font-weight: normal" href="">
-              <div class="shortText">Quickly check that required fields have been filled out... read more</div>
-            </a>
+
+            <input class="css-expander" type="checkbox" name="twelve" id="item-12" />
+            <h4>
+            <label class="css-expander" for="item-12" title="Click to expand">
+            <label for="item-12" class="expanded-status"></label>&nbsp;Quickly check that required fields have been filled out... read more</label>
+            </h4>
+            <div class="css-expander-hide">
+              <p>
+                <div>
+
+                  <div>
+                    <p>When writing a custom VisualForce page, you commonly need to verify that required fields have been filled out.</p>
+
+                    <p>However, when you design complex pages with multiple ajax requests and dynamic rendering, using the <strong>required="true"</strong> parameter on tag elements becomes a problem. Using APEX to validate your input is also a much more
+                      cumbersome experience to your users as the data has to be sent to the server, validated, and returned - sometimes with nasty errors that you didn't think to handle. By throwing a little javascript into the equation, you can quickly
+                      and easily check that all required fields have been filled out - and even prevent your action method from running! But, enough talk.</p>
+
+                    <p>Let's look at the code.</p>
+
+                    <code>
+                      < apex:commandbutton value="My Button" action="{!myApexAction}" onclick="if(!fieldsFilledOut()) return false;"/>
+                    </code>
+
+                    <p>You see that the onclick event of the button calls out fieldsFilledOut() javascript function; the function returns true if all fields are filled out. If the function returns false (there is a missing field), the action method is not
+                      called because our onclick method will return false. A nice feature to add to your page is an instant check while the user is filling it out. If they tab to a field and then skip it, it's nice to instantly show them "Nope, you actually
+                      need to fill this one out". We use a function called checkVal() for that and pass in the "this" variable which resolves to the specific element calling the function:</p>
+
+                    <code> < apex:inputtext styleClass="mustFillOut" value="{!myVar}" onkeyup="checkVal(this);"/> </code>
+
+
+                    <p style="font-weight:bold">**NOTE** For any field that you are using a selectlist (dropdown) option you should use the onchange action instead of onkeyup.**</p>
+
+                    <p>You may be wondering about the styleClass="mustFillOut". This is to make it super easy to grab all the fields that should be required. As long as you do not have an actual css class called "mustFillOut" you can use this on any input
+                      element you want to require - even in cascade if you have other style classes applied to the element.</p>
+
+                    <code>styleClass="myOtherCSS mustFillOut"</code>
+
+                    <p>Here is the actual code for the two functions, checkVal() and fieldsFilledOut() that we have been talking about.</p>
+
+                    <code>
+
+                      function fieldsFilledOut(){
+    var hasErrors = false;
+    var eles = document.getElementsByClassName('mustFillOut');
+    for (var i=0; i < eles.length; i++){
+        var ele = eles[i];
+        if (!ele.value && ele.tagName != 'A'){
+            checkVal(ele);
+            hasErrors = true;
+        }
+    }
+    if (hasErrors){
+        alert('You must fill out all required fields');
+        return false;
+    }
+    else { return true; }
+}
+
+function checkVal(ele){
+    if (ele.value) ele.style.background = 'white';
+    else ele.style.background = '#FFCCCC';
+}
+
+                    </code>
+
+                    <p>When calling the fieldsFilledOut() function, you'll notice we display an alert to the user notifying them that they need to fill out all the required fields.</p>
+
+                    <p>That's it! You're done!</p>
+
+                    <p>Check back soon for a follow up post on how to make the functions dynamic enough to allow for multiple "sections" of required fields depending on which button / action you are trying to call.</p>
+                  </div>
+
+
+                </div>
+              </p>
+            </div>
+
           </div>
         </div>
       </div>

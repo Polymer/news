@@ -54,30 +54,91 @@
 <body>
 
   <div class="content">
-    <h2>MK Partners Hosts its Website on Force.com Sites</h2>
 
     <div>
 
       <div class="uni-paragraph">
         <div class="rich-text">
           <div>
-            <p>
-              As the most innovative Cloud Consulting firm, MK Partners decided to migrate its website from WordPress to Force.com Sites. MK Partners was already a customer of salesforce.com and heavily uses their Salesforce application in daily operations. Since Force.com
-              Sites is included in Salesforce licenses, and a website redesign was being planned, it only made sense to take advantage of the feature.
-            </p>
-            <p>
-              Migration started by loading website assets (html, css, javascript and images) onto the Force.com platform. Once the look and feel was set, custom code was written to automatically create and populate pages with data in Salesforce. This custom code allows
-              non-technical staff to contribute to content to the <a style="display: inline;" href="list/support">knowledgebase</a> and <a style="display: inline;" href="list/customers">customer stories</a> on
-              <a style="display: inline;" href="http://www.mkpartners.com">www.mkpartners.com</a>. This tight integration enable mkpartners.com to automatically update as employees are doing their daily jobs. For instance, every time a project is marked
-              as completed in Salesforce, the website is updated to reflect the new number of projects completed.
-            </p>
-            <p>
-              As a small business, we don't always have the time to focus on marketing. Having Salesforce update our website for us not only saves us time but ensures that our prospects and customers get up-to-date information when they visit our website. Not having
-              to remember additional passwords for an outside content management system is a bonus too.
-            </p>
-            <p>
-              If you're interested in migrating your website to Force.com, <a style="display: inline;" href="article/contact">drop us a line</a>.
-            </p>
+            <code-sample>
+              <template>
+
+< apex:page standardController="Account" title="This is the Page Title" >
+
+< apex:form >
+
+< apex:sectionheader title="Section Header Title" subtitle="Subtitle goes here" />
+
+< apex:pageBlock title="This is a Page Block" helpTitle="This is the Help Title" helpURL="http://www.salesforce.com/us/developer/docs/pages/index.htm" >
+
+< apex:pageBlockButtons location="top" > This is only on Top
+
+< apex:commandButton value="This is a commandButton" action="{!cancel}" />
+
+< /apex:pageBlockButtons>
+
+< apex:pageBlockButtons location="bottom" > This is only on Bottom
+
+< apex:commandButton value="This is a commandButton" action="{!cancel}" />
+
+< /apex:pageBlockButtons>
+
+< apex:pageBlockSection title="This is a page Block Section" >
+
+< apex:pageBlockSectionItem >
+
+< apex:outputlabel value="This is an output Label for a PageBlockSectionItem" />
+
+< apex:inputText value="{!account.Name}" />
+
+< /apex:pageBlockSectionItem>
+
+< apex:pageBlockSection />
+
+< apex:pageBlockSectionItem >
+
+< apex:outputLink value="{!$Page.sample_VisualForce}" > This is an outputLink < / apex:outputLink>
+
+< / apex:pageBlockSectionItem >
+
+< / apex:pageBlockSection >
+
+< / apex:pageBlock >
+
+< apex:tabPanel switchType="client" selectedTab="tab1" >
+
+< apex:tab id="tab1" name="tab1" label="Tab1" >
+
+< apex:pageBlock title="Tab1 pageblock">
+
+< apex:pageBlockSection title="Tab1 Section" >
+
+< / apex:pageBlockSection>
+
+< / apex:pageBlock>
+
+< / apex:tab>
+
+< apex:tab id="tab2" name="tab2" label="Tab2" >
+
+< apex:pageBlock title="Tab2 pageblock">
+
+< apex:pageBlockSection title="Tab2 Section">
+
+< / apex:pageBlockSection>
+
+< / apex:pageBlock>
+
+< / apex:tab>
+
+< / apex:tabPanel>
+
+< / apex:form>
+
+< / apex:page>
+
+              </template>
+            </code-sample>
           </div>
         </div>
       </div>

@@ -57,30 +57,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <template>
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
           </template>
-        </dom-repeat>
-      </iron-selector>
-    </app-drawer>
+  </dom-repeat>
+  </iron-selector>
+  </app-drawer>
 
   </template>
 
   <script>
-
     class NewsDrawer extends Polymer.Element {
 
-      static get is() { return 'news-drawer'; }
+      static get is() {
+        return 'news-drawer';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        categories: Array,
+          categories: Array,
 
-        category: Object,
+          category: Object,
 
-        drawerOpened: {
-          type: Boolean,
-          notify: true
+          drawerOpened: {
+            type: Boolean,
+            notify: true
+          }
+
         }
-
-      }}
+      }
 
       _closeDrawer() {
         this.drawerOpened = false;
@@ -89,7 +92,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     customElements.define(NewsDrawer.is, NewsDrawer);
-
   </script>
 
 </dom-module>

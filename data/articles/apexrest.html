@@ -54,36 +54,71 @@
 <body>
 
   <div class="content">
-    <h2>MK Partners Hosts its Website on Force.com Sites</h2>
 
     <div>
 
       <div class="uni-paragraph">
         <div class="rich-text">
           <div>
-            <p>
-              As the most innovative Cloud Consulting firm, MK Partners decided to migrate its website from WordPress to Force.com Sites. MK Partners was already a customer of salesforce.com and heavily uses their Salesforce application in daily operations. Since Force.com
-              Sites is included in Salesforce licenses, and a website redesign was being planned, it only made sense to take advantage of the feature.
-            </p>
-            <p>
-              Migration started by loading website assets (html, css, javascript and images) onto the Force.com platform. Once the look and feel was set, custom code was written to automatically create and populate pages with data in Salesforce. This custom code allows
-              non-technical staff to contribute to content to the <a style="display: inline;" href="list/support">knowledgebase</a> and <a style="display: inline;" href="list/customers">customer stories</a> on
-              <a style="display: inline;" href="http://www.mkpartners.com">www.mkpartners.com</a>. This tight integration enable mkpartners.com to automatically update as employees are doing their daily jobs. For instance, every time a project is marked
-              as completed in Salesforce, the website is updated to reflect the new number of projects completed.
-            </p>
-            <p>
-              As a small business, we don't always have the time to focus on marketing. Having Salesforce update our website for us not only saves us time but ensures that our prospects and customers get up-to-date information when they visit our website. Not having
-              to remember additional passwords for an outside content management system is a bonus too.
-            </p>
-            <p>
-              If you're interested in migrating your website to Force.com, <a style="display: inline;" href="article/contact">drop us a line</a>.
-            </p>
+            <div>
+              Force.com makes it very simple to publish an Apex method as a REST Web Service. &nbsp;In order to call that Web Service you need to first authenticate with a username and password (or oAuth token). &nbsp;However, you can expose these Web Services publicly
+              too without any authentication using Force.com Sites. &nbsp;<strong>NOTE: Whenever providing any service/page without authentication, you expose yourself to security vulnerabilities, so be sure to consult an expert before doing so.</strong><br>
+              <br> Let's start by creating a new Apex Class named "helloREST" and adding a single static method to it named "whatTimeIsIt" that returns the current date/time. &nbsp;Your class should look something like this:<br>
+              <br>
+              <code-sample>
+                <template>
+              public class helloRest{
+                public static String whatTimeIsIt(){
+                  return system.now().format();
+                }
+              }
+                </template>
+              </code-sample>
+              <br>
+              <br> To transform this simple class and method into a REST Web Service, we need to do the following:
+              <ol>
+                <li>
+                  Make our class Global</li>
+                <li>
+                  Add the RestResource annotation with a URLmapping&nbsp;to our class</li>
+                <li>
+                  Make our method Global</li>
+                <li>
+                  Add a REST annotation to our method</li>
+              </ol>
+              Your class should now look something like this:
+              <br>
+              <br>
+              <code-sample>
+                <template>
+                @RestResource(urlMapping='/helloRest/*')
+                global class helloRest{
+                @HttpGet
+                global static String whatTimeIsIt(){
+                  return system.now().format();
+                  }
+                }
+              </template>
+              </code-sample>
+              <br><br> You've just created a REST Web Service in Apex. Testing the web service requires you to first authenticate into Salesforce, get a SessionId and then pass in that SessionId in the header when calling the Web Service. That's great
+              for security, but not so great if the functionality needs to be exposed to the world. If you have a Force.com Site, you have already published Visualforce Pages to the world. With a few clicks you can also expose this Web Service.
+              <ol>
+                <li>
+                  Go to the detail page (not the edit page) for your Force.com Site and click on the Public Access Settings button.</li>
+                <li>
+                  Scroll down to the Apex Class related list and click the Edit button.</li>
+                <li>
+                  Move your new Class to the Enabled Apex Classes column and click Save</li>
+              </ol>
+
+              That's it, anyone can now call your Web Service using the below URL structure:
+              <br> http://[SITE_NAME].force.com/services/apexrest/[URLMAPPING]
+            </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
 
 </body>
 

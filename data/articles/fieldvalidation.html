@@ -1,0 +1,137 @@
+<html>
+
+<head>
+  <meta name="description" content="Daydream brings you on immersive virtual reality adventures powered by a smartphone. Experience it all with Daydream View, a VR headset and controller made by Google available in stores today.">
+  <meta name="keywords" content="">
+  <meta name="article-author" content="Andrey Doronichev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Experience Daydream today">
+  <meta property="og:description" content="Daydream brings you on immersive virtual reality adventures powered by a smartphone. Experience it all with Daydream View, a VR headset and controller made by Google available in stores today.">
+  <meta property="og:image" content="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DaydreamHeroImage_9ucbyg0.2e16d0ba.fill-1440x810.png">
+  <meta property="og:site_name" content="Google">
+  <meta property="og:url" content="https://blog.google/products/google-vr/experience-daydream-today/">
+  <meta property="article:publisher" content="https://www.facebook.com/Google/">
+  <meta property="article:published_time" content="2016-11-10">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://blog.google/products/google-vr/experience-daydream-today/">
+  <meta name="twitter:title" content="Experience Daydream today">
+  <meta name="twitter:description" content="Daydream brings you on immersive virtual reality adventures powered by a smartphone. Experience it all with Daydream View, a VR headset and controller made by Google available in stores today.">
+  <meta name="twitter:image:src" content="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DaydreamHeroImage_9ucbyg0.2e16d0ba.fill-1440x810.png">
+  <meta name="twitter:site" content="@google">
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": "http://www.blog.google:443/products/google-vr/experience-daydream-today/",
+      "headline": "Experience Daydream today",
+      "datePublished": "2016-11-10T14:00:00+00:00",
+      "dateModified": "2016-11-11T06:21:30.434480+00:00",
+      "description": "Daydream brings you on immersive virtual reality adventures powered by a smartphone. Experience it all with Daydream View, a VR headset and controller made by Google available in stores today.",
+      "author": {
+        "@type": "Person",
+        "name": "Andrey Doronichev"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Google",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://storage.googleapis.com/gweb-uniblog-publish-prod/static/blog/images/google-200x200.7714256da16f.png",
+          "width": "200",
+          "height": "200"
+        }
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/DaydreamHeroImage_9ucbyg0.2e16d0ba.fill-1440x810.png",
+        "width": "1440",
+        "height": "810"
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="content">
+
+    <div>
+
+      <div class="uni-paragraph">
+        <div class="rich-text">
+          <div>
+            <p>When writing a custom VisualForce page, you commonly need to verify that required fields have been filled out.</p>
+
+            <p>However, when you design complex pages with multiple ajax requests and dynamic rendering, using the <strong>required="true"</strong> parameter on tag elements becomes a problem. Using APEX to validate your input is also a much more cumbersome
+              experience to your users as the data has to be sent to the server, validated, and returned - sometimes with nasty errors that you didn't think to handle. By throwing a little javascript into the equation, you can quickly and easily check
+              that all required fields have been filled out - and even prevent your action method from running! But, enough talk.</p>
+
+            <p>Let's look at the code.</p>
+
+            <code-sample>
+              <template>
+              < apex:commandbutton value="My Button" action="{!myApexAction}" onclick="if(!fieldsFilledOut()) return false;"/>
+            </template>
+            </code-sample>
+
+            <p>You see that the onclick event of the button calls out fieldsFilledOut() javascript function; the function returns true if all fields are filled out. If the function returns false (there is a missing field), the action method is not called
+              because our onclick method will return false. A nice feature to add to your page is an instant check while the user is filling it out. If they tab to a field and then skip it, it's nice to instantly show them "Nope, you actually need to
+              fill this one out". We use a function called checkVal() for that and pass in the "this" variable which resolves to the specific element calling the function:</p>
+
+            <code-sample>
+              <template>
+                < apex:inputtext styleClass="mustFillOut" value="{!myVar}" onkeyup="checkVal(this);"/>
+              </template>
+            </code-sample>
+
+
+            <p style="font-weight:bold">**NOTE** For any field that you are using a selectlist (dropdown) option you should use the onchange action instead of onkeyup.**</p>
+
+            <p>You may be wondering about the styleClass="mustFillOut". This is to make it super easy to grab all the fields that should be required. As long as you do not have an actual css class called "mustFillOut" you can use this on any input element
+              you want to require - even in cascade if you have other style classes applied to the element.</p>
+
+            <code>styleClass="myOtherCSS mustFillOut"</code>
+
+            <p>Here is the actual code for the two functions, checkVal() and fieldsFilledOut() that we have been talking about.</p>
+
+            <code-sample>
+              <template>
+                  function fieldsFilledOut(){
+                      var hasErrors = false;
+                      var eles = document.getElementsByClassName('mustFillOut');
+                      for (var i=0; i < eles.length; i++){
+                          var ele = eles[i];
+                          if (!ele.value && ele.tagName != 'A'){
+                              checkVal(ele);
+                              hasErrors = true;
+                          }
+                      }
+                      if (hasErrors){
+                          alert('You must fill out all required fields');
+                          return false;
+                      }
+                      else { return true; }
+                  }
+                  function checkVal(ele){
+                      if (ele.value) ele.style.background = 'white';
+                      else ele.style.background = '#FFCCCC';
+                  }
+                </template>
+            </code-sample>
+
+            <p>When calling the fieldsFilledOut() function, you'll notice we display an alert to the user notifying them that they need to fill out all the required fields.</p>
+
+            <p>That's it! You're done!</p>
+
+            <p>Check back soon for a follow up post on how to make the functions dynamic enough to allow for multiple "sections" of required fields depending on which button / action you are trying to call.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

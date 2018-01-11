@@ -199,22 +199,25 @@ flex-wrap: wrap;
     </iron-pages>
 
     <footer>
-      <!-- <a href="https://www.polymer-project.org/1.0/toolbox/">Made by Polymer</a> -->
-
-        <div class="flexparent">
-          <div>
-      <div class="footernav" id="footer-nav">
-        <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
-        <dom-repeat items="[[categories]]" as="category" initial-count="9">
-                <template>
-                  <a style="font-size: 14px;" name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-                </template>
-  </dom-repeat>
+<div class="flexparent">
+  <div>
+    <div class="footernav" id="footer-nav">
+      <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
+        <!-- <dom-repeat items="[[categories]]" as="category" initial-count="9">
+          <template>
+            <a style="font-size: 14px;" name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+          </template>
+  </dom-repeat> -->
+  <a style="font-size: 14px;" href="/list/home">Home</a>
+  <a style="font-size: 14px;" href="/list/customers">Customers</a>
+  <a style="font-size: 14px;" href="/article/support/knowledgebase">Support</a>
+  <a style="font-size: 14px;" href="/list/about">About</a>
+  <a style="font-size: 14px;" href="/article/contact/contact">Contact Me</a>
   </iron-selector>
   </div>
   <ul class="contact-info flexcontainer">
     <li class="address">5709 Cahuenga Blvd, North Hollywood, CA 91601</li>
-    <li class="phone">(818) 760-8285</li>
+    <li class="phone"><a href="tel:+1-818-760-8285">(818) 760-8285</a></li>
     <li class="email"><a href="mailto:sales@mkpartners.com">sales@mkpartners.com</a></li>
   </ul>
   </div>
@@ -223,9 +226,11 @@ flex-wrap: wrap;
     <ul class="social-links flexcontainer">
       <li class="twitter"><a href="https://twitter.com/mkpartners" target="_blank">Twitter</a></li>
       <li class="facebook"><a href="https://www.facebook.com/pages/MK-Partners-Inc/111342268891832">Facebook</a></li>
-      <li class="youtube"><a href="http://www.youtube.com">YouTube</a></li>
-
+      <li class="youtube"><a href="https://www.youtube.com/channel/UCtNsCxpxe6F4x9Nw1HOePuQ">YouTube</a></li>
     </ul>
+  </div>
+  <div style="margin-left: 50px;">
+    <a href="https://www.bbb.org/losangelessiliconvalley/business-reviews/information-technology-services/mk-partners-in-north-hollywood-ca-100115701#bbbseal"><img src="images/bbb.png" alt="" style="width: 150px;"></a>
   </div>
   </div>
   </footer>

@@ -82,7 +82,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-decoration: underline;
         color: #f15a23;
       }
-
+      .bbbimg {
+        margin-left: 50px;
+      }
       /* desktop */
       @media (min-width: 768px) {
         :host {
@@ -131,6 +133,23 @@ flex-wrap: wrap;
         margin: 0 0 12px;
         margin-left: 30px;
         padding: 0 0 12px;
+      }
+
+      @media (max-width: 767px) {
+        iron-pages {
+          margin-bottom: 200px
+        }
+
+        footer .title {
+          margin-left: 0px;
+        }
+
+        footer ul {
+              padding-left: 0;
+        }
+        .bbbimg {
+          margin-left: 0px;
+        }
       }
 
     </style>
@@ -229,7 +248,7 @@ flex-wrap: wrap;
       <li class="youtube"><a href="https://www.youtube.com/channel/UCtNsCxpxe6F4x9Nw1HOePuQ">YouTube</a></li>
     </ul>
   </div>
-  <div style="margin-left: 50px;">
+  <div class="bbbimg">
     <a href="https://www.bbb.org/losangelessiliconvalley/business-reviews/information-technology-services/mk-partners-in-north-hollywood-ca-100115701#bbbseal"><img src="images/bbb.png" alt="" style="width: 150px;"></a>
   </div>
   </div>

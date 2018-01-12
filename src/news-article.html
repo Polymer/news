@@ -48,6 +48,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .preview-cover {
         display: none;
       }
+      .fcontainer {
+        width: 80%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
       #content {
         font-size: 16px;
@@ -109,6 +114,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 24px;
       }
 
+      .listcontainer {
+        margin: 0 auto;
+        max-width: 60%;
+      }
+
       /* mobile */
       @media (max-width: 767px) {
         .container {
@@ -145,6 +155,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         .opinions-grid li:last-of-type {
           border-bottom: none;
+        }
+        .listcontainer {
+          margin: 0 auto;
+          max-width: 100%;
+        }
+        .fcontainer,
+        .contact-container {
+          width: 100%;
         }
       }
 
@@ -318,14 +336,9 @@ google-map {
   height: 440px;
 }
 
-.fcontainer {
-  width: 80%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .flexparent {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .fcontainer * {

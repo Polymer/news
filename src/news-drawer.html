@@ -53,11 +53,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
       <paper-icon-button icon="close" on-click="_closeDrawer"></paper-icon-button>
       <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
-        <dom-repeat items="[[categories]]" as="category" initial-count="9">
+        <!-- <dom-repeat items="[[categories]]" as="category" initial-count="9">
           <template>
             <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
           </template>
-  </dom-repeat>
+  </dom-repeat> -->
+  <a href="/list/home">Home</a>
+  <a href="/list/customers">Customers</a>
+  <a href="/list/support/">Support</a>
+  <a href="/list/about">About</a>
+  <a href="/article/contact/contact">Contact Me</a>
   </iron-selector>
   </app-drawer>
 

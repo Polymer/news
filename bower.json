@@ -16,7 +16,11 @@
     "iron-selector": "polymerelements/iron-selector#^2.0.0",
     "paper-icon-button": "polymerelements/paper-icon-button#^2.0.0",
     "google-map": "GoogleWebComponents/google-map#^2.0.3",
-    "code-sample": "^0.4.2"
+    "code-sample": "^0.4.2",
+    "iron-form": "^2.1.0",
+    "paper-input": "^2.0.5",
+    "paper-button": "^2.0.0",
+    "iron-ajax": "^2.0.8"
   },
   "devDependencies": {
     "web-component-tester": "^6.0.0"

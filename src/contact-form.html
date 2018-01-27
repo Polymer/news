@@ -1,0 +1,186 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<dom-module id="contact-form">
+  <template>
+<style>
+:host {
+        display: block;
+        padding: 10px;
+      }
+      .wrapper-btns {
+        margin-top: 15px;
+      }
+      paper-button.link {
+        color: #757575;
+      }
+      .alert-error {
+        background: #ffcdd2;
+        border: 1px solid #f44336;
+        border-radius: 3px;
+        color: #333;
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .alert-success {
+        background: #a3f5ba;
+        border: 1px solid #0e7a2c;
+        border-radius: 3px;
+        color: #333;
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      input, textarea {
+        position: relative; /* to make a stacking context */
+        outline: none;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        background: transparent;
+        border: none;
+        color: var(--paper-input-container-input-color, var(--primary-text-color));
+        -webkit-appearance: none;
+        text-align: inherit;
+        vertical-align: bottom;
+        /* Firefox sets a min-width on the input, which can cause layout issues */
+        min-width: 0;
+        @apply --paper-font-subhead;
+        @apply --paper-input-container-input;
+      }
+
+      .fcontainer {
+        width: 80%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .fcontainer * {
+        box-sizing: border-box;
+      }
+
+      @media (max-width: 767px) {
+        .fcontainer {
+          width: 100%;
+        }
+
+      }
+</style>
+
+      <iron-ajax
+        id="sendContactForm"
+        method="post"
+        content-type="application/json"
+        handle-as="text"
+        on-response="handleFormResponse"
+        on-error="handleFormError">
+      </iron-ajax>
+
+      <div class="fcontainer">
+
+      <template is="dom-if" if="[[error]]">
+                <p class="alert-error"><strong>Error:</strong> [[error]]</p>
+      </template>
+  <h3 style="text-align: center">Let's Keep In Touch</h3>
+  <paper-input-container>
+    <label slot="input">First Name</label>
+    <iron-input slot="input" bind-value="{{formData.firstName}}">
+      <input class="input-style" id="firstName" type="text" value="{{formData.firstName}}" placeholder="">
+    </iron-input>
+  </paper-input-container>
+
+  <paper-input-container>
+    <label slot="input">Last Name</label>
+    <iron-input slot="input" bind-value="{{formData.lastName}}">
+      <input class="input-style" id="lastName" type="text" value="{{formData.lastName}}" placeholder="">
+    </iron-input>
+  </paper-input-container>
+
+
+  <paper-input-container>
+    <label slot="input">Email</label>
+    <iron-input slot="input" bind-value="{{formData.email}}">
+      <input class="input-style" id="email" type="email" value="{{formData.email}}" placeholder="">
+    </iron-input>
+  </paper-input-container>
+
+  <paper-input-container>
+    <label slot="input">Company</label>
+    <iron-input slot="input" bind-value="{{formData.company}}">
+      <input class="input-style" id="company" type="text" value="{{formData.company}}" placeholder="">
+    </iron-input>
+  </paper-input-container>
+
+  <paper-input-container>
+    <label slot="input">Phone</label>
+    <iron-input slot="input" bind-value="{{formData.phone}}">
+      <input class="input-style" id="phone" type="tel" value="{{formData.phone}}" placeholder="">
+    </iron-input>
+  </paper-input-container>
+
+  <paper-input-container>
+    <label slot="input">Message</label>
+    <iron-input slot="input" bind-value="{{formData.message}}">
+      <textarea rows="6" id="message" type="textarea" value="{{formData.message}}" placeholder=""></textarea>
+    </iron-input>
+  </paper-input-container>
+
+
+  <div class="wrapper-btns">
+    <paper-button raised class="primary" on-tap="send">Send</paper-button>
+  </div>
+  </div>
+
+
+  </template>
+
+  <script>
+    class contactForm extends Polymer.Element {
+      static get is() {
+        return 'contact-form';
+      }
+
+      static get properties() {
+        return {
+          formData: {
+            type: Object,
+            value: {}
+          }
+        }
+      }
+
+      _setReqBody() {
+        this.$.sendContactForm.body = this.formData;
+      }
+
+      send() {
+        this.$.sendContactForm.url = 'https://full-mkpartners.cs92.force.com/api/services/apexrest/api/v1/webtolead';
+        this._setReqBody();
+        this.$.sendContactForm.generateRequest();
+      }
+
+
+      handleFormResponse(event) {
+        var response = JSON.parse(event.detail.response);
+        console.log('response ', response);
+
+
+        // reset form data
+        this.formData = {};
+      }
+
+
+      handleFormError(event) {
+        this.error = event.detail.request.xhr.response;
+      }
+
+    }
+    customElements.define(contactForm.is, contactForm);
+  </script>
+</dom-module>

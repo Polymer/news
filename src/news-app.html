@@ -255,7 +255,7 @@ flex-wrap: wrap;
   </div>
   </div>
   <div>
-    <p style="font-size: 10px;">© 2018. All Rights Reserved MK Partners, Inc. </p>
+    <p style="font-size: 10px;">© 2006-[[_currentYear()]]. All Rights Reserved MK Partners, Inc. </p>
     <p style="font-size: 10px;">Salesforce, Salesforce.com, AppExchange, Sales Cloud, Service Cloud, Chatter, and others are trademarks of salesforce.com, inc. and are used here with permission </p>
   </div>
   </footer>
@@ -461,6 +461,11 @@ flex-wrap: wrap;
         this._setMeta('property', 'twitter:description', description || document.title);
         this._setMeta('property', 'twitter:url', document.location.href);
         this._setMeta('property', 'twitter:image:src', this.baseURI + image);
+      }
+
+      _currentYear() {
+        let date = new Date();
+        return date.getFullYear();
       }
 
       _setMeta(attrName, attrValue, content) {

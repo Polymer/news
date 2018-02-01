@@ -59,10 +59,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-
     class NewsSnackbar extends Polymer.Element {
 
-      static get is() { return 'news-snackbar'; }
+      static get is() {
+        return 'news-snackbar';
+      }
 
       connectedCallback() {
         super.connectedCallback();
@@ -88,7 +89,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     customElements.define(NewsSnackbar.is, NewsSnackbar);
-
   </script>
 
 </dom-module>

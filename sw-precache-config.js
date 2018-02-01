@@ -15,7 +15,7 @@ module.exports = {
       }
     },
     {
-      urlPattern: /.*\.(png|jpg|gif|svg)/i,
+      urlPattern: /.*\.(png|jpg|gif|svg|jp2)/i,
       handler: 'fastest',
       options: {
         cache: {

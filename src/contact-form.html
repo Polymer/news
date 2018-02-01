@@ -73,79 +73,47 @@
       }
 </style>
 
-      <iron-ajax
-        id="sendContactForm"
-        method="post"
-        content-type="application/json"
-        handle-as="text"
-        on-response="handleFormResponse"
-        on-error="handleFormError">
-      </iron-ajax>
+<iron-ajax
+  id="sendContactForm"
+  method="post"
+  content-type="application/json"
+  handle-as="text"
+  on-response="handleFormResponse"
+  on-error="handleFormError">
+</iron-ajax>
+<div class="fcontainer">
 
-      <div class="fcontainer">
-
-      <template is="dom-if" if="[[error]]">
-                <p class="alert-error"><strong>Error:</strong> [[error]]</p>
-      </template>
+<template is="dom-if" if="[[error]]"><p class="alert-error"><strong>Error:</strong> [[error]]</p></template>
+  <template is="dom-if" if="[[success]]"><p class="alert-success"> [[success]]</p></template>
   <h3 style="text-align: center">Let's Keep In Touch</h3>
-  <paper-input-container>
-    <label slot="input">First Name</label>
-    <iron-input slot="input" bind-value="{{formData.firstName}}">
-      <input class="input-style" id="firstName" type="text" value="{{formData.firstName}}" placeholder="">
-    </iron-input>
+  <paper-input-container><label slot="input">First Name</label>
+    <iron-input slot="input" bind-value="{{formData.firstName}}"><input class="input-style" id="firstName" type="text" value="{{formData.firstName}}" placeholder=""></iron-input>
   </paper-input-container>
-
-  <paper-input-container>
-    <label slot="input">Last Name</label>
-    <iron-input slot="input" bind-value="{{formData.lastName}}">
-      <input class="input-style" id="lastName" type="text" value="{{formData.lastName}}" placeholder="">
-    </iron-input>
+  <paper-input-container><label slot="input">Last Name</label>
+    <iron-input slot="input" bind-value="{{formData.lastName}}"><input class="input-style" id="lastName" type="text" value="{{formData.lastName}}" placeholder=""></iron-input>
   </paper-input-container>
-
-
-  <paper-input-container>
-    <label slot="input">Email</label>
-    <iron-input slot="input" bind-value="{{formData.email}}">
-      <input class="input-style" id="email" type="email" value="{{formData.email}}" placeholder="">
-    </iron-input>
+  <paper-input-container><label slot="input">Email</label>
+    <iron-input slot="input" bind-value="{{formData.email}}"><input class="input-style" id="email" type="email" value="{{formData.email}}" placeholder=""></iron-input>
   </paper-input-container>
-
-  <paper-input-container>
-    <label slot="input">Company</label>
-    <iron-input slot="input" bind-value="{{formData.company}}">
-      <input class="input-style" id="company" type="text" value="{{formData.company}}" placeholder="">
-    </iron-input>
+  <paper-input-container><label slot="input">Company</label>
+    <iron-input slot="input" bind-value="{{formData.company}}"><input class="input-style" id="company" type="text" value="{{formData.company}}" placeholder=""></iron-input>
   </paper-input-container>
-
-  <paper-input-container>
-    <label slot="input">Phone</label>
-    <iron-input slot="input" bind-value="{{formData.phone}}">
-      <input class="input-style" id="phone" type="tel" value="{{formData.phone}}" placeholder="">
-    </iron-input>
+  <paper-input-container><label slot="input">Phone</label>
+    <iron-input slot="input" bind-value="{{formData.phone}}"><input class="input-style" id="phone" type="tel" value="{{formData.phone}}" placeholder=""></iron-input>
   </paper-input-container>
-
-  <paper-input-container>
-    <label slot="input">Message</label>
-    <iron-input slot="input" bind-value="{{formData.message}}">
-      <textarea rows="6" id="message" type="textarea" value="{{formData.message}}" placeholder=""></textarea>
-    </iron-input>
+  <paper-input-container><label slot="input">Message</label>
+    <iron-input slot="input" bind-value="{{formData.message}}"><textarea rows="6" id="message" type="textarea" value="{{formData.message}}" placeholder=""></textarea></iron-input>
   </paper-input-container>
-
-
   <div class="wrapper-btns">
-    <paper-button raised class="primary" on-tap="send">Send</paper-button>
+    <paper-button raised="" class="primary" on-tap="send">Send</paper-button>
   </div>
   </div>
-
-
   </template>
-
   <script>
     class contactForm extends Polymer.Element {
       static get is() {
-        return 'contact-form';
+        return 'contact-form'
       }
-
       static get properties() {
         return {
           formData: {
@@ -154,33 +122,25 @@
           }
         }
       }
-
       _setReqBody() {
-        this.$.sendContactForm.body = this.formData;
+        this.$.sendContactForm.body = this.formData
       }
-
       send() {
-        this.$.sendContactForm.url = 'https://full-mkpartners.cs92.force.com/api/services/apexrest/api/v1/webtolead';
-        this._setReqBody();
-        this.$.sendContactForm.generateRequest();
+        this.$.sendContactForm.url = 'https://mkpartners.secure.force.com/api/services/apexrest/api/v1/webtolead', this._setReqBody(), this.$.sendContactForm.generateRequest()
       }
-
-
-      handleFormResponse(event) {
-        var response = JSON.parse(event.detail.response);
-        console.log('response ', response);
-
-
-        // reset form data
+      handleFormResponse(a) {
+        // var b = JSON.parse(a.detail.response);
+        // console.log('response ', b);
+        this.success = "Your message has been received."
         this.formData = {};
       }
-
-
-      handleFormError(event) {
-        this.error = event.detail.request.xhr.response;
+      handleFormError(a) {
+        this.error = a.detail.request.xhr.response
       }
-
     }
     customElements.define(contactForm.is, contactForm);
   </script>
 </dom-module>
+</body>
+
+</html>

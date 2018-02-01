@@ -240,7 +240,6 @@ flex-wrap: wrap;
   <ul class="contact-info flexcontainer">
     <li class="address">5709 Cahuenga Blvd, North Hollywood, CA 91601</li>
     <li class="phone"><a href="tel:+1-818-760-8285">(818) 760-8285</a></li>
-    <li class="email"><a href="mailto:sales@mkpartners.com">sales@mkpartners.com</a></li>
   </ul>
   </div>
   <div>
@@ -352,7 +351,7 @@ flex-wrap: wrap;
         if (!isAttached) {
           return;
         }
-        if (page === "contactme") {
+        if (page === "contactme" || page === "ContactMe" || page === "CONTACTME") {
           this.set('route.path', 'article/contact/contact')
           return;
         }
@@ -361,7 +360,6 @@ flex-wrap: wrap;
           this.set('route.path', 'list/home');
           return;
         }
-        console.log('page is :', page);
         this.page = page;
         // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.

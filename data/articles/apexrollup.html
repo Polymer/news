@@ -52,25 +52,30 @@
 </head>
 
 <body>
-
   <div class="content">
-
     <div>
-
       <div class="uni-paragraph">
         <div class="rich-text">
           <div>
-            <p>
-              While you may not be able to create a standard field that rolls up the number of Contacts on an Account, you can easily do it with code. The below method can either be used as part of a Batch Apex process or an Apex Trigger. If you use it in an Apex Trigger,
-              be sure to create the Trigger on the Contact object.
-            </p>
+            <p>While you may not be able to create a standard field that rolls up the number of Contacts on an Account, you can easily do it with code. The below method can either be used as part of a Batch Apex process or an Apex Trigger. If you use it
+              in an Apex Trigger, be sure to create the Trigger on the Contact object.</p>
+            <code-sample>
+              <template>
+               public static void updateAccounts(Set< Id > accountIds){
+               Map < Id,Account > accountMap = new Map < Id,Account >();
+               AggregateResult[] aggQuery = [Select AccountId, Count(Id) conCount from Contact where AccountId in :accountIds and AccountId != null GROUP BY AccountId];
+               for ( AggregateResult ar : aggQuery ){
+               accountMap.put(string.valueOf(ar.get('AccountId')), new Account(Id=string.valueOf(ar.get('AccountId')),Number_Of_Contacts__c=decimal.valueOf(string.valueOf(ar.get('conCount'))).intValue());
+               }
+               database.update(accountMap.values());
+               }
+                </template>
+            </code-sample>
           </div>
         </div>
       </div>
-
     </div>
   </div>
-
 </body>
 
 </html>

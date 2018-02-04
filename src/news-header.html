@@ -268,7 +268,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-toolbar class="logo-toolbar">
         <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu" on-click="_toggleDrawer" aria-label="Main navigation">
         </paper-icon-button>
-        <div class="logo" main-title=""><a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]"><img src="[[appTitle]]" alt="MKPartners"></a></div>
+        <div class="logo" main-title="">
+          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">
+            <img src="[[appTitle]]" alt="MKPartners" itemprop="image">
+          </a>
+        </div>
         <a href="http://pledge1percent.org/"><img class="onelogo" src="images/PledgeOneLogo.png" alt="pledge1percent"></a>
       </app-toolbar>
       <div class="date-line" role="heading">

@@ -238,8 +238,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </iron-selector>
   </div>
   <ul class="contact-info flexcontainer">
-    <li class="address">5709 Cahuenga Blvd, North Hollywood, CA 91601</li>
-    <li class="phone"><a href="tel:+1-818-760-8285">(818) 760-8285</a></li>
+    <li itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" class="address style-scope news-app">
+      <span itemprop="streetAddress">5709 Cahuenga Blvd</span>, 
+      <span itemprop="addressLocality">North Hollywood</span>, 
+      <span itemprop="addressRegion">CA</span> 
+      <span itemprop="postalCode">91601</span>
+    </li>
+    <li class="phone style-scope news-app">
+      <a href="tel:+1-818-760-8285" class="style-scope news-app">
+        <span itemprop="telephone">(818) 760-8285</span>
+      </a>
+    </li>
   </ul>
   </div>
   <div>
@@ -255,7 +264,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </div>
   </div>
   <div>
-    <p style="font-size: 10px;">© 2006-[[_currentYear()]]. All Rights Reserved MK Partners, Inc. </p>
+    <p style="font-size: 10px;">© 2006-[[_currentYear()]]. All Rights Reserved 
+      <span itemprop="name">MK Partners, Inc.</span>
+    </p>
     <p style="font-size: 10px;">Salesforce, Salesforce.com, AppExchange, Sales Cloud, Service Cloud, Chatter, and others are trademarks of salesforce.com, inc. and are used here with permission </p>
   </div>
   </footer>

@@ -133,6 +133,7 @@
         // console.log('response ', b);
         this.success = "Your message has been received."
         this.formData = {};
+        location.href = '/article/contact/thankyou';
       }
       handleFormError(a) {
         this.error = a.detail.request.xhr.response

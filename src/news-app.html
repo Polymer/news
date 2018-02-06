@@ -362,8 +362,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!isAttached) {
           return;
         }
-        if (page === "contactme" || page === "ContactMe" || page === "CONTACTME") {
+        if (page.toUpperCase() === "CONTACTME" || page.toUpperCase() === "CONTACT") {
           this.set('route.path', 'article/contact/contact')
+          return;
+        }
+        if (page.toUpperCase() === "CAREERS") {
+          this.set('route.path', 'article/about/careers')
+          return;
+        }
+        if (page.toUpperCase() === "ABOUT") {
+          this.set('route.path', 'list/about')
           return;
         }
         if (!page) {

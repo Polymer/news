@@ -20,7 +20,8 @@
     "iron-form": "^2.1.0",
     "paper-input": "^2.0.5",
     "paper-button": "^2.0.0",
-    "iron-ajax": "^2.0.8"
+    "iron-ajax": "^2.0.8",
+    "github-gist": "^1.2.6"
   },
   "devDependencies": {
     "web-component-tester": "^6.0.0"

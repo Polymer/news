@@ -59,34 +59,9 @@
 
       <div class="uni-paragraph">
         <div class="rich-text">
-          <div>
-            <code-sample>
-              <template>
-              public with sharing class sample_Transient_Controller {
-              DateTime t1;
-              transient DateTime t2;
-              public String getT1() {
-              if (t1 == null) t1 = System.now();
-              return '' + t1;
-              }
-              public String getT2() {
-              if (t2 == null) t2 = System.now();
-              return '' + t2;
-              }
-              }
-              [/code]
-              < b>VisualForce Page < /b> < br/>
-              [code]
-              < apex:page controller="sample_Transient_Controller">
-              T1: {!t1} < br/>
-              T2: {!t2} < br/>
-              < apex:form >
-              < apex:commandLink value="refresh" />
-              < / apex:form>
-              < / apex:page>
-
-            </template>
-            </code-sample>
+          <div style="padding-top:10px;">
+            <github-gist gistid="2c4c5f9a5b71e7717f72677e0a6b2932"></github-gist>
+            <github-gist gistid="9a8b21c0dea8f142d1b4947b2e5d8227"></github-gist>
           </div>
         </div>
       </div>

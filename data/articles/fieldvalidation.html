@@ -68,56 +68,16 @@
 
             <p>Let's look at the code.</p>
 
-            <code-sample>
-              <template>
-              < apex:commandbutton value="My Button" action="{!myApexAction}" onclick="if(!fieldsFilledOut()) return false;"/>
-            </template>
-            </code-sample>
+            <github-gist gistid="6fb978f2de3c7c0cf921a137ed3ac265"></github-gist>
 
             <p>You see that the onclick event of the button calls out fieldsFilledOut() javascript function; the function returns true if all fields are filled out. If the function returns false (there is a missing field), the action method is not called
               because our onclick method will return false. A nice feature to add to your page is an instant check while the user is filling it out. If they tab to a field and then skip it, it's nice to instantly show them "Nope, you actually need to
               fill this one out". We use a function called checkVal() for that and pass in the "this" variable which resolves to the specific element calling the function:</p>
 
-            <code-sample>
-              <template>
-                < apex:inputtext styleClass="mustFillOut" value="{!myVar}" onkeyup="checkVal(this);"/>
-              </template>
-            </code-sample>
-
-
             <p style="font-weight:bold">**NOTE** For any field that you are using a selectlist (dropdown) option you should use the onchange action instead of onkeyup.**</p>
 
             <p>You may be wondering about the styleClass="mustFillOut". This is to make it super easy to grab all the fields that should be required. As long as you do not have an actual css class called "mustFillOut" you can use this on any input element
               you want to require - even in cascade if you have other style classes applied to the element.</p>
-
-            <code>styleClass="myOtherCSS mustFillOut"</code>
-
-            <p>Here is the actual code for the two functions, checkVal() and fieldsFilledOut() that we have been talking about.</p>
-
-            <code-sample>
-              <template>
-                  function fieldsFilledOut(){
-                      var hasErrors = false;
-                      var eles = document.getElementsByClassName('mustFillOut');
-                      for (var i=0; i < eles.length; i++){
-                          var ele = eles[i];
-                          if (!ele.value && ele.tagName != 'A'){
-                              checkVal(ele);
-                              hasErrors = true;
-                          }
-                      }
-                      if (hasErrors){
-                          alert('You must fill out all required fields');
-                          return false;
-                      }
-                      else { return true; }
-                  }
-                  function checkVal(ele){
-                      if (ele.value) ele.style.background = 'white';
-                      else ele.style.background = '#FFCCCC';
-                  }
-                </template>
-            </code-sample>
 
             <p>When calling the fieldsFilledOut() function, you'll notice we display an alert to the user notifying them that they need to fill out all the required fields.</p>
 

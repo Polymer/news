@@ -89,17 +89,7 @@
               Your class should now look something like this:
               <br>
               <br>
-              <code-sample>
-                <template>
-                @RestResource(urlMapping='/helloRest/*')
-                global class helloRest{
-                @HttpGet
-                global static String whatTimeIsIt(){
-                  return system.now().format();
-                  }
-                }
-              </template>
-              </code-sample>
+              <github-gist gistid="0bf32f80350238867b6acedc9af86a09"></github-gist>
               <br><br> You've just created a REST Web Service in Apex. Testing the web service requires you to first authenticate into Salesforce, get a SessionId and then pass in that SessionId in the header when calling the Web Service. That's great
               for security, but not so great if the functionality needs to be exposed to the world. If you have a Force.com Site, you have already published Visualforce Pages to the world. With a few clicks you can also expose this Web Service.
               <ol>

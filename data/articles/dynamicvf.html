@@ -62,39 +62,7 @@
           <div>
             <p>While you can always use the "rendered" and "rerender" attributes to make your Visualforce pages more dynamic, there are times where you need a more powerful solution. Dynamic Visualforce allows you to actually generate your markup at runtime
               based on logic in your controller.</p>
-
-            <code-sample>
-              <template>
-              public with sharing class sample_DynamicVisualforce_Controller {
-
-              public String sampleText {get;set;}
-
-              public Component.Apex.PageBlock getdynamicContent() {
-              Component.Apex.PageBlock block = new Component.Apex.PageBlock();
-              block.title = 'Dynamic Page Block';
-
-              Component.Apex.PageBlockSection blockSection = new Component.Apex.PageBlockSection();
-              blockSection.title = 'Dynamic Page Block Section';
-
-              Component.Apex.PageBlockSectionItem blockSectionItem = new Component.Apex.PageBlockSectionItem();
-
-              Component.Apex.OutputLabel outputlabel = new Component.Apex.OutputLabel();
-              outputlabel.value='Controller based label';
-              blockSectionItem.childComponents.add(outputlabel);
-
-              Component.Apex.InputText inputText = new Component.Apex.InputText();
-              InputText.value=sampleText;
-              blockSectionItem.childComponents.add(InputText);
-
-
-              blockSection.childComponents.add(blockSectionItem);
-              block.childComponents.add(blockSection);
-              return block;
-              }
-
-              }
-                </template>
-            </code-sample>
+            <github-gist gistid="e875df435721ad5375b99cf91ee4c017"></github-gist>
           </div>
         </div>
       </div>

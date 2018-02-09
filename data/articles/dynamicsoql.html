@@ -62,45 +62,12 @@
           <div>
             <p>If you are familiar with SQL and learning Salesforce's SOQL, then you've probably realized that there is no ability to do a "Select *" in SOQL. This can be rather frustrating for newbies, but is easily worked around using existing features
               of Apex as demonstrated below:</p>
-            <code-sample>
-              <template>
-              String queryString = 'Select ';
-              for ( String s : Schema.SObjectType.Account.fields.getMap().keySet() ){
-                queryString += s + ', ';
-              }
-              queryString = queryString.subString(0,queryString.length()-2);
-              queryString += ' from Account ';
-              List < Account> resultsList = database.query(queryString);
-
-              </template>
-            </code-sample>
+            <github-gist gistid="4adaea2793af8fee324e8d023cf7be81"></github-gist>
             <p>The above example is a dynamic query of Accounts. You can easily query any other object using the same concept by just replacing the word "Account" with the name of your object on lines 2 and 6. We also recommend adding WHERE and LIMIT clauses
               to all queries to ensure you're only querying what you actually need. Dynamic queries are great for managed packages when you don't know what schema is going to look like in the install org. It's also great in a multi-developer environment,
               when one person may be adding fields to a Visualforce page or if statements and the other is responsible for the constructor or a getter. If you want to get clever (and we always do) then you can setup a method like the one below:
             </p>
-            <code-sample>
-              <template>
-              public static List < sObject> queryDynamically(String objectName,
-              Map < String,Schema.SObjectField> schemaMap, String whereClause, String orderBy, Integer queryLimit ){
-                String queryString = 'Select ';
-                for ( String s : schemaMap.keySet() ){
-                  queryString += s + ', ';
-                }
-                queryString = queryString.subString(0,queryString.length()-2);
-                  queryString += ' from ' + objectName;
-                  if ( whereClause != null ){
-                    queryString += ' where ' + whereClause;
-                  }
-                  if ( orderBy != null ){
-                    queryString += ' order by ' + orderBy;
-                  }
-                  if ( queryLimit != null ){
-                    queryString += ' limit ' + queryLimit;
-                  }
-                  return database.query(queryString);
-                }
-                </template>
-            </code-sample>
+            <github-gist gistid="4fc7bb419441e292934c407e8e189840"></github-gist>
           </div>
         </div>
       </div>

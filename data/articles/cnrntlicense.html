@@ -62,12 +62,12 @@
           <div>
             <p>Unlike home-grown applications, cloud-based applications are typically licensed on a per user model. &nbsp;This can be a big deterrent to large organizations that want to benefit from the advantages of a cloud-based application for low-use
               business purposes.</p>
-            <p>Many of our clients have asked us to help them find the right licensing options for users that need to login to the platform infrequently or sporadically. &nbsp;Unfortunately, there is no concurrent licensing model for Force.com Users available
+            <p>Many of our clients have asked us to help them find the right licensing options for users that need to log in to the platform infrequently or sporadically. &nbsp;Unfortunately, there is no concurrent licensing model for Force.com Users available
               at this time. &nbsp;However, it is an acceptable term of use (and even an encouraged one) to deactivate a user's license in order to activate another user's license. &nbsp;Taking advantage of this ability and the robust ability of the Force.com
               platform's Apex programming language, we can build an license management engine that will allow you to pool your licenses across your organization.</p>
-            <p> Actual implementations will vary depending on business requirements and whether single sign-on is used, however the basic framework is the same. &nbsp;Let's assume that you have 100 employees that sporadically and infrequently login to the
-              platform to update their emergency contact information. &nbsp;Rather than buying 100 licenses for those employees you have only 25. &nbsp;When an employee wants to login, they go to a custom webpage (which may be built on Force.com Sites),
-              enters their email address and clicks a button. &nbsp;Upon clicking that button, a query is performed to determine if there are any available licenses and if not, an employee with an active license that is has not logged in to the system
+            <p> Actual implementations will vary depending on business requirements and whether single sign-on is used; however, the basic framework is the same. &nbsp;Let's assume that you have 100 employees that sporadically and infrequently login to the
+              platform to update their emergency contact information. &nbsp;Rather than buying 100 licenses for those employees, you have only 25. &nbsp;When an employee wants to login, they go to a custom webpage (which may be built on Force.com Sites),
+              enters their email address, and clicks a button. &nbsp;Upon clicking that button, a query is performed to determine if there are any available licenses, and, if not, an employee with an active license that is has not logged in to the system
               in x days is deactivated and this employee's user record is activated. &nbsp;The employee is then presented with a password input field and button to login. &nbsp;Should all active users have last login times within the last hour or so,
               then this employee would be presented with a please try again later message.</p>
             <p>This simple technique allows you to replicate a concurrent licensing model on top of the Force.com Platform's per user model.</p>

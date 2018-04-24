@@ -1,4 +1,4 @@
-# NEWS
+# com-mkpartners-www
 
 ## Prerequisites
 
@@ -10,8 +10,8 @@ Install [polymer-cli](https://github.com/Polymer/polymer-cli):
 
 ### Setup
 
-    git clone https://github.com/polymer/news.git
-    cd news
+    git clone https://github.com/mk-partners/com-mkpartners-www
+    cd com-mkpartners-www
     bower install
 
 ## Start the development server

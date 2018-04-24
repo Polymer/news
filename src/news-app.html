@@ -13,6 +13,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/code-sample/themes/one-dark.html">
+<link rel="import" href="../bower_components/code-sample/code-sample.html">
 
 <link rel="import" href="news-data.html">
 <link rel="import" href="news-nav.html">
@@ -53,37 +56,108 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       iron-pages {
         max-width: 1440px;
         margin: 0 auto;
+        padding-bottom: 50px;
+        margin-bottom: 100px
       }
 
       footer {
+        /* width: 100vw; */
         position: absolute;
         bottom: 0;
         right: 0;
         left: 0;
-        padding-bottom: 24px;
+        /* left: -40px; */
         text-align: center;
+        background: #3a3a3a;
+        color: #868686;
+        margin-top: 80px;
+        padding: 20px 0 0px;
       }
 
       footer a {
         text-decoration: none;
-        font-size: 13px;
+        font-size: 11px;
         color: #757575;
+        margin-right: 15px;
       }
 
       footer a:hover {
         text-decoration: underline;
+        color: #f15a23;
       }
-
+      .bbbimg {
+        margin-left: 50px;
+      }
       /* desktop */
       @media (min-width: 768px) {
         :host {
           margin: 0 40px;
         }
+        footer {
+          margin: 0 -40px;
+        }
+      }
+
+      /* .footercontainer {
+        margin: 0 auto;
+        position: relative;
+        width: 940px;
+      } */
+
+      .flexparent {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .flexparent li {
+        font-size: 11px;
+        list-style: none;
+        margin: 0 0 5px 24px;
+      }
+
+      .flexcontainer {
+        display: flex;
+        flex-wrap: wrap;
+       justify-content: space-evenly;
+      }
+
+      #footer-nav {
+        border-bottom: 1px solid #4b4b4b;
+        margin: 0 0 12px;
+        padding: 0 0 12px;
+      }
+
+      .title {
+        border-bottom: 1px solid #4b4b4b;
+        display: block;
+        font-size: 14px;
+        margin: 0 0 12px;
+        margin-left: 30px;
+        padding: 0 0 12px;
+      }
+
+      @media (max-width: 767px) {
+        iron-pages {
+          margin-bottom: 200px
+        }
+
+        footer .title {
+          margin-left: 0px;
+        }
+
+        footer ul {
+              padding-left: 0;
+        }
+        .bbbimg {
+          margin-left: 0px;
+        }
       }
 
     </style>
 
-    <news-analytics key="UA-39334307-18"></news-analytics>
+    <news-analytics key="UA-20804647-1"></news-analytics>
 
     <!--
       app-location and app-route elements provide the state of the URL for the app.
@@ -147,60 +221,115 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </iron-pages>
 
     <footer>
-      <a href="https://www.polymer-project.org/1.0/toolbox/">Made by Polymer</a>
-    </footer>
+<div class="flexparent">
+  <div>
+    <div class="footernav" id="footer-nav">
+      <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
+        <!-- <dom-repeat items="[[categories]]" as="category" initial-count="9">
+          <template>
+            <a style="font-size: 14px;" name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+          </template>
+  </dom-repeat> -->
+  <a style="font-size: 14px;" href="/list/home">Home</a>
+  <a style="font-size: 14px;" href="/list/customers">Customers</a>
+  <a style="font-size: 14px;" href="/list/support">Support</a>
+  <a style="font-size: 14px;" href="/list/about">About</a>
+  <a style="font-size: 14px;" href="/article/contact/contact">Contact Me</a>
+  </iron-selector>
+  </div>
+  <ul class="contact-info flexcontainer">
+    <li class="news-app">
+      <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" class="address style-scope">
+        <span itemprop="streetAddress" class="style-scope news-app">5709 Cahuenga Blvd</span>,
+      <span itemprop="addressLocality" class="style-scope news-app">North Hollywood</span>,
+      <span itemprop="addressRegion" itemprop="addressRegion" class="style-scope news-app">CA</span>
+      <span itemprop="postalCode" class="style-scope news-app">91601</span>
+      </span>
+    </li>
+    <li class="phone style-scope news-app">
+      <a href="tel:+1-818-760-8285" class="style-scope news-app">
+        <span itemprop="telephone">(818) 760-8285</span>
+      </a>
+    </li>
+  </ul>
+  </div>
+  <div>
+    <span class="title" style="font-size: 14px;">Stay connected</span>
+    <ul class="social-links flexcontainer">
+      <li class="twitter"><a href="https://twitter.com/mkpartners" target="_blank">Twitter</a></li>
+      <li class="facebook"><a href="https://www.facebook.com/mkpartners1">Facebook</a></li>
+      <li class="youtube"><a href="https://www.youtube.com/channel/UCtNsCxpxe6F4x9Nw1HOePuQ">YouTube</a></li>
+    </ul>
+  </div>
+  <div class="bbbimg">
+    <a href="https://www.bbb.org/losangelessiliconvalley/business-reviews/information-technology-services/mk-partners-in-north-hollywood-ca-100115701#bbbseal"><img src="images/bbb.png" alt="" style="width: 150px;"></a>
+  </div>
+  </div>
+  <div>
+    <p style="font-size: 10px;">© 2006-[[_currentYear()]]. All Rights Reserved
+      <span itemprop="name">MK Partners, Inc.</span>
+    </p>
+    <p style="font-size: 10px;">Salesforce, Salesforce.com, AppExchange, Sales Cloud, Service Cloud, Chatter, and others are trademarks of salesforce.com, inc. and are used here with permission </p>
+  </div>
+  </footer>
 
   </template>
 
-  <script>
 
+  <script>
     class NewsApp extends Polymer.Element {
 
-      static get is() { return 'news-app'; }
+      static get is() {
+        return 'news-app';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        appTitle: String,
+          appTitle: String,
 
-        page: {
-          type: String,
-          observer: '_pageChanged'
-        },
+          page: {
+            type: String,
+            observer: '_pageChanged'
+          },
 
-        routeData: Object,
+          routeData: Object,
 
-        categories: Array,
+          categories: Array,
 
-        categoryName: String,
+          categoryName: String,
 
-        category: Object,
+          category: Object,
 
-        articleId: String,
+          articleId: String,
 
-        article: Object,
+          article: Object,
 
-        articleHeadline: {
-          type: String,
-          value: ''
-        },
+          articleHeadline: {
+            type: String,
+            value: ''
+          },
 
-        offline: {
-          type: Boolean,
-          value: false,
-          readOnly: true
-        },
+          offline: {
+            type: Boolean,
+            value: false,
+            readOnly: true
+          },
 
-        failure: Boolean,
+          failure: Boolean,
 
-        loadComplete: Boolean
+          loadComplete: Boolean
 
-      }}
+        }
+      }
 
-      static get observers() { return [
-        '_routePageChanged(routeData.page, isAttached)',
-        '_updateArticleHeadline(article.headline)',
-        '_updateDocumentTitle(page, category.title, articleHeadline, appTitle)'
-      ]}
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page, isAttached)',
+          '_updateArticleHeadline(article.headline)',
+          '_updateDocumentTitle(page, category.title, articleHeadline, "MKPartners")'
+        ]
+      }
 
       ready() {
         super.ready();
@@ -220,9 +349,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         Polymer.RenderStatus.afterNextRender(this, () => {
-          window.addEventListener('online', (e)=>this._notifyNetworkStatus(e));
-          window.addEventListener('offline', (e)=>this._notifyNetworkStatus(e));
-          this.addEventListener('refresh-data', (e)=>this._refreshData(e));
+          window.addEventListener('online', (e) => this._notifyNetworkStatus(e));
+          window.addEventListener('offline', (e) => this._notifyNetworkStatus(e));
+          this.addEventListener('refresh-data', (e) => this._refreshData(e));
         });
       }
 
@@ -235,15 +364,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!isAttached) {
           return;
         }
+        if (page.toUpperCase() === "CONTACTME" || page.toUpperCase() === "CONTACT") {
+          this.set('route.path', 'article/contact/contact')
+          return;
+        }
+        if (page.toUpperCase() === "CAREERS") {
+          this.set('route.path', 'article/about/careers')
+          return;
+        }
+        if (page.toUpperCase() === "ABOUT") {
+          this.set('route.path', 'list/about')
+          return;
+        }
         if (!page) {
           // set default route if route path is empty
-          this.set('route.path', 'list/top_stories');
+          this.set('route.path', 'list/home');
           return;
         }
         this.page = page;
         // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
         // with `behavior: 'silent'` to disable header scroll effects during the scroll.
-        Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });
+        Polymer.AppLayout.scroll({
+          top: 0,
+          behavior: 'silent'
+        });
         // Close the drawer - in case the *route* change came from a link in the drawer.
         this.$.nav.closeDrawer();
       }
@@ -251,23 +395,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _pageChanged(page, oldPage) {
         let href;
 
-        switch(page) {
+        switch (page) {
           case 'list':
             href = 'news-list.html';
-          break;
+            break;
           case 'article':
             href = 'news-article.html';
-          break;
+            break;
           default:
             href = 'news-path-warning.html';
-          break;
+            break;
         }
         let cb = this._pageLoaded.bind(this, Boolean(oldPage));
         Polymer.importHref(
-            this.resolveUrl(href),
-            cb,
-            cb,
-            true);
+          this.resolveUrl(href),
+          cb,
+          cb,
+          true);
       }
 
       _pageLoaded(shouldResetLayout) {
@@ -284,7 +428,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               // Load pre-caching Service Worker
               if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('service-worker.js', {scope: '/'});
+                navigator.serviceWorker.register('service-worker.js', {
+                  scope: '/'
+                });
               }
             });
           });
@@ -302,7 +448,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.root.appendChild(this._networkSnackbar);
           }
           this._networkSnackbar.textContent = this.offline ?
-              'You are offline' : 'You are online';
+            'You are offline' : 'You are online';
           this._networkSnackbar.open();
         }
       }
@@ -323,7 +469,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _setPageMetadata(description, article) {
-        let image = article ? article.imageUrl : 'images/news-icon-128.png';
+        let image = article ? article.imageUrl : 'images/mkp-icon-128.png';
 
         // Set open graph metadata
         this._setMeta('property', 'og:title', document.title);
@@ -336,6 +482,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._setMeta('property', 'twitter:description', description || document.title);
         this._setMeta('property', 'twitter:url', document.location.href);
         this._setMeta('property', 'twitter:image:src', this.baseURI + image);
+      }
+
+      _currentYear() {
+        let date = new Date();
+        return date.getFullYear();
       }
 
       _setMeta(attrName, attrValue, content) {
@@ -355,7 +506,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     customElements.define(NewsApp.is, NewsApp);
-
   </script>
 
 </dom-module>

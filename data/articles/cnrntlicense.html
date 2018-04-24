@@ -1,0 +1,83 @@
+<html>
+
+<head>
+  <meta property="Description" content="MKPartners : Concurrent Licensing Models on Force.com">
+  <meta name="keywords" content="MKPartners Salesforce Force.com APEX">
+  <meta name="article-author" content="MKPartners">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MKPartners : Concurrent Licensing Models on Force.com">
+  <meta property="og:description" content="MKPartners : Concurrent Licensing Models on Force.com">
+  <meta property="og:image" content="https://www.mkpartners.com/images/mkp-icon-512.png">
+  <meta property="og:site_name" content="MKPartners">
+  <meta property="og:url" content="https://www.mkpartners.com/article/support/cnrntlicense">
+  <meta property="article:publisher" content="https://www.mkpartners.com/">
+  <meta property="article:published_time" content="2016-11-10">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://www.mkpartners.com/article/support/cnrntlicense">
+  <meta name="twitter:title" content="MKPartners : Concurrent Licensing Models on Force.com">
+  <meta name="twitter:description" content="MKPartners : Concurrent Licensing Models on Force.com">
+  <meta name="twitter:image:src" content="https://www.mkpartners.com/images/mkp-icon-512.png">
+  <meta name="twitter:site" content="@MKPartners">
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": "https://www.mkpartners.com/article/support/cnrntlicense",
+      "headline": "MKPartners : Concurrent Licensing Models on Force.com",
+      "datePublished": "2016-11-10T14:00:00+00:00",
+      "dateModified": "2016-11-11T06:21:30.434480+00:00",
+      "description": "MKPartners : Concurrent Licensing Models on Force.com",
+      "author": {
+        "@type": "Person",
+        "name": "MKPartners"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "MKPartners",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.mkpartners.com/images/mkp-icon-512.png",
+          "width": "200",
+          "height": "200"
+        }
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://www.mkpartners.com/images/mkp-icon-512.png",
+        "width": "1440",
+        "height": "810"
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="content">
+
+    <div>
+
+      <div class="uni-paragraph">
+        <div class="rich-text">
+          <div>
+            <p>Unlike home-grown applications, cloud-based applications are typically licensed on a per user model. &nbsp;This can be a big deterrent to large organizations that want to benefit from the advantages of a cloud-based application for low-use
+              business purposes.</p>
+            <p>Many of our clients have asked us to help them find the right licensing options for users that need to log in to the platform infrequently or sporadically. &nbsp;Unfortunately, there is no concurrent licensing model for Force.com Users available
+              at this time. &nbsp;However, it is an acceptable term of use (and even an encouraged one) to deactivate a user's license in order to activate another user's license. &nbsp;Taking advantage of this ability and the robust ability of the Force.com
+              platform's Apex programming language, we can build an license management engine that will allow you to pool your licenses across your organization.</p>
+            <p> Actual implementations will vary depending on business requirements and whether single sign-on is used; however, the basic framework is the same. &nbsp;Let's assume that you have 100 employees that sporadically and infrequently login to the
+              platform to update their emergency contact information. &nbsp;Rather than buying 100 licenses for those employees, you have only 25. &nbsp;When an employee wants to login, they go to a custom webpage (which may be built on Force.com Sites),
+              enters their email address, and clicks a button. &nbsp;Upon clicking that button, a query is performed to determine if there are any available licenses, and, if not, an employee with an active license that is has not logged in to the system
+              in x days is deactivated and this employee's user record is activated. &nbsp;The employee is then presented with a password input field and button to login. &nbsp;Should all active users have last login times within the last hour or so,
+              then this employee would be presented with a please try again later message.</p>
+            <p>This simple technique allows you to replicate a concurrent licensing model on top of the Force.com Platform's per user model.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

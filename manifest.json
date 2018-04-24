@@ -1,16 +1,16 @@
 {
-  "name": "NEWS",
-  "short_name": "NEWS",
+  "name": "MKPartners",
+  "short_name": "MKPartners",
   "icons": [{
-      "src": "images/news-icon-128.png",
+      "src": "images/mkp-icon-128.png",
       "sizes": "128x128",
       "type": "image/png"
     }, {
-      "src": "images/news-icon-192.png",
+      "src": "images/mkp-icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     }, {
-      "src": "images/news-icon-512.png",
+      "src": "images/mkp-icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }],

@@ -1,0 +1,115 @@
+<html>
+
+<head>
+  <meta property="Description" content="MK Partners showing how to expose Apex REST Web Services via Force.com Sites">
+  <meta name="keywords" content="MKPartners Force.com APEX REST">
+  <meta name="article-author" content="MKPartners">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MKPartners Expose Apex Rest Web Services via Force.com">
+  <meta property="og:description" content="MK Partners showing how to expose Apex REST Web Services via Force.com Sites">
+  <meta property="og:image" content="https://www.mkpartners.com/data/images/knwldg2.jpg">
+  <meta property="og:site_name" content="MKPartners">
+  <meta property="og:url" content="https://www.mkpartners.com/article/support/apexrollup">
+  <meta property="article:publisher" content="https://www.MKPartners.com/">
+  <meta property="article:published_time" content="2016-11-10">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://www.mkpartners.com/article/support/apexrollup">
+  <meta name="twitter:title" content="MKPartners Expose Apex Rest Web Services via Force.com">
+  <meta name="twitter:description" content="MK Partners showing how to expose Apex REST Web Services via Force.com Sites">
+  <meta name="twitter:image:src" content="https://www.mkpartners.com/data/images/knwldg2.jpg">
+  <meta name="twitter:site" content="@MKPartners">
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": "https://www.mkpartners.com/article/support/apexrollup",
+      "headline": "MKPartners Expose Apex Rest Web Services via Force.com",
+      "datePublished": "2016-11-10T14:00:00+00:00",
+      "dateModified": "2016-11-11T06:21:30.434480+00:00",
+      "description": "MK Partners showing how to expose Apex REST Web Services via Force.com Sites",
+      "author": {
+        "@type": "Person",
+        "name": "MKPartners"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "MKPartners",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.mkpartners.com/images/mkp-icon-512.png",
+          "width": "200",
+          "height": "200"
+        }
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://www.mkpartners.com/data/images/knwldg2.jpg",
+        "width": "1440",
+        "height": "810"
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="content">
+
+    <div>
+
+      <div class="uni-paragraph">
+        <div class="rich-text">
+          <div>
+            <div>
+              Force.com makes it very simple to publish an Apex method as a REST Web Service. &nbsp;In order to call that Web Service you need to first authenticate with a username and password (or oAuth token). &nbsp;However, you can expose these Web Services publicly
+              too without any authentication using Force.com Sites. &nbsp;<strong>NOTE: Whenever providing any service/page without authentication, you expose yourself to security vulnerabilities, so be sure to consult an expert before doing so.</strong><br>
+              <br> Let's start by creating a new Apex Class named "helloREST" and adding a single static method to it named "whatTimeIsIt" that returns the current date/time. &nbsp;Your class should look something like this:<br>
+              <br>
+              <code-sample>
+                <template>
+              public class helloRest{
+                public static String whatTimeIsIt(){
+                  return system.now().format();
+                }
+              }
+                </template>
+              </code-sample>
+              <br>
+              <br> To transform this simple class and method into a REST Web Service, we need to do the following:
+              <ol>
+                <li>
+                  Make our class Global</li>
+                <li>
+                  Add the RestResource annotation with a URLmapping&nbsp;to our class</li>
+                <li>
+                  Make our method Global</li>
+                <li>
+                  Add a REST annotation to our method</li>
+              </ol>
+              Your class should now look something like this:
+              <br>
+              <br>
+              <github-gist gistid="0bf32f80350238867b6acedc9af86a09"></github-gist>
+              <br><br> You've just created a REST Web Service in Apex. Testing the web service requires you to first authenticate into Salesforce, get a SessionId and then pass in that SessionId in the header when calling the Web Service. That's great
+              for security, but not so great if the functionality needs to be exposed to the world. If you have a Force.com Site, you have already published Visualforce Pages to the world. With a few clicks you can also expose this Web Service.
+              <ol>
+                <li>
+                  Go to the detail page (not the edit page) for your Force.com Site and click on the Public Access Settings button.</li>
+                <li>
+                  Scroll down to the Apex Class related list and click the Edit button.</li>
+                <li>
+                  Move your new Class to the Enabled Apex Classes column and click Save</li>
+              </ol>
+
+              That's it, anyone can now call your Web Service using the below URL structure:
+              <br> http://[SITE_NAME].force.com/services/apexrest/[URLMAPPING]
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+</body>
+
+</html>

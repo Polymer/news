@@ -33,6 +33,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
       }
 
+      .onelogo {
+        width: 65px;
+        position: absolute;
+        top: 0px;
+        right: 0;
+      }
+
       .date-line,
       .article-headline {
         text-align: center;
@@ -137,20 +144,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         header .logo {
           margin-right: 40px;
+          padding-top: 68px;
         }
 
         header .date-line {
+          margin-top: 70px;
           padding: 6px 0;
           border-top: var(--app-transparent-border-style);
           border-bottom: var(--app-transparent-border-style);
         }
 
         :host([page=article]) header .logo,
+        :host([page=article]) header .onelogo,
         :host([page=article]) header .date-line {
           visibility: hidden;
         }
 
         .sticky-nav .logo,
+        .sticky-nav .onelogo,
         :host([page=article]) .sticky-nav .date-line,
         :host([page=list]) .sticky-nav .article-headline {
           display: none;
@@ -169,8 +180,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /* desktop */
       @media (min-width: 768px) {
+        .date-line {
+          margin-top: 55px;
+        }
+
         .logo {
           font-size: 39px;
+          padding-top: 15px;
         }
 
         .logo-toolbar {
@@ -204,6 +220,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .sticky-nav .date-line {
+          margin-top: 0px;
           padding: 4px 0 14px;
         }
 
@@ -249,11 +266,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     -->
     <header>
       <app-toolbar class="logo-toolbar">
-        <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu"
-            on-click="_toggleDrawer" aria-label="Main navigation"></paper-icon-button>
-        <div class="logo" main-title>
-          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
+        <paper-icon-button class="mobile-toggle-drawer-btn" icon="menu" on-click="_toggleDrawer" aria-label="Main navigation">
+        </paper-icon-button>
+        <div class="logo" main-title="">
+          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">
+            <img src="[[appTitle]]" alt="MKPartners" itemprop="image">
+          </a>
         </div>
+        <a href="http://pledge1percent.org/"><img class="onelogo" src="images/PledgeOneLogo.png" alt="pledge1percent"></a>
       </app-toolbar>
       <div class="date-line" role="heading">
         [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
@@ -262,79 +282,94 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template>
           <iron-selector role="navigation" class="menu-list" selected="[[category.name]]"
               attr-for-selected="name">
-            <dom-repeat items="[[categories]]" as="category" initial-count="9">
+            <!-- <dom-repeat items="[[categories]]" as="category" initial-count="9">
               <template>
                 <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
               </template>
-            </dom-repeat>
-          </iron-selector>
-        </template>
-      </dom-if>
-    </header>
+  </dom-repeat> -->
+  <a href="/list/home">Home</a>
+  <a href="/list/customers">Customers</a>
+  <a href="/list/support">Support</a>
+  <a href="/list/about">About</a>
+  <a href="/article/contact/contact">Contact Me</a>
+  </iron-selector>
+  </template>
+  </dom-if>
+  </header>
 
-    <!--
+  <!--
       Sticky nav reveals when scrolled down on the page.
     -->
-    <app-box role="banner" class="sticky-nav" threshold="[[_getScrollThreshold(smallScreen)]]">
-      <app-toolbar class="sticky-nav-toolbar">
-        <paper-icon-button
-          arial-label="Main navigation"
-          icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
-        <div class="sticky-nav-center">
-          <div class="logo">
-            <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]">[[appTitle]]</a>
-          </div>
-          <div class="date-line" role="heading">
-            [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
-          </div>
-          <div class="article-headline">
-            <slot></slot>
-          </div>
+  <app-box role="banner" class="sticky-nav" threshold="[[_getScrollThreshold(smallScreen)]]">
+    <app-toolbar class="sticky-nav-toolbar">
+      <paper-icon-button arial-label="Main navigation" icon="[[_menuIcon(drawerOpened)]]" on-click="_toggleDrawer"></paper-icon-button>
+      <div class="sticky-nav-center">
+        <div class="logo">
+          <a href="/" aria-label$="[[_computeAppHomeLabel(appTitle)]]"><img style="height: 80px;" src=[[appTitle]] alt="MKPartners"></a>
         </div>
+        <a href="http://pledge1percent.org/"><img class="onelogo" src="images/PledgeOneLogo.png" alt="pledge1percent"></a>
+        <div class="date-line" role="heading">
+          [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
+        </div>
+        <div class="article-headline">
+          <slot></slot>
+        </div>
+      </div>
+      <a href="mailto:sales@mkpartners.com" style="color:white;">
         <paper-icon-button icon="mail" aria-label="Send by mail"></paper-icon-button>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//com-mkpartners.firebaseapp.com" style="color:white;">
         <paper-icon-button icon="share" aria-label="Share on social networks"></paper-icon-button>
-      </app-toolbar>
-      <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
-        <iron-selector class="grid-container" role="navigation"
-            selected="[[category.name]]" attr-for-selected="name">
-          <dom-repeat items="[[categories]]" as="category" initial-count="9">
-            <template>
+      </a>
+    </app-toolbar>
+    <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
+      <iron-selector class="grid-container" role="navigation" selected="[[category.name]]" attr-for-selected="name">
+        <!-- <dom-repeat items="[[categories]]" as="category" initial-count="9">
+          <template>
               <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
             </template>
-          </dom-repeat>
-        </iron-selector>
-      </div>
-    </app-box>
+        </dom-repeat> -->
+        <a href="/list/home">Home</a>
+        <a href="/list/customers">Customers</a>
+        <a href="/list/support">Support</a>
+        <a href="/list/about">About</a>
+        <a href="/article/contact/contact">Contact Me</a>
+      </iron-selector>
+    </div>
+  </app-box>
 
   </template>
 
   <script>
-
     class NewsHeader extends Polymer.Element {
 
-      static get is() { return 'news-header'; }
+      static get is() {
+        return 'news-header';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        appTitle: String,
+          appTitle: String,
 
-        page: {
-          type: String,
-          reflectToAttribute: true
-        },
+          page: {
+            type: String,
+            reflectToAttribute: true
+          },
 
-        categories: Array,
+          categories: Array,
 
-        category: Object,
+          category: Object,
 
-        smallScreen: Boolean,
+          smallScreen: Boolean,
 
-        drawerOpened: {
-          type: Boolean,
-          notify: true
+          drawerOpened: {
+            type: Boolean,
+            notify: true
+          }
+
         }
-
-      }}
+      }
 
       _menuIcon(drawerOpened) {
         return drawerOpened ? 'close' : 'menu';
@@ -368,7 +403,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     customElements.define(NewsHeader.is, NewsHeader);
-
   </script>
 
 </dom-module>

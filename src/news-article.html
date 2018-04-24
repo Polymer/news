@@ -13,8 +13,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
 <link rel="import" href="news-article-cover.html">
-<link rel="import" href="news-side-list.html">
-
+<!-- <link rel="import" href="news-side-list.html"> -->
+<link rel="import" href="contact-form.html">
+<link rel="import" href="../bower_components/github-gist/github-gist.html">
+<link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Source+Sans+Pro" rel="stylesheet">
 <dom-module id="news-article">
 
   <template>
@@ -47,6 +49,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .preview-cover {
         display: none;
+      }
+      .formcontainer {
+        width: 70%;
+        max-width: 1200px;
+        margin: 0 auto;
       }
 
       #content {
@@ -109,6 +116,189 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 24px;
       }
 
+      .listcontainer {
+        margin: 0 auto;
+        max-width: 60%;
+      }
+
+      .item {
+    display: var(--layout-horizontal_-_display);
+    -ms-flex-direction: var(--layout-horizontal_-_-ms-flex-direction);
+    -webkit-flex-direction: var(--layout-horizontal_-_-webkit-flex-direction);
+    flex-direction: var(--layout-horizontal_-_flex-direction);
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    }
+
+    .item:hover {
+      background-color: #f6f6f6;
+    }
+    .item:hover .primary,
+    .item:hover h2,
+    .shortText:hover {
+      color: #f15a23;
+    }
+
+    .pad {
+          width: 100%;
+    padding: 0 16px;
+    -ms-flex: var(--layout-flex_-_-ms-flex);
+    -webkit-flex: var(--layout-flex_-_-webkit-flex);
+    flex: var(--layout-flex_-_flex);
+    -webkit-flex-basis: var(--layout-flex_-_-webkit-flex-basis);
+    flex-basis: var(--layout-flex_-_flex-basis);
+    display: var(--layout-vertical_-_display);
+    -ms-flex-direction: var(--layout-vertical_-_-ms-flex-direction);
+    -webkit-flex-direction: var(--layout-vertical_-_-webkit-flex-direction);
+    flex-direction: var(--layout-vertical_-_flex-direction);
+  }
+
+  .primary {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .shortText {
+    font-size: 14px;
+  }
+
+  .jobDesc {
+    padding: 0 20px 25px 55px;
+  }
+
+
+  .css-expander {
+	display:block;
+}
+
+label.css-expander:hover {
+  cursor: pointer;
+}
+
+input.css-expander {
+	display:none;
+}
+
+.css-expander-hide {
+	max-height:0em;
+	opacity:0;
+	height:auto;
+	overflow:hidden;
+	transition:opacity .5s linear;
+}
+
+.hide p {
+	padding:10px;
+	margin:0
+}
+
+input[type=checkbox]:checked + h4 + div {
+	opacity:1;
+	max-height:999em;
+	border:none;
+}
+
+input[type=checkbox]:not(:checked) + h4 > label.css-expander > label.expanded-status:before {
+  content: "+";
+}
+
+label.expanded-status:before {
+  content: "-";
+}
+
+.pad h4 {
+  font-size: 13px;
+  margin: 5px;
+  font-weight: normal;
+}
+
+google-map {
+  height: 440px;
+}
+
+.flexparent {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.formcontainer * {
+  box-sizing: border-box;
+}
+
+.flex-outer,
+.flex-inner {
+  list-style-type: none;
+  padding: 0;
+}
+
+.flex-outer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.flex-outer li,
+.flex-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.flex-inner {
+  padding: 0 8px;
+  justify-content: space-between;
+}
+
+.flex-outer > li:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.flex-outer li label,
+.flex-outer li p {
+  padding: 8px;
+  font-weight: 300;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.flex-outer > li > label,
+.flex-outer li p {
+  flex: 1 0 120px;
+  max-width: 220px;
+}
+
+.flex-outer > li > label + *,
+.flex-inner {
+  flex: 1 0 220px;
+}
+
+.flex-outer li p {
+  margin: 0;
+}
+
+.flex-outer li input:not([type='checkbox']),
+.flex-outer li textarea {
+  padding: 15px;
+  border: none;
+}
+
+.flex-outer li button {
+  margin-left: auto;
+  padding: 8px 16px;
+  border: none;
+  background: #333;
+  color: #f2f2f2;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  border-radius: 2px;
+}
+
+.flex-inner li {
+  width: 100px;
+}
+
+
       /* mobile */
       @media (max-width: 767px) {
         .container {
@@ -136,6 +326,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         .share-link {
           display: none;
         }
+
+        .opinions-grid li{
+          border-bottom: var(--app-border-style);
+          margin: 0px 24px 24px 24px;
+          padding-bottom: 24px;
+        }
+
+        .opinions-grid li:last-of-type {
+          border-bottom: none;
+        }
+        .listcontainer {
+          margin: 0 auto;
+          max-width: 100%;
+        }
+        .formcontainer,
+        .contact-container {
+          width: 100%;
+        }
+
+        .item {
+              padding: 5px;
+        }
+      }
+
+      /* desktop */
+      @media (min-width: 768px) {
+        .opinions-grid {
+          @apply --layout-horizontal;
+          @apply --layout-wrap;
+        }
+
+        .opinions-grid li {
+          width: calc(50% - 32px);
+          margin-right: 32px;
+        }
+
+        .opinions-grid {
+          margin-right: -32px;
+        }
       }
 
       /* mobile and desktop small */
@@ -156,6 +385,106 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           max-height: calc(var(--viewport-height) * 0.49);
         }
       }
+
+      .opinions-grid {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+
+      .news-img {
+        height: 150px;
+        width: 150px;
+      }
+
+      h2 {
+        margin: 18px 0;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 28px;
+      }
+
+      .headline {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 150px;
+        right: 0;
+        padding: 24px;
+      }
+
+      a {
+        display: block;
+        position: relative;
+        text-decoration: none;
+        color: inherit;
+        overflow: hidden;
+        margin-bottom: 10px;
+      }
+      .wrapper-1 {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .wrapper-2 {
+        padding: 30px;
+        text-align: center;
+      }
+
+      .thankyou h1 {
+        font-family: 'Kaushan Script', cursive;
+        font-size: 4em;
+        letter-spacing: 3px;
+        color: #f37243;
+        margin: 0;
+        margin-bottom: 20px;
+      }
+
+      .wrapper-2 p {
+        margin: 0;
+        font-size: 1.3em;
+        color: #aaa;
+        font-family: 'Source Sans Pro', sans-serif;
+        letter-spacing: 1px;
+      }
+
+      .go-home {
+        color: #fff;
+        background: #f37243;
+        border: none;
+        padding: 10px 50px;
+        margin: 30px 0;
+        border-radius: 30px;
+        text-transform: capitalize;
+        box-shadow: 0 10px 16px 1px rgba(251, 210, 195, 1);
+      }
+
+      @media (min-width:360px) {
+        .thankyou h1 {
+          font-size: 4.5em;
+        }
+        .go-home {
+          margin-bottom: 20px;
+        }
+      }
+
+      @media (min-width:600px) {
+        .thankyou .content {
+          max-width: 1000px;
+          margin: 0 auto;
+        }
+        .wrapper-1 {
+          height: initial;
+          max-width: 620px;
+          margin: 0 auto;
+          margin-top: 50px;
+          box-shadow: 4px 8px 40px 8px rgba(250, 198, 179, 0.2);
+        }
+
+      }
     </style>
 
     <app-route
@@ -164,14 +493,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{_routeData}}"></app-route>
 
     <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
-      <article class="flex">
+      <article style="width: 100%;" class="flex">
         <news-article-cover id="cover0" class="fade-in"></news-article-cover>
         <news-article-cover id="cover1" class="preview-cover"></news-article-cover>
         <news-article-cover id="cover2" class="preview-cover"></news-article-cover>
         <div id="content" class="fade-in"></div>
       </article>
 
-      <aside>
+      <!-- <aside>
         <div class="ad-container">
           <news-gpt-ad id="ad_slot_2"
               ad-unit-path="/6355419/Travel/Europe/France/Paris"
@@ -189,66 +518,70 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <news-side-list class="fade-in" featured items="[[_slice(category.items, 3, 9)]]">
           Top Stories
         </news-side-list>
-      </aside>
+      </aside> -->
     </div>
 
     <news-network-warning
         hidden$="[[!failure]]"
         offline="[[offline]]"
         on-try-reconnect="_tryReconnect"></news-network-warning>
-
   </template>
 
   <script>
-
     class NewsArticle extends Polymer.Element {
 
-      static get is() { return 'news-article'; }
+      static get is() {
+        return 'news-article';
+      }
 
-      static get properties() { return {
+      static get properties() {
+        return {
 
-        route: Object,
+          route: Object,
 
-        category: Object,
+          category: Object,
 
-        article: Object,
+          article: Object,
 
-        previousArticle: {
-          type: Object,
-          computed: '_computePreviousArticle(category.items, article)'
-        },
+          previousArticle: {
+            type: Object,
+            computed: '_computePreviousArticle(category.items, article)'
+          },
 
-        nextArticle: {
-          type: Object,
-          computed: '_computeNextArticle(category.items, article)'
-        },
+          nextArticle: {
+            type: Object,
+            computed: '_computeNextArticle(category.items, article)'
+          },
 
-        loading: Boolean,
+          loading: Boolean,
 
-        offline: Boolean,
+          offline: Boolean,
 
-        failure: Boolean,
+          failure: Boolean,
 
-        categoryName: {
-          type: Boolean,
-          computed: '_return(_routeData.category)',
-          notify: true
-        },
+          categoryName: {
+            type: Boolean,
+            computed: '_return(_routeData.category)',
+            notify: true
+          },
 
-        articleId: {
-          type: Boolean,
-          computed: '_return(_routeData.id)',
-          notify: true
-        },
+          articleId: {
+            type: Boolean,
+            computed: '_return(_routeData.id)',
+            notify: true
+          },
 
-        _routeData: Object
+          _routeData: Object
 
-      }}
+        }
+      }
 
-      static get observers() { return [
-        '_loadArticle(article.html)',
-        '_articleChanged(article)'
-      ]}
+      static get observers() {
+        return [
+          '_loadArticle(article.html)',
+          '_articleChanged(article)'
+        ]
+      }
 
       connectedCallback() {
         super.connectedCallback();
@@ -339,15 +672,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           if (dx > 0) {
             if (dx > 100) {
-              this._translate(this._previousArticleCover, 0, window.pageYOffset, true /* transition */);
+              this._translate(this._previousArticleCover, 0, window.pageYOffset, true /* transition */ );
               window.setTimeout(() => {
                 this.set('_routeData.id', this.previousArticle.id);
-                Polymer.AppLayout.scroll({ top: 0 });
+                Polymer.AppLayout.scroll({
+                  top: 0
+                });
                 this._previousArticleCover = this._swapCurrentArticleCovers(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
               }, 200);
             } else {
-              this._translate(this._previousArticleCover, -this.offsetWidth, window.pageYOffset, true /* transition */);
+              this._translate(this._previousArticleCover, -this.offsetWidth, window.pageYOffset, true /* transition */ );
               window.setTimeout(() => {
                 this._resetElementStyles(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
@@ -355,15 +690,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           } else if (dx < 0) {
             if (dx < -100) {
-              this._translate(this._nextArticleCover, 0, window.pageYOffset, true /* transition */);
+              this._translate(this._nextArticleCover, 0, window.pageYOffset, true /* transition */ );
               window.setTimeout(() => {
                 this.set('_routeData.id', this.nextArticle.id);
-                Polymer.AppLayout.scroll({ top: 0 });
+                Polymer.AppLayout.scroll({
+                  top: 0
+                });
                 this._nextArticleCover = this._swapCurrentArticleCovers(this._nextArticleCover);
                 this._resetElementStyles(this._previousArticleCover);
               }, 200);
             } else {
-              this._translate(this._nextArticleCover, this.offsetWidth, window.pageYOffset, true /* transition */);
+              this._translate(this._nextArticleCover, this.offsetWidth, window.pageYOffset, true /* transition */ );
               window.setTimeout(() => {
                 this._resetElementStyles(this._previousArticleCover);
                 this._resetElementStyles(this._nextArticleCover);
@@ -424,7 +761,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _tryReconnect() {
-        this.dispatchEvent(new CustomEvent('refresh-data', {bubbles: true, composed: true}));
+        this.dispatchEvent(new CustomEvent('refresh-data', {
+          bubbles: true,
+          composed: true
+        }));
       }
 
       _slice(list, begin, end) {
@@ -440,21 +780,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _computePreviousArticle(categoryItems, article) {
         if (categoryItems) {
           const i = categoryItems.indexOf(article);
-          return i > 0 ? categoryItems[i-1] : null;
+          return i > 0 ? categoryItems[i - 1] : null;
         }
       }
 
       _computeNextArticle(categoryItems, article) {
         if (categoryItems) {
           const i = categoryItems.indexOf(article);
-          return (i > -1 && i < categoryItems.length-1) ? categoryItems[i+1] : null;
+          return (i > -1 && i < categoryItems.length - 1) ? categoryItems[i + 1] : null;
         }
       }
 
     }
 
     customElements.define(NewsArticle.is, NewsArticle);
-
   </script>
-
 </dom-module>

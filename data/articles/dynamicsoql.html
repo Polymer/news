@@ -1,0 +1,80 @@
+<html>
+
+<head>
+  <meta property="Description" content="MKPartners : How to use Dynamic SOQL in Apex">
+  <meta name="keywords" content="MKPartners Salesforce Force.com APEX">
+  <meta name="article-author" content="MKPartners">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="MKPartners : Dynamic SOQL in Apex">
+  <meta property="og:description" content="MKPartners : How to use Dynamic SOQL in Apex">
+  <meta property="og:image" content="https://www.mkpartners.com/images/mkp-icon-512.png">
+  <meta property="og:site_name" content="MKPartners">
+  <meta property="og:url" content="https://www.mkpartners.com/article/support/dynamicsoql">
+  <meta property="article:publisher" content="https://www.mkpartners.com/">
+  <meta property="article:published_time" content="2016-11-10">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://www.mkpartners.com/article/support/dynamicsoql">
+  <meta name="twitter:title" content="MKPartners : Dynamic SOQL in Apex">
+  <meta name="twitter:description" content="MKPartners : How to use Dynamic SOQL in Apex">
+  <meta name="twitter:image:src" content="https://www.mkpartners.com/images/mkp-icon-512.png">
+  <meta name="twitter:site" content="@MKPartners">
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": "https://www.mkpartners.com/article/support/dynamicsoql",
+      "headline": "MKPartners : Dynamic SOQL in Apex",
+      "datePublished": "2016-11-10T14:00:00+00:00",
+      "dateModified": "2016-11-11T06:21:30.434480+00:00",
+      "description": "MKPartners : How to use Dynamic SOQL in Apex",
+      "author": {
+        "@type": "Person",
+        "name": "MKPartners"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "MKPartners",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.mkpartners.com/images/mkp-icon-512.png",
+          "width": "200",
+          "height": "200"
+        }
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://www.mkpartners.com/images/mkp-icon-512.png",
+        "width": "1440",
+        "height": "810"
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="content">
+
+    <div>
+
+      <div class="uni-paragraph">
+        <div class="rich-text">
+          <div>
+            <p>If you are familiar with SQL and learning Salesforce's SOQL, then you've probably realized that there is no ability to do a "Select *" in SOQL. This can be rather frustrating for newbies, but is easily worked around using existing features
+              of Apex as demonstrated below:</p>
+            <github-gist gistid="4adaea2793af8fee324e8d023cf7be81"></github-gist>
+            <p>The above example is a dynamic query of Accounts. You can easily query any other object using the same concept by just replacing the word "Account" with the name of your object on lines 2 and 6. We also recommend adding WHERE and LIMIT clauses
+              to all queries to ensure you're only querying what you actually need. Dynamic queries are great for managed packages when you don't know what schema is going to look like in the install org. It's also great in a multi-developer environment,
+              when one person may be adding fields to a Visualforce page or if statements and the other is responsible for the constructor or a getter. If you want to get clever (and we always do) then you can setup a method like the one below:
+            </p>
+            <github-gist gistid="4fc7bb419441e292934c407e8e189840"></github-gist>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

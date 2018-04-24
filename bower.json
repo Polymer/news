@@ -25,5 +25,9 @@
   },
   "devDependencies": {
     "web-component-tester": "^6.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0",
+    "webcomponentsjs": "^v1.0.19"
   }
 }

@@ -1,14 +1,24 @@
-import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import '../node_modules/@polymer/app-route/app-route.js';
-import '../node_modules/@polymer/iron-icon/iron-icon.js';
+/**
+@license
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+
+import '@polymer/app-route/app-route.js';
+import '@polymer/iron-icon/iron-icon.js';
 import './news-article-cover.js';
 import './news-side-list.js';
-import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
-import { scroll } from '../node_modules/@polymer/app-layout/helpers/helpers.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import { scroll } from '@polymer/app-layout/helpers/helpers.js';
 
-class NewsArticle extends Element {
+class NewsArticle extends PolymerElement {
   static get template() {
-    return `
+    return html`
     <style>
       :host {
         display: block;
@@ -163,9 +173,9 @@ class NewsArticle extends Element {
 
       <aside>
         <div class="ad-container">
-        <news-gpt-ad id="ad_slot_2"
-            ad-unit-path="/6355419/Travel/Europe/France/Paris"
-            ad-width="300" ad-height="250"></news-gpt-ad>
+          <news-gpt-ad id="ad_slot_2"
+              ad-unit-path="/6355419/Travel/Europe/France/Paris"
+              ad-width="300" ad-height="250"></news-gpt-ad>
         </div>
         <a href="#" class="share-link" aria-label="Send by email">
           <iron-icon icon="mail"></iron-icon> Email
@@ -185,8 +195,10 @@ class NewsArticle extends Element {
     <news-network-warning
         hidden$="[[!failure]]"
         offline="[[offline]]"
-        on-try-reconnect="_tryReconnect"></news-network-warning>`;
+        on-try-reconnect="_tryReconnect"></news-network-warning>
+`;
   }
+
   static get is() { return 'news-article'; }
 
   static get properties() { return {
@@ -434,7 +446,6 @@ class NewsArticle extends Element {
       return (i > -1 && i < categoryItems.length-1) ? categoryItems[i+1] : null;
     }
   }
-
 }
 
 customElements.define(NewsArticle.is, NewsArticle);

@@ -1,15 +1,26 @@
-import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import { scroll } from '../node_modules/@polymer/app-layout/helpers/helpers.js';
-import '../node_modules/@polymer/app-route/app-location.js';
-import '../node_modules/@polymer/app-route/app-route.js';
-import '../node_modules/@polymer/iron-pages/iron-pages.js';
+/**
+@license
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+
+import '@polymer/app-layout/helpers/helpers.js';
+import '@polymer/app-route/app-location.js';
+import '@polymer/app-route/app-route.js';
+import '@polymer/iron-pages/iron-pages.js';
 import './news-data.js';
 import './news-nav.js';
-import { afterNextRender } from '../node_modules/@polymer/polymer/lib/utils/render-status.js';
+import { afterNextRender } from '@polymer/polymer/lib/utils/render-status.js';
+import { scroll } from '@polymer/app-layout/helpers/helpers.js';
 
-class NewsApp extends Element {
+class NewsApp extends PolymerElement {
   static get template() {
-    return `
+    return html`
     <style>
 
       :host {
@@ -100,7 +111,7 @@ class NewsApp extends Element {
     </iron-pages>
 
     <footer>
-      <a href="https://www.polymer-project.org/1.0/toolbox/">Made by Polymer</a>
+      <a href="https://www.polymer-project.org/3.0/toolbox/">Made by Polymer</a>
     </footer>
 `;
   }
@@ -190,7 +201,7 @@ class NewsApp extends Element {
       return;
     }
     this.page = page;
-    // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
+    // Scroll to the top of the page on every *route* change. Use `scroll`
     // with `behavior: 'silent'` to disable header scroll effects during the scroll.
     scroll({ top: 0, behavior: 'silent' });
     // Close the drawer - in case the *route* change came from a link in the drawer.
@@ -198,21 +209,17 @@ class NewsApp extends Element {
   }
 
   _pageChanged(page, oldPage) {
-    let href;
-
-    switch(page) {
-      case 'list':
-        href = 'news-list.js';
-      break;
-      case 'article':
-        href = 'news-article.js';
-      break;
-      default:
-        href = 'news-path-warning.js';
-      break;
-    }
     let cb = this._pageLoaded.bind(this, Boolean(oldPage));
-    import('./' + href).then(cb);
+    switch (page) {
+      case 'list':
+        import('./news-list.js').then(cb);
+        break;
+      case 'article':
+        import('./news-article.js').then(cb);
+        break;
+      default:
+        import('./news-path-warning.js').then(cb);
+    }
   }
 
   _pageLoaded(shouldResetLayout) {
@@ -223,7 +230,7 @@ class NewsApp extends Element {
     // load lazy resources after render and set `loadComplete` when done.
     if (!this.loadComplete) {
       afterNextRender(this, () => {
-        import('./lazy-resources.js').then( () => {
+        import('./lazy-resources.js').then(() => {
           this._notifyNetworkStatus();
           this.loadComplete = true;
 

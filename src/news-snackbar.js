@@ -1,11 +1,21 @@
-import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import { flush } from '../node_modules/@polymer/polymer/lib/legacy/polymer.dom.js';
-import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
+/**
+@license
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-class NewsSnackbar extends Element {
+import { flush } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '@polymer/polymer/lib/utils/async.js';
+
+class NewsSnackbar extends PolymerElement {
   static get template() {
-    return `
+    return html`
     <style>
 
       :host {

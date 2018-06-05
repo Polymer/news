@@ -1,6 +1,16 @@
-import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
+/**
+@license
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+
+import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 
 let categoryList = [
   {name: 'top_stories', title: 'Top Stories'},
@@ -13,7 +23,7 @@ let categoryList = [
 
 let textarea = document.createElement('textarea');
 
-class NewsData extends Element {
+class NewsData extends PolymerElement {
 
   static get is() { return 'news-data'; }
 

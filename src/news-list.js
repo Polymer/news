@@ -1,15 +1,25 @@
-import { Element } from '../node_modules/@polymer/polymer/polymer-element.js';
-import '../node_modules/@polymer/app-route/app-route.js';
-import '../node_modules/@polymer/app-layout/app-grid/app-grid-style.js';
-import { Debouncer } from '../node_modules/@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '../node_modules/@polymer/polymer/lib/utils/async.js';
+/**
+@license
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+
+import '@polymer/app-route/app-route.js';
+import '@polymer/app-layout/app-grid/app-grid-style.js';
 import './news-list-featured-item.js';
 import './news-list-item.js';
 import './news-side-list.js';
+import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 
-class NewsList extends Element {
+class NewsList extends PolymerElement {
   static get template() {
-    return `
+    return html`
     <style include="app-grid-style">
 
       :host {
@@ -183,7 +193,7 @@ class NewsList extends Element {
         hidden$="[[!failure]]"
         offline="[[offline]]"
         on-try-reconnect="_tryReconnect"></news-network-warning>
-    `;
+`;
   }
 
   static get is() { return 'news-list'; }
@@ -243,7 +253,6 @@ class NewsList extends Element {
   _return(value) {
     return value;
   }
-
 }
 
 customElements.define(NewsList.is, NewsList);

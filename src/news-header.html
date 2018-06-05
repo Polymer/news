@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
@@ -216,8 +216,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .sticky-nav-menu {
-          @apply(--layout-vertical);
-          @apply(--layout-center);
+          @apply --layout-vertical;
+          @apply --layout-center;
           position: absolute;
           left: 0;
           right: 0;
@@ -258,14 +258,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="date-line" role="heading">
         [[category.title]] <span aria-hidden="true">&nbsp;&middot;&nbsp;</span> [[_currentTime()]]
       </div>
-      <template is="dom-if" if="[[!smallScreen]]">
-        <iron-selector role="navigation" class="menu-list" selected="[[category.name]]"
-            attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
-        </iron-selector>
-      </template>
+      <dom-if if="[[!smallScreen]]">
+        <template>
+          <iron-selector role="navigation" class="menu-list" selected="[[category.name]]"
+              attr-for-selected="name">
+            <dom-repeat items="[[categories]]" as="category" initial-count="9">
+              <template>
+                <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+              </template>
+            </dom-repeat>
+          </iron-selector>
+        </template>
+      </dom-if>
     </header>
 
     <!--
@@ -284,7 +288,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             [[category.title]] <span aria-hidden="true">&nbsp; &middot; &nbsp;</span> [[_currentTime()]]
           </div>
           <div class="article-headline">
-            <content></content>
+            <slot></slot>
           </div>
         </div>
         <paper-icon-button icon="mail" aria-label="Send by mail"></paper-icon-button>
@@ -293,9 +297,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="sticky-nav-menu" shown$="[[drawerOpened]]">
         <iron-selector class="grid-container" role="navigation"
             selected="[[category.name]]" attr-for-selected="name">
-          <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-          </template>
+          <dom-repeat items="[[categories]]" as="category" initial-count="9">
+            <template>
+              <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+            </template>
+          </dom-repeat>
         </iron-selector>
       </div>
     </app-box>
@@ -304,11 +310,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 
-    Polymer({
+    class NewsHeader extends Polymer.Element {
 
-      is: 'news-header',
+      static get is() { return 'news-header'; }
 
-      properties: {
+      static get properties() { return {
 
         appTitle: String,
 
@@ -328,38 +334,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         }
 
-      },
+      }}
 
-      _menuIcon: function(drawerOpened) {
+      _menuIcon(drawerOpened) {
         return drawerOpened ? 'close' : 'menu';
-      },
+      }
 
-      _currentTime: function() {
-        var monthNames = [
+      _currentTime() {
+        let monthNames = [
           'January', 'February', 'March',
           'April', 'May', 'June', 'July',
           'August', 'September', 'October',
           'November', 'December'
         ];
 
-        var date = new Date();
+        let date = new Date();
 
         return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
-      },
+      }
 
-      _toggleDrawer: function() {
+      _toggleDrawer() {
         this.drawerOpened = !this.drawerOpened;
-      },
+      }
 
-      _getScrollThreshold: function(smallScreen) {
+      _getScrollThreshold(smallScreen) {
         return smallScreen ? window.innerHeight - 64 : 162;
-      },
+      }
 
-      _computeAppHomeLabel: function(appTitle) {
+      _computeAppHomeLabel(appTitle) {
         return appTitle + ' Home';
       }
 
-    });
+    }
+
+    customElements.define(NewsHeader.is, NewsHeader);
 
   </script>
 

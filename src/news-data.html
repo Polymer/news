@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 
 <dom-module id="news-data">
 
@@ -16,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   (function() {
 
-    var categoryList = [
+    let categoryList = [
       {name: 'top_stories', title: 'Top Stories'},
       {name: 'doodles', title: 'Doodles'},
       {name: 'chrome', title: 'Chrome'},
@@ -25,13 +25,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       {name: 'nonprofits', title: 'Nonprofits'}
     ];
 
-    var textarea = document.createElement('textarea');
+    let textarea = document.createElement('textarea');
 
-    Polymer({
+    class NewsData extends Polymer.Element {
 
-      is: 'news-data',
+      static get is() { return 'news-data'; }
 
-      properties: {
+      static get properties() { return {
 
         categories: {
           type: Array,
@@ -70,24 +70,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         }
 
-      },
+      }}
 
-      observers: [
+      static get observers() { return [
         '_fetchCategory(category, offline)',
         '_fetchArticle(article, offline)'
-      ],
+      ]}
 
-      _computeArticle: function(categoryItems, articleId) {
-        for (var i = 0; i < categoryItems.length; ++i) {
-          var article = categoryItems[i];
+      _computeArticle(categoryItems, articleId) {
+        if (!categoryItems || !articleId) {
+          return null;
+        }
+        for (let i = 0; i < categoryItems.length; ++i) {
+          let article = categoryItems[i];
           if (article.id === articleId) {
             return article;
           }
         }
         return null;
-      },
+      }
 
-      _fetchArticle: function(article, offline) {
+      _fetchArticle(article, offline) {
         // Don't fail if we become offline but already have a cached version, or if there's
         // nothing to fetch, or if already loading.
         if ((offline && article && article.html) || !article || this.loading) {
@@ -95,22 +98,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return;
         }
         this._fetch('data/articles/' + article.id + '.html',
-          function(response) {
-            this.set('article.html', this._formatHTML(response));
-          }.bind(this),
+          (response) => { this.set('article.html', this._formatHTML(response)); },
           1 /* attempts */, true /* isRaw */);
-      },
+      }
 
-      _computeCategory: function(categoryName) {
-        for (var i = 0, c; c = this.categories[i]; ++i) {
+      _computeCategory(categoryName) {
+        for (let i = 0, c; c = this.categories[i]; ++i) {
           if (c.name === categoryName) {
             return c;
           }
         }
         return null;
-      },
+      }
 
-      _fetchCategory: function(category, offline, attempts) {
+      _fetchCategory(category, offline, attempts) {
         // Don't fail if we become offline but already have a cached version, or if there's
         // nothing to fetch, or if already loading.
         if ((offline && category && category.items) || !category || this.loading) {
@@ -118,16 +119,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return;
         }
         this._fetch('data/' + category.name + '.json',
-          function(response) {
-            this.set('category.items', this._parseCategoryItems(response));
-          }.bind(this),
+          (response) => { this.set('category.items', this._parseCategoryItems(response)); },
           attempts || 1 /* attempts */);
-      },
+      }
 
-      _parseCategoryItems: function(response) {
-        var items = [];
+      _parseCategoryItems(response) {
+        let items = [];
 
-        for (var i = 0, item; item = response[i]; ++i) {
+        for (let i = 0, item; item = response[i]; ++i) {
           items.push({
             headline: this._unescapeText(item.title),
             href: this._getItemHref(item),
@@ -143,26 +142,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         return items;
-      },
+      }
 
-      _unescapeText: function(text) {
+      _unescapeText(text) {
         textarea.innerHTML = text;
         return textarea.textContent;
-      },
+      }
 
-      _getItemHref: function(item) {
+      _getItemHref(item) {
         return item.id ? '/article/' + this.categoryName + '/' + encodeURIComponent(item.id) : null;
-      },
+      }
 
-      _getItemImage: function(item) {
+      _getItemImage(item) {
         return item.imgSrc ? 'data/' + item.imgSrc : '';
-      },
+      }
 
-      _timeAgo: function(timestamp) {
+      _timeAgo(timestamp) {
         if (!timestamp)
           return ''
 
-        var minutes = (Date.now() - timestamp) / 1000 / 60;
+        let minutes = (Date.now() - timestamp) / 1000 / 60;
         if (minutes < 2)
           return '1 min ago';
         if (minutes < 60)
@@ -170,90 +169,93 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (minutes < 120)
           return '1 hour ago';
 
-        var hours = minutes / 60;
+        let hours = minutes / 60;
         if (hours < 24)
           return Math.floor(hours) + ' hours ago';
         if (hours < 48)
           return '1 day ago';
 
         return Math.floor(hours / 24) + ' days ago';
-      },
+      }
 
-      _trimRight: function(text, maxLength) {
-        var breakIdx = text.indexOf(' ', maxLength);
+      _trimRight(text, maxLength) {
+        let breakIdx = text.indexOf(' ', maxLength);
         return breakIdx === -1 ? text : text.substr(0, breakIdx) + '...';
-      },
+      }
 
-      _formatHTML: function(html) {
-        var template = document.createElement('template');
+      _formatHTML(html) {
+        let template = document.createElement('template');
         template.innerHTML = html;
 
         // Remove h1, .kicker, and .date from content.
-        // var h1 = template.content.querySelector('h1');
+        // let h1 = template.content.querySelector('h1');
         // h1 && h1.remove();
-        // var kicker = template.content.querySelector('.kicker');
+        // let kicker = template.content.querySelector('.kicker');
         // kicker && kicker.remove();
-        // var date = template.content.querySelector('.date');
+        // let date = template.content.querySelector('.date');
         // date && date.remove();
 
         // Remove the first image if it's the same as the item image.
-        // var image = template.content.querySelector('img');
+        // let image = template.content.querySelector('img');
         // if (image && this._isSameImageSrc(image.src, this.article.imageUrl)) {
         //   image.remove();
         // }
 
         // Remove width/height attributes from all images.
-        var images = template.content.querySelectorAll('img');
-        for (var i = 0; i < images.length; ++i) {
-          var img = images[i];
+        let images = template.content.querySelectorAll('img');
+        for (let i = 0; i < images.length; ++i) {
+          let img = images[i];
           img.removeAttribute('width');
           img.removeAttribute('height');
         }
 
         return template.content.querySelector('.content').innerHTML;
-      },
+      }
 
-      // _isSameImageSrc: function(a, b) {
-      //   var regex = /[^/]+\.(jpg|png|gif)/;
-      //   var aMatch = regex.exec(a);
-      //   var bMatch = regex.exec(b);
+      // _isSameImageSrc(a, b) {
+      //   let regex = /[^/]+\.(jpg|png|gif)/;
+      //   let aMatch = regex.exec(a);
+      //   let bMatch = regex.exec(b);
       //   return aMatch && bMatch && aMatch[0] === bMatch[0];
-      // },
+      // }
 
-      _fetch: function(url, callback, attempts, isRaw) {
-        var xhr = new XMLHttpRequest();
-        xhr.addEventListener('load', function(e) {
+      _fetch(url, callback, attempts, isRaw) {
+        let xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', (e) => {
           this._setLoading(false);
           if (isRaw) {
             callback(e.target.responseText);
           } else {
             callback(JSON.parse(e.target.responseText));
           }
-        }.bind(this));
-        xhr.addEventListener('error', function(e) {
+        });
+        xhr.addEventListener('error', (e) => {
           // Flaky connections might fail fetching resources
           if (attempts > 1) {
-            this.debounce('_fetch', this._fetch.bind(this, url, callback, attempts - 1), 200);
+            this._fetchDebouncer = Polymer.Debouncer.debounce(this._fetchDebouncer,
+              Polymer.Async.timeOut.after(200), this._fetch.bind(this, url, callback, attempts - 1));
           } else {
             this._setLoading(false);
             this._setFailure(true);
           }
-        }.bind(this));
+        });
 
         this._setLoading(true);
         this._setFailure(false);
         xhr.open('GET', url);
         xhr.send();
-      },
+      }
 
-      refresh: function() {
+      refresh() {
         if (this.categoryName) {
           // Try at most 3 times to get the items.
           this._fetchCategory(this.category, this.offline, 3);
         }
       }
 
-    });
+    }
+
+    customElements.define(NewsData.is, NewsData);
 
   })();
 

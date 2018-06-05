@@ -8,11 +8,10 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
 
-<link rel="import" href="news-iframe.html">
 <link rel="import" href="news-list-featured-item.html">
 <link rel="import" href="news-list-item.html">
 <link rel="import" href="news-side-list.html">
@@ -41,7 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .content {
-        @apply(--layout-flex);
+        @apply --layout-flex;
       }
 
       .article-grid,
@@ -60,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       h3 {
-        @apply(--app-sub-section-headline);
+        @apply --app-sub-section-headline;
         margin: 24px 0;
       }
 
@@ -68,7 +67,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 32px;
       }
 
-      news-iframe {
+      news-gpt-ad {
+        display: block;
         width: 300px;
         height: 250px;
       }
@@ -106,8 +106,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .opinions-grid {
-          @apply(--layout-horizontal);
-          @apply(--layout-wrap);
+          @apply --layout-horizontal;
+          @apply --layout-wrap;
         }
 
         .opinions-grid li {
@@ -124,7 +124,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop large */
       @media (min-width: 1310px) {
         .container {
-          @apply(--layout-horizontal);
+          @apply --layout-horizontal;
         }
 
         .content {
@@ -145,7 +145,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-route
         route="[[route]]"
         pattern="/:category"
-        data="{{_routeData}}"></app-route>
+        data="{{routeData}}"></app-route>
 
     <div class="container" fade-in$="[[!loading]]" hidden$="[[failure]]">
       <div class="content">
@@ -153,26 +153,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </news-list-featured-item>
 
         <ul class="app-grid article-grid fade-in">
-          <template is="dom-repeat" items="[[_slice(category.items, 1, 5)]]">
-            <li>
-              <news-list-item item="[[item]]"></news-list-item>
-            </li>
-          </template>
+          <dom-repeat items="[[_slice(category.items, 1, 5)]]">
+            <template>
+              <li>
+                <news-list-item item="[[item]]"></news-list-item>
+              </li>
+            </template>
+          </dom-repeat>
         </ul>
 
         <h3>Opinions</h3>
         <ul class="opinions-grid fade-in">
-          <template is="dom-repeat" items="[[_slice(category.items, 5)]]">
-            <li>
-              <news-list-item horizontal item="[[item]]"></news-list-item>
-            </li>
-          </template>
+          <dom-repeat items="[[_slice(category.items, 5)]]">
+            <template>
+              <li>
+                <news-list-item horizontal item="[[item]]"></news-list-item>
+              </li>
+            </template>
+          </dom-repeat>
         </ul>
       </div>
 
       <aside>
         <div class="ad-container">
-          <news-iframe src="//rcm-na.amazon-adsystem.com/e/cm?o=1&p=12&l=ur1&f=ifr"></news-iframe>
+          <news-gpt-ad id="ad_slot_1"
+              ad-unit-path="/6355419/Travel/Europe/France/Paris"
+              ad-width="300" ad-height="250"></news-gpt-ad>
         </div>
         <news-side-list class="fade-in" items="[[_slice(category.items, 0, 3)]]">
           Most Read
@@ -192,11 +198,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 
-    Polymer({
+    class NewsList extends Polymer.Element {
 
-      is: 'news-list',
+      static get is() { return 'news-list'; }
 
-      properties: {
+      static get properties() { return {
 
         route: Object,
 
@@ -208,46 +214,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         categoryName: {
           type: Boolean,
-          computed: '_return(_routeData.category)',
+          computed: '_return(routeData.category)',
           notify: true
         },
 
-        _routeData: Object
+        routeData: Object,
 
-      },
+        loading: Boolean
 
-      _boundResizeHandler: null,
+      }}
 
-      attached: function() {
+      connectedCallback() {
+        super.connectedCallback();
         this._boundResizeHandler = this._resizeHandler.bind(this);
         window.addEventListener('resize', this._boundResizeHandler);
-      },
+      }
 
-      detached: function() {
+      disconnectedCallback() {
+        super.disconnectedCallback();
         window.removeEventListener('resize', this._boundResizeHandler);
-      },
+      }
 
-      _getFeaturedItem: function(items) {
+      _getFeaturedItem(items) {
         return items ? items[0] : {};
-      },
+      }
 
-      _tryReconnect: function() {
-        this.fire('refresh-data');
-      },
+      _tryReconnect() {
+        this.dispatchEvent(new CustomEvent('refresh-data', {bubbles: true, composed: true}));
+      }
 
-      _resizeHandler: function() {
-        this.debounce('_resize', this.updateStyles, 50);
-      },
+      _resizeHandler() {
+        this._resizeDebouncer = Polymer.Debouncer.debounce(this._resizeDebouncer,
+          Polymer.Async.timeOut.after(50), () => { this.updateStyles(); });
+      }
 
-      _slice: function(list, begin, end) {
-        return list.slice(begin, end);
-      },
+      _slice(list, begin, end) {
+        if (list) {
+          return list.slice(begin, end);
+        }
+      }
 
-      _return: function(value) {
+      _return(value) {
         return value;
       }
 
-    });
+    }
+
+    customElements.define(NewsList.is, NewsList);
 
   </script>
 

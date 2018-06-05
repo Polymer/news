@@ -12,16 +12,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <base href="/">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
   <title>NEWS</title>
 
   <link rel="shortcut icon" sizes="32x32" href="images/news-icon-32.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Polymer">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NEWS">
   <meta name="theme-color" content="#000">
   <link rel="manifest" href="manifest.json">
-
-  <base href="/">
-  <link rel="import" href="src/news-app.html" async>
 
   <style>
 
@@ -73,22 +75,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <news-app unresolved app-title="NEWS">NEWS</news-app>
 
-  <script>
-    Polymer = {lazyRegister: true, dom: 'shadow'};
-
-    (function() {
-      if ('registerElement' in document
-          && 'import' in document.createElement('link')
-          && 'content' in document.createElement('template')) {
-        // platform is good!
-      } else {
-        // polyfill the platform!
-        var e = document.createElement('script');
-        e.src = 'bower_components/webcomponentsjs/webcomponents-lite.min.js';
-        document.body.appendChild(e);
-      }
-    })();
-  </script>
+  <script src="bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+  <link rel="import" href="src/news-app.html">
 
 </body>
 </html>

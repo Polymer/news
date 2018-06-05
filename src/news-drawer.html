@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 
@@ -51,11 +51,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
-      <paper-icon-button icon="close" on-click="_closeDrawer"></paper-icon-button>
+      <paper-icon-button icon="close" on-click="_closeDrawer" aria-label="Close main navigation"></paper-icon-button>
       <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
-        <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-          <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-        </template>
+        <dom-repeat items="[[categories]]" as="category" initial-count="9">
+          <template>
+            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+          </template>
+        </dom-repeat>
       </iron-selector>
     </app-drawer>
 
@@ -63,11 +65,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <script>
 
-    Polymer({
+    class NewsDrawer extends Polymer.Element {
 
-      is: 'news-drawer',
+      static get is() { return 'news-drawer'; }
 
-      properties: {
+      static get properties() { return {
 
         categories: Array,
 
@@ -78,13 +80,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         }
 
-      },
+      }}
 
-      _closeDrawer: function() {
+      _closeDrawer() {
         this.drawerOpened = false;
       }
 
-    });
+    }
+
+    customElements.define(NewsDrawer.is, NewsDrawer);
 
   </script>
 

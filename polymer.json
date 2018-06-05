@@ -10,27 +10,27 @@
   "sources": [
     "src/**/*",
     "images/**/*",
-    "data/**/*",
-    "bower.json"
+    "data/**/*"
   ],
   "extraDependencies": [
-    "app.yaml",
-    "main.py",
     "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+    "bower_components/webcomponentsjs/*"
   ],
+  "lint": {
+    "rules": ["polymer-2-hybrid"]
+  },
   "builds": [
-   {
-     "preset": "es5-bundled",
-     "basePath": true
-   },
-   {
-     "preset": "es6-unbundled",
-     "basePath": true
-   },
-   {
-     "preset": "es6-bundled",
-     "basePath": true
-   }
- ]
+    {
+      "preset": "es5-bundled",
+      "basePath": true
+    },
+    {
+      "preset": "es6-unbundled",
+      "basePath": true
+    },
+    {
+      "preset": "es6-bundled",
+      "basePath": true
+    }
+  ]
 }

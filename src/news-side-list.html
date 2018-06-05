@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 
 <dom-module id="news-side-list">
 
@@ -21,7 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       h3 {
-        @apply(--app-sub-section-headline);
+        @apply --app-sub-section-headline;
       }
 
       a {
@@ -70,30 +70,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <h3>
-      <content></content>
+      <slot></slot>
     </h3>
-    <template is="dom-repeat" items="[[items]]">
-      <a href$="[[item.href]]">
-        <div class="category">[[item.category]]</div>
-        <span class="headline">[[item.headline]]</span>
-        <span class="time-ago">[[item.timeAgo]]</span>
-      </a>
-    </template>
+    <dom-repeat items="[[items]]">
+      <template>
+        <a href$="[[item.href]]">
+          <div class="category">[[item.category]]</div>
+          <span class="headline">[[item.headline]]</span>
+          <span class="time-ago">[[item.timeAgo]]</span>
+        </a>
+      </template>
+    </dom-repeat>
   </template>
 
   <script>
 
-    Polymer({
+    class NewsSideList extends Polymer.Element {
 
-      is: 'news-side-list',
+      static get is() { return 'news-side-list'; }
 
-      properties: {
+      static get properties() { return {
 
         items: Array
 
-      }
+      }}
 
-    });
+    }
+
+    customElements.define(NewsSideList.is, NewsSideList);
 
   </script>
 

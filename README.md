@@ -1,29 +1,24 @@
 # NEWS
 
-## Prerequisites
-
-### Polymer CLI
-
-Install [polymer-cli](https://github.com/Polymer/polymer-cli):
-
-    npm install -g polymer-cli
-
 ### Setup
 
-    git clone https://github.com/polymer/news.git
+    git clone -b 3.0 https://github.com/polymer/news.git
     cd news
-    bower install
+    npm i
 
 ## Start the development server
 
-    polymer serve
+    npm start
 
 ## Build
 
-    polymer build
+    npm run build
 
 ## Test the build
+static build:
 
-Use `polymer serve` to serve a specific build preset of the app. For example:
+    npm run serve:static
 
-    polymer serve build/es5-bundled
+prpl-server build:
+
+    npm run serve:prpl-server

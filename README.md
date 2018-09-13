@@ -1,24 +1,28 @@
 # NEWS
 
-### Setup
-
-    git clone -b 3.0 https://github.com/polymer/news.git
-    cd news
-    npm i
-
-## Start the development server
-
-    npm start
+## Setup
+```bash
+$ git clone https://github.com/polymer/news.git
+$ cd news
+$ npm i
+$ npm start
+```
 
 ## Build
-
-    npm run build
+```bash
+$ npm run build
+```
 
 ## Test the build
-static build:
+To test prpl-server build:
+```bash
+$ npm run serve:prpl-server
+```
+To test static build:
+```bash
+$ npm run serve:static
+```
 
-    npm run serve:static
+## Deploying
 
-prpl-server build:
-
-    npm run serve:prpl-server
+Our [production deployment of NEWS](https://news.polymer-project.org/) is hosted on App Engine with Node.js. It can be deployed with [the same steps as PWA Starter Kit](https://polymer.github.io/pwa-starter-kit/building-and-deploying/#deploying-prpl-server).

@@ -1,21 +1,20 @@
-<!--
+/**
 @license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+import '@polymer/app-layout/app-drawer/app-drawer.js';
+import '@polymer/iron-selector/iron-selector.js';
 
-<dom-module id="news-drawer">
-
-  <template>
-
+class NewsDrawer extends PolymerElement {
+  static get template() {
+    return html`
     <style>
 
       app-drawer {
@@ -60,36 +59,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </dom-repeat>
       </iron-selector>
     </app-drawer>
+`;
+  }
 
-  </template>
+  static get is() { return 'news-drawer'; }
 
-  <script>
+  static get properties() { return {
 
-    class NewsDrawer extends Polymer.Element {
+    categories: Array,
 
-      static get is() { return 'news-drawer'; }
+    category: Object,
 
-      static get properties() { return {
-
-        categories: Array,
-
-        category: Object,
-
-        drawerOpened: {
-          type: Boolean,
-          notify: true
-        }
-
-      }}
-
-      _closeDrawer() {
-        this.drawerOpened = false;
-      }
-
+    drawerOpened: {
+      type: Boolean,
+      notify: true
     }
 
-    customElements.define(NewsDrawer.is, NewsDrawer);
+  }}
 
-  </script>
+  _closeDrawer() {
+    this.drawerOpened = false;
+  }
+}
 
-</dom-module>
+customElements.define(NewsDrawer.is, NewsDrawer);

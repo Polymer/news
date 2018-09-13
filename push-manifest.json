@@ -1,0 +1,44 @@
+{
+  "/": {
+    "src/news-app.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "src/news-list.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js": {
+      "type": "script",
+      "weight": 1
+    }
+  },
+  "/list/.*": {
+    "src/news-app.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "src/news-list.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js": {
+      "type": "script",
+      "weight": 1
+    }
+  },
+  "/article/.*": {
+    "src/news-app.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "src/news-article.js": {
+      "type": "script",
+      "weight": 1
+    },
+    "node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js": {
+      "type": "script",
+      "weight": 1
+    }
+  }
+}

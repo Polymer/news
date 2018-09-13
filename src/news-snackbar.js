@@ -1,19 +1,21 @@
-<!--
+/**
 @license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
+import { flush } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 
-<dom-module id="news-snackbar">
-
-  <template>
-
+class NewsSnackbar extends PolymerElement {
+  static get template() {
+    return html`
     <style>
 
       :host {
@@ -55,40 +57,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <slot></slot>
+`;
+  }
 
-  </template>
+  static get is() { return 'news-snackbar'; }
 
-  <script>
+  connectedCallback() {
+    super.connectedCallback();
+    this.setAttribute('role', 'alert');
+    this.setAttribute('aria-live', 'assertive');
+  }
 
-    class NewsSnackbar extends Polymer.Element {
+  open() {
+    flush();
+    this.removeAttribute('aria-hidden');
+    this.offsetHeight && this.classList.add('opened');
+    this._closeDebouncer = Debouncer.debounce(this._closeDebouncer,
+      timeOut.after(4000), () => {
+        this.close();
+      });
+  }
 
-      static get is() { return 'news-snackbar'; }
+  close() {
+    this.setAttribute('aria-hidden', 'true');
+    this.classList.remove('opened');
+  }
+}
 
-      connectedCallback() {
-        super.connectedCallback();
-        this.setAttribute('role', 'alert');
-        this.setAttribute('aria-live', 'assertive');
-      }
-
-      open() {
-        Polymer.dom.flush();
-        this.removeAttribute('aria-hidden');
-        this.offsetHeight && this.classList.add('opened');
-        this._closeDebouncer = Polymer.Debouncer.debounce(this._closeDebouncer,
-          Polymer.Async.timeOut.after(4000), () => {
-            this.close();
-          });
-      }
-
-      close() {
-        this.setAttribute('aria-hidden', 'true');
-        this.classList.remove('opened');
-      }
-
-    }
-
-    customElements.define(NewsSnackbar.is, NewsSnackbar);
-
-  </script>
-
-</dom-module>
+customElements.define(NewsSnackbar.is, NewsSnackbar);

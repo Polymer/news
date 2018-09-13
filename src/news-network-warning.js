@@ -1,22 +1,20 @@
-<!--
+/**
 @license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+import '@polymer/iron-icon/iron-icon.js';
+import './news-icons.js';
 
-<link rel="import" href="news-icons.html">
-
-<dom-module id="news-network-warning">
-
-  <template>
-
+class NewsNetworkWarning extends PolymerElement {
+  static get template() {
+    return html`
     <style>
 
       :host {
@@ -65,38 +63,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <iron-icon icon="cloud-off"></iron-icon>
-    <div hidden$="[[offline]]">
+    <div hidden\$="[[offline]]">
       <h1>Couldn't reach the server</h1>
     </div>
-    <div hidden$="[[!offline]]">
+    <div hidden\$="[[!offline]]">
       <h1>No internet connection</h1>
       <p>Check if your device is connected to a mobile network or WiFi.</p>
     </div>
 
     <button on-click="_tryReconnect">Try Again</button>
+`;
+  }
 
-  </template>
+  static get is() { return 'news-network-warning'; }
 
-  <script>
+  static get properties() { return {
 
-    class NewsNetworkWarning extends Polymer.Element {
+    offline: Boolean
 
-      static get is() { return 'news-network-warning'; }
+  }}
 
-      static get properties() { return {
+  _tryReconnect() {
+    this.dispatchEvent(new CustomEvent('try-reconnect', {composed: true}));
+  }
+}
 
-        offline: Boolean
-
-      }}
-
-      _tryReconnect() {
-        this.dispatchEvent(new CustomEvent('try-reconnect', {composed: true}));
-      }
-
-    }
-
-    customElements.define(NewsNetworkWarning.is, NewsNetworkWarning);
-
-  </script>
-
-</dom-module>
+customElements.define(NewsNetworkWarning.is, NewsNetworkWarning);

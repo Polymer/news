@@ -1,25 +1,25 @@
-<!--
+/**
 @license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
+import '@polymer/app-route/app-route.js';
+import '@polymer/app-layout/app-grid/app-grid-style.js';
+import './news-list-featured-item.js';
+import './news-list-item.js';
+import './news-side-list.js';
+import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 
-<link rel="import" href="news-list-featured-item.html">
-<link rel="import" href="news-list-item.html">
-<link rel="import" href="news-side-list.html">
-
-<dom-module id="news-list">
-
-  <template>
-
+class NewsList extends PolymerElement {
+  static get template() {
+    return html`
     <style include="app-grid-style">
 
       :host {
@@ -193,75 +193,66 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         hidden$="[[!failure]]"
         offline="[[offline]]"
         on-try-reconnect="_tryReconnect"></news-network-warning>
+`;
+  }
 
-  </template>
+  static get is() { return 'news-list'; }
 
-  <script>
+  static get properties() { return {
 
-    class NewsList extends Polymer.Element {
+    route: Object,
 
-      static get is() { return 'news-list'; }
+    category: Object,
 
-      static get properties() { return {
+    offline: Boolean,
 
-        route: Object,
+    failure: Boolean,
 
-        category: Object,
+    categoryName: {
+      type: Boolean,
+      computed: '_return(routeData.category)',
+      notify: true
+    },
 
-        offline: Boolean,
+    routeData: Object,
 
-        failure: Boolean,
+    loading: Boolean
 
-        categoryName: {
-          type: Boolean,
-          computed: '_return(routeData.category)',
-          notify: true
-        },
+  }}
 
-        routeData: Object,
+  connectedCallback() {
+    super.connectedCallback();
+    this._boundResizeHandler = this._resizeHandler.bind(this);
+    window.addEventListener('resize', this._boundResizeHandler);
+  }
 
-        loading: Boolean
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('resize', this._boundResizeHandler);
+  }
 
-      }}
+  _getFeaturedItem(items) {
+    return items ? items[0] : {};
+  }
 
-      connectedCallback() {
-        super.connectedCallback();
-        this._boundResizeHandler = this._resizeHandler.bind(this);
-        window.addEventListener('resize', this._boundResizeHandler);
-      }
+  _tryReconnect() {
+    this.dispatchEvent(new CustomEvent('refresh-data', {bubbles: true, composed: true}));
+  }
 
-      disconnectedCallback() {
-        super.disconnectedCallback();
-        window.removeEventListener('resize', this._boundResizeHandler);
-      }
+  _resizeHandler() {
+    this._resizeDebouncer = Debouncer.debounce(this._resizeDebouncer,
+      timeOut.after(50), () => { this.updateStyles(); });
+  }
 
-      _getFeaturedItem(items) {
-        return items ? items[0] : {};
-      }
-
-      _tryReconnect() {
-        this.dispatchEvent(new CustomEvent('refresh-data', {bubbles: true, composed: true}));
-      }
-
-      _resizeHandler() {
-        this._resizeDebouncer = Polymer.Debouncer.debounce(this._resizeDebouncer,
-          Polymer.Async.timeOut.after(50), () => { this.updateStyles(); });
-      }
-
-      _slice(list, begin, end) {
-        if (list) {
-          return list.slice(begin, end);
-        }
-      }
-
-      _return(value) {
-        return value;
-      }
-
+  _slice(list, begin, end) {
+    if (list) {
+      return list.slice(begin, end);
     }
+  }
 
-    customElements.define(NewsList.is, NewsList);
+  _return(value) {
+    return value;
+  }
+}
 
-  </script>
-
-</dom-module>
+customElements.define(NewsList.is, NewsList);

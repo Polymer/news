@@ -49,8 +49,8 @@ class NewsDrawer extends PolymerElement {
 
     </style>
 
-    <app-drawer opened="{{drawerOpened}}" swipe-open="" tabindex="0">
-      <paper-icon-button icon="close" on-click="_closeDrawer"></paper-icon-button>
+    <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
+      <paper-icon-button icon="close" on-click="_closeDrawer" aria-label="Close main navigation"></paper-icon-button>
       <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
         <dom-repeat items="[[categories]]" as="category" initial-count="9">
           <template>

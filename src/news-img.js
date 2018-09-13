@@ -64,7 +64,10 @@ class NewsImg extends PolymerElement {
 
   static get properties() { return {
 
-    alt: String,
+    alt: {
+      type: String,
+      value: ''
+    },
 
     src: {
       type: String,
